@@ -1,0 +1,5 @@
+package Domain;
+
+class Patient {
+    
+}
