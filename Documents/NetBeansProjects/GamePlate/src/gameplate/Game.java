@@ -23,6 +23,7 @@ public class Game extends javax.swing.JFrame {
     private boolean isComFirst;
     private boolean isSingle;
     private Plate plate;
+    public Plate background;
   
     
 
@@ -74,7 +75,16 @@ public class Game extends javax.swing.JFrame {
         System.out.println(this.getWidth()+" "+this.getHeight());
         this.setResizable(false);
     }
-    void init(){       
+    void init(){   
+        
+        //...........................
+       /* background = new Plate();
+        background.setBounds(0,0, this.getWidth(),this.getHeight());
+        System.out.println("1");
+        this.add(background);
+        background.drawImage("back");*/
+        
+        //...........................
         this.count = 2; 
         totGames++;
         System.out.println(totGames);

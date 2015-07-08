@@ -9,15 +9,32 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+
 
 import javax.imageio.ImageIO;
 
 public class Plate extends Canvas implements MouseListener{ 
     
   
-    private ArrayList<Integer> rest;   
-    int simbleList[][];   
+    
+    int simbleList[][];     
+    
+    
+    
+    public void drawImage(String name){
+        
+            Graphics2D h = (Graphics2D) this.getGraphics();          
+            BufferedImage image=null;
+            try {
+                image = ImageIO.read(new File("res/TTTP/"+name+".png"));            
+            } catch (IOException ex) {
+                System.out.println("dasdasd");
+            }       
+            h.drawImage(image, 0, 0,this);       
+            Toolkit.getDefaultToolkit().sync();
+            h.dispose();   
+            
+    }
     
     
    
@@ -30,7 +47,7 @@ public class Plate extends Canvas implements MouseListener{
             } catch (IOException ex) {
                 System.out.println("dasdasd");
             }       
-            h.drawImage(image, 0, 0,this);       
+            h.drawImage(image, -5, 80,this);       
             Toolkit.getDefaultToolkit().sync();
             h.dispose();   
             
@@ -44,7 +61,7 @@ public class Plate extends Canvas implements MouseListener{
             } catch (IOException ex) {
                 System.out.println("dasdasd");
             }       
-            h.drawImage(image, x,y,this);       
+            h.drawImage(image, x-5,y+80,this);       
             Toolkit.getDefaultToolkit().sync();
             h.dispose();
             

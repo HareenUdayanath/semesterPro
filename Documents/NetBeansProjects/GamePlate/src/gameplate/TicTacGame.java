@@ -28,8 +28,9 @@ public class TicTacGame {
     static void newGame(boolean isCF){
         game = new Game();                
         Plate p = new Plate();
-        p.setBounds(-5, 80, 355,365); 
+        p.setBounds(0,0, game.getWidth(),game.getHeight()); 
         p.addMouseListener(game.getMouseAdapter());
+        System.out.println("2");
         game.add(p);   
         game.setPlate(p);
         
@@ -42,7 +43,9 @@ public class TicTacGame {
         
         
         game.setVisible(true);
+        //p.drawImage("back");
         p.drawBoard();   
+        
         new Thread(){
             public void run(){
                 if(isIsOtherFirst()&&isIsSingle()){             
