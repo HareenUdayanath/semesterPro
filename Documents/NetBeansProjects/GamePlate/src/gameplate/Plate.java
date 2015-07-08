@@ -26,7 +26,7 @@ public class Plate extends Canvas implements MouseListener{
             Graphics2D h = (Graphics2D) this.getGraphics();          
             BufferedImage image=null;
             try {
-                image = ImageIO.read(new File("res/TTTP/"+name+".png"));            
+                image = ImageIO.read(new File("res/TTTP/"+name));            
             } catch (IOException ex) {
                 System.out.println("dasdasd");
             }       
@@ -76,7 +76,7 @@ public class Plate extends Canvas implements MouseListener{
             } catch (IOException ex) {
                 System.out.println("dasdasd");
             }       
-            h.drawImage(image, x,y,this);       
+            h.drawImage(image, x-5,y+80,this);       
             Toolkit.getDefaultToolkit().sync();
             h.dispose();
             

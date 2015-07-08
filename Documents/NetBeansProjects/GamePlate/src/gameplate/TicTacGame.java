@@ -43,7 +43,7 @@ public class TicTacGame {
         
         
         game.setVisible(true);
-        //p.drawImage("back");
+        p.drawImage("H.jpg");
         p.drawBoard();   
         
         new Thread(){

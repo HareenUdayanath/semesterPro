@@ -156,6 +156,8 @@ public class Game extends javax.swing.JFrame {
     }
      
     private int getBut(int x,int y){
+        x-=(-5);
+        y-=80;
         if(x<120&&x>32&&y<111&&y>24)
             return 1;
         if(x<219&&x>132&&y<111&&y>24)
