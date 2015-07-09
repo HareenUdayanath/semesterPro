@@ -1,5 +1,7 @@
 package gameplate;
 
+import gameplate.TicTacGame;
+
 public class Difficulty extends javax.swing.JFrame {
 
     /**

@@ -1,5 +1,6 @@
 package gameplate;
 
+import PlayerRecords.PlayerRecord;
 import javax.swing.JFrame;
 
 
@@ -18,9 +19,10 @@ public class TicTacGame {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       controller = new Controller(); 
+       /*controller = new Controller(); 
        isOtherFirst = false;
-       new PlayerSelect().setVisible(true); 
+       new PlayerSelect().setVisible(true); */
+       new PlayerRecord().setVisible(true);
        
        
     }
@@ -43,7 +45,7 @@ public class TicTacGame {
         
         
         game.setVisible(true);
-        p.drawImage("H.jpg");
+        p.drawImage("BB.jpg");
         p.drawBoard();   
         
         new Thread(){
@@ -58,7 +60,7 @@ public class TicTacGame {
         networkedGame = new NetworkedGame();         
          //networkedGame.setVisible(true);
         Plate p = new Plate();
-        p.setBounds(5, 80, 355,365); 
+        p.setBounds(0,0, networkedGame.getWidth(),networkedGame.getHeight()); 
         p.addMouseListener(networkedGame.getMouseAdapter());
         networkedGame.add(p);
         networkedGame.setPlate(p);
@@ -71,9 +73,10 @@ public class TicTacGame {
         controller.setPlayerFirstBut(-1);
         
         networkedGame.setVisible(true);
+        
+        p.drawImage("B.jpg");        
         p.drawBoard(); 
-        if(isIsOtherFirst()&&isIsSingle()){  
-            
+        if(isIsOtherFirst()&&isIsSingle()){              
             new Thread(){
                 public void run(){
                     networkedGame.comStart();
