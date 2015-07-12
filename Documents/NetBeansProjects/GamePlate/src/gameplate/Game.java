@@ -1,5 +1,6 @@
 package gameplate;
 
+import PlayerRecords.Player;
 import gameplate.Controller;
 import gameplate.TicTacGame;
 import java.awt.Color;
@@ -12,6 +13,36 @@ import javax.swing.JOptionPane;
 
 public class Game extends javax.swing.JFrame {
 
+    /**
+     * @return the p1
+     */
+    public static Player getP1() {
+        return p1;
+    }
+
+    /**
+     * @param aP1 the p1 to set
+     */
+    public static void setP1(Player aP1) {
+        p1 = aP1;
+    }
+
+    /**
+     * @return the p2
+     */
+    public static Player getP2() {
+        return p2;
+    }
+
+    /**
+     * @param aP2 the p2 to set
+     */
+    public static void setP2(Player aP2) {
+        p2 = aP2;
+    }
+
+   
+
    
     
     private Controller myController;   
@@ -21,7 +52,9 @@ public class Game extends javax.swing.JFrame {
     private int count;
     private static int p1Wins;
     private static int p2Wins;
-    private static int totGames;
+    private static int total;
+    private static Player p1;
+    private static Player p2;
     private boolean isComFirst;
     private boolean isSingle;
     private Plate plate;
@@ -32,8 +65,15 @@ public class Game extends javax.swing.JFrame {
      /**
      * @return the totGames
      */
-    public static int getTotGames() {
-        return totGames;
+    public static int getTotal() {
+        return total;
+    }
+    
+     /**
+     * @param aTotal the total to set
+     */
+    public static void setTotal(int aTotal) {
+        total = aTotal;
     }
     
     /**
@@ -88,8 +128,8 @@ public class Game extends javax.swing.JFrame {
         
         //...........................
         this.count = 2; 
-        totGames++;
-        System.out.println(totGames);
+        setTotal(getTotal() + 1);
+        System.out.println(getTotal());
         simbleList = new int[3][3];
         this.setIsComFirst(false);    
         this.pLable1.setText(TicTacGame.getPlayer1()+" - "+String.valueOf(Game.getP1Wins())+" Wins");
@@ -274,9 +314,13 @@ public class Game extends javax.swing.JFrame {
                 if(myController.checher(simbleList)==1){
                     JOptionPane.showMessageDialog(null,TicTacGame.getPlayer1()+" is Win..");
                     Game.setP1Wins(Game.getP1Wins()+1);
+                    Game.p1.setWins(1);
+                    Game.p2.setLosses(1);
                 }else{
                     JOptionPane.showMessageDialog(null,TicTacGame.getPlayer2()+" is Win..");
                     Game.setP2Wins(Game.getP2Wins()+1);
+                    Game.p2.setWins(1);
+                    Game.p1.setLosses(1);
                 }            
                 int option = JOptionPane.showConfirmDialog(null, "Do you want a new Game..?", "New Game", JOptionPane.YES_NO_OPTION);
                 if(option==JOptionPane.OK_OPTION){
@@ -297,7 +341,8 @@ public class Game extends javax.swing.JFrame {
                 this.dispose();
             }else if(count==11){            
                 JOptionPane.showMessageDialog(null,TicTacGame.getPlayer1()+" and "+TicTacGame.getPlayer2()+" are even....");
-
+                Game.p1.setTies(1);
+                Game.p2.setTies(1);
                 int option = JOptionPane.showConfirmDialog(null, "Do you want a new Game..?", "New Game", JOptionPane.YES_NO_OPTION);
                 if(option==JOptionPane.OK_OPTION){
                     if(TicTacGame.isIsOtherFirst()){
@@ -432,6 +477,11 @@ public class Game extends javax.swing.JFrame {
         jMenu1.setText("File");
 
         jMenuItem1.setText("New Game");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
@@ -467,6 +517,11 @@ public class Game extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        this.dispose();
+        TicTacGame.start();
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments

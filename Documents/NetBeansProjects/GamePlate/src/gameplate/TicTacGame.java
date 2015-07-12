@@ -1,5 +1,6 @@
 package gameplate;
 
+import PlayerRecords.DataBase;
 import PlayerRecords.PlayerRecord;
 import javax.swing.JFrame;
 
@@ -14,19 +15,30 @@ public class TicTacGame {
     private static String player2;
     private static Game game;
     private static NetworkedGame networkedGame;
+    public static DataBase db;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       /*controller = new Controller(); 
-       isOtherFirst = false;
-       new PlayerSelect().setVisible(true); */
-       new PlayerRecord().setVisible(true);
+       db = new DataBase();
+       start();
+       //new PlayerRecord().setVisible(true);
        
        
     }
+    public static void start(){
+        controller = new Controller(); 
+        isOtherFirst = false;
+        Game.setP1Wins(0);
+        Game.setP2Wins(0);
+        Game.setTotal(0);
+        NetworkedGame.setP1Wins(0);
+        NetworkedGame.setP2Wins(0);
+        NetworkedGame.setTotal(0);
+        new PlayerSelect().setVisible(true); 
     
+    }
     static void newGame(boolean isCF){
         game = new Game();                
         Plate p = new Plate();

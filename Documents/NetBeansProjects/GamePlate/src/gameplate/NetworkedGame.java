@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
  * @author Asus
  */
 public class NetworkedGame extends javax.swing.JFrame {
+
+    
     
     private Controller myController;   
     private ArrayList<Integer> rest;
@@ -31,7 +33,7 @@ public class NetworkedGame extends javax.swing.JFrame {
     private int count;
     private static int p1Wins;
     private static int p2Wins;
-    private static int totGames;
+    private static int total;
     private boolean isOtherFirst;
     private boolean isSingle;
     private NetworkedGame temp;
@@ -137,7 +139,7 @@ public class NetworkedGame extends javax.swing.JFrame {
         input = null;
         isServer = false;*/
         NetworkedGame.setCanClicked(true);
-        totGames++;
+        total++;
         simbleList = new int[3][3];
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.addWindowListener(new WindowAdapter(){
@@ -723,8 +725,15 @@ public class NetworkedGame extends javax.swing.JFrame {
     /**
      * @return the totGames
      */
-    public static int getTotGames() {
-        return totGames;
+    public static int getTotal() {
+        return total;
+    }
+    
+    /**
+     * @param aTotal the total to set
+     */
+    public static void setTotal(int aTotal) {
+        total = aTotal;
     }
 
     /**

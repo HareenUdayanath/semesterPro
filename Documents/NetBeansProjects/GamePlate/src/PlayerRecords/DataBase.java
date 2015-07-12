@@ -73,8 +73,7 @@ public class DataBase {
             use = pst.executeQuery();                
             palyerList.clear();                
             while(use.next()){                   
-                Player player = new Player();
-                player.setName(use.getString(1));
+                Player player = new Player(use.getString(1));               
                 player.setWins(use.getInt(2));
                 player.setLosses(use.getInt(3));
                 player.setTies(use.getInt(4));                

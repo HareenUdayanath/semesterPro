@@ -6,6 +6,11 @@ public class Player {
     private int wins;
     private int losses;
     private int ties;
+    
+    public Player(String name){
+        this.name = name;
+        this.wins = this.ties = this.losses = 0;    
+    }
 
     /**
      * @return the name
@@ -13,13 +18,7 @@ public class Player {
     public String getName() {
         return name;
     }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+ 
 
     /**
      * @return the wins
@@ -32,7 +31,7 @@ public class Player {
      * @param wins the wins to set
      */
     public void setWins(int wins) {
-        this.wins = wins;
+        this.wins += wins;
     }
 
     /**
@@ -46,7 +45,7 @@ public class Player {
      * @param losses the losses to set
      */
     public void setLosses(int losses) {
-        this.losses = losses;
+        this.losses += losses;
     }
 
     /**
@@ -60,6 +59,10 @@ public class Player {
      * @param ties the ties to set
      */
     public void setTies(int ties) {
-        this.ties = ties;
+        this.ties += ties;
+    }
+    
+    public int getTotal(){
+        return this.losses+this.wins+this.ties;
     }
 }
