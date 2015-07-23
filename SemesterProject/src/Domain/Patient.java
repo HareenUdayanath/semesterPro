@@ -1,5 +1,6 @@
 package Domain;
 
-class Patient {
+public class Patient {
+    
     
 }
