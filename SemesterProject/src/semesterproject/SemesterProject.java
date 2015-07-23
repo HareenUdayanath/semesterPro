@@ -1,6 +1,6 @@
 package semesterproject;
 
-import gui.login.ChangeUserNamePassword;
+import gui.login.ChangeLogInSetting;
 import gui.login.LoginFace;
 
 
@@ -8,6 +8,7 @@ public class SemesterProject {
 
    
     public static void main(String[] args) {
-       new ChangeUserNamePassword().setVisible(true);
+       //new ChangeLogInSetting().setVisible(true);
+       new LoginFace().setVisible(true);
     }
 }
