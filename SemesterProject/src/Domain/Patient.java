@@ -107,6 +107,97 @@ public class Patient {
         return Allergies;
     }
 
+    /**
+     * @param PID the PID to set
+     */
+    public void setPID(int PID) {
+        this.PID = PID;
+    }
+
+    /**
+     * @param firstName the firstName to set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * @param fullName the fullName to set
+     */
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    /**
+     * @param dateOfBirth the dateOfBirth to set
+     */
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    /**
+     * @param gender the gender to set
+     */
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * @param NIC the NIC to set
+     */
+    public void setNIC(String NIC) {
+        this.NIC = NIC;
+    }
+
+    /**
+     * @param patientContactNo the patientContactNo to set
+     */
+    public void setPatientContactNo(int patientContactNo) {
+        this.patientContactNo = patientContactNo;
+    }
+
+    /**
+     * @param nameOfTheGuardian the nameOfTheGuardian to set
+     */
+    public void setNameOfTheGuardian(String nameOfTheGuardian) {
+        this.nameOfTheGuardian = nameOfTheGuardian;
+    }
+
+    /**
+     * @param guardianCinatactNo the guardianCinatactNo to set
+     */
+    public void setGuardianCinatactNo(int guardianCinatactNo) {
+        this.guardianCinatactNo = guardianCinatactNo;
+    }
+
+    /**
+     * @param bloodGroup the bloodGroup to set
+     */
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
+    }
+
+    /**
+     * @param Allergies the Allergies to set
+     */
+    public void setAllergies(String Allergies) {
+        this.Allergies = Allergies;
+    }
+
     
     
 }

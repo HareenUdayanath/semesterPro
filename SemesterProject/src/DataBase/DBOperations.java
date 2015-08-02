@@ -182,11 +182,11 @@ public class DBOperations {
         }catch(SQLException se){}
         return result;
     }
-    public void loadStudent(ArrayList<Patient> patientList){
+    public void loadPatient(ArrayList<Patient> patientList){
         try{
 
             con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM Table1");              
+            pst = con.prepareStatement("SELECT * FROM PatientFile");              
             use = pst.executeQuery();                
             patientList.clear();                
             while(use.next()){                   
@@ -196,6 +196,24 @@ public class DBOperations {
                 patient.setLastName(use.getString(3));
                 patient.setAddress(use.getString(4));
                 patient.setAge(use.getInt(5));*/
+                patient.setPID(use.getInt(1));
+                patient.setFirstName(use.getString(2));
+                patient.setFullName(use.getString(3));
+                patient.setLastName(use.getString(4));
+                patient.setDateOfBirth(use.getDate(5));
+                patient.setGender(use.getString(6));
+                patient.setAddress(use.getString(7));
+                patient.setNIC(use.getString(8));
+                      
+                pst.setDate(5,patient.getDateOfBirth());
+                pst.setString(6, patient.getGender());
+                pst.setString(7, patient.getAddress());
+                pst.setString(8, patient.getNIC());
+                pst.setInt(9, patient.getPatientContactNo());
+                pst.setString(10, patient.getNameOfTheGuardian());
+                pst.setInt(11, patient.getGuardianCinatactNo());
+                pst.setString(12, patient.getBloodGroup());
+                pst.setString(13, patient.getAllergies());
                 patientList.add(patient);
             }               
         }catch(SQLException ex){
