@@ -173,12 +173,18 @@ public class DocGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_SearchCatChooserActionPerformed
 
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
+        DBOperations dateOpr = new DBOperations();
         int searchIndex = SearchCatChooser.getSelectedIndex();
+        int pid = 0;
         if(searchIndex == 0){
-            int pid = Integer.parseInt(SearchBox.getText());
+            pid = Integer.parseInt(SearchBox.getText());
         }
-        /*DBOperations dateOpr = new DBOperations();
-        dateOpr.getDate(pid);*/
+        if(searchIndex == 1){
+            String name = SearchBox.getText();
+            pid = dateOpr.getPID(name);
+        }
+        
+        dateOpr.getDate(pid);
     }//GEN-LAST:event_SearchButtonActionPerformed
 
     /**

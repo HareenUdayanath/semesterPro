@@ -4,6 +4,7 @@
  */
 package gui.lab;
 
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,6 +17,11 @@ public class LabReport extends javax.swing.JFrame {
     public LabReport() {
         
         initComponents();
+        FBCpanel.setVisible(false);
+        FBSpanel.setVisible(false);
+        TCpanel.setVisible(false);
+        UFRpanel.setVisible(false);
+        LPpanel.setVisible(false);
     }
 
     /**
@@ -33,15 +39,33 @@ public class LabReport extends javax.swing.JFrame {
         testID = new javax.swing.JLabel();
         testName = new javax.swing.JLabel();
         textPatientID = new javax.swing.JTextField();
-        textTestNo = new javax.swing.JTextField();
         textTestName = new javax.swing.JTextField();
         detailsOfTestLable = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        detailsOfTest = new javax.swing.JTextArea();
         labTechnicianID = new javax.swing.JLabel();
         textLabTechnicianID = new javax.swing.JTextField();
         date = new javax.swing.JLabel();
         textDate = new javax.swing.JTextField();
+        TestBox = new javax.swing.JComboBox();
+        detailPanel = new javax.swing.JPanel();
+        TCpanel = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        CholesterolAmount = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        FBSpanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        fbsAmount = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        FBCpanel = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        UFRpanel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        LPpanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,30 +94,20 @@ public class LabReport extends javax.swing.JFrame {
             }
         });
 
-        textTestNo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textTestNoActionPerformed(evt);
-            }
-        });
-        textTestNo.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                textTestNoKeyPressed(evt);
-            }
-        });
-
         textTestName.setEditable(false);
         textTestName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textTestNameActionPerformed(evt);
             }
         });
+        textTestName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                textTestNameFocusGained(evt);
+            }
+        });
 
         detailsOfTestLable.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         detailsOfTestLable.setText("Details of the test");
-
-        detailsOfTest.setColumns(20);
-        detailsOfTest.setRows(5);
-        jScrollPane1.setViewportView(detailsOfTest);
 
         labTechnicianID.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         labTechnicianID.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -107,6 +121,239 @@ public class LabReport extends javax.swing.JFrame {
 
         textDate.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
 
+        TestBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01", "02", "03", "04", "05", " " }));
+        TestBox.setSelectedIndex(-1);
+        TestBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TestBoxActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setText("Total Cholesterol");
+
+        CholesterolAmount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CholesterolAmountActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel9.setText("mg/dl");
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("( ANALYZED BY 3000 EVOLUTION SEMI AUTOMATED BIIO CHEMISTRY ANALYZER )");
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("Reference range : 140-239 mg/dl");
+
+        javax.swing.GroupLayout TCpanelLayout = new javax.swing.GroupLayout(TCpanel);
+        TCpanel.setLayout(TCpanelLayout);
+        TCpanelLayout.setHorizontalGroup(
+            TCpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(TCpanelLayout.createSequentialGroup()
+                .addGap(121, 121, 121)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(CholesterolAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel9)
+                .addGap(124, 124, 124))
+            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        TCpanelLayout.setVerticalGroup(
+            TCpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(TCpanelLayout.createSequentialGroup()
+                .addGap(55, 55, 55)
+                .addGroup(TCpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CholesterolAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel11)
+                .addGap(25, 25, 25)
+                .addComponent(jLabel10)
+                .addContainerGap(126, Short.MAX_VALUE))
+        );
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("Fasting Blood Sugar");
+
+        fbsAmount.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel6.setText("mg/dl");
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Reference values : 70 - 110 mg/dl");
+        jLabel7.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+                jLabel7AncestorMoved(evt);
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("( ANALYZED BY 3000 EVOLUTION SEMI AUTOMATED BIO CHEMISTRY ANALYZER )");
+
+        javax.swing.GroupLayout FBSpanelLayout = new javax.swing.GroupLayout(FBSpanel);
+        FBSpanel.setLayout(FBSpanelLayout);
+        FBSpanelLayout.setHorizontalGroup(
+            FBSpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FBSpanelLayout.createSequentialGroup()
+                .addGap(240, 240, 240)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(fbsAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(295, 295, 295))
+            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        FBSpanelLayout.setVerticalGroup(
+            FBSpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FBSpanelLayout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(FBSpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fbsAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(41, 41, 41)
+                .addComponent(jLabel7)
+                .addGap(28, 28, 28)
+                .addComponent(jLabel8)
+                .addContainerGap())
+        );
+
+        FBCpanel.setPreferredSize(new java.awt.Dimension(489, 278));
+
+        jLabel2.setText("FBC");
+
+        javax.swing.GroupLayout FBCpanelLayout = new javax.swing.GroupLayout(FBCpanel);
+        FBCpanel.setLayout(FBCpanelLayout);
+        FBCpanelLayout.setHorizontalGroup(
+            FBCpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FBCpanelLayout.createSequentialGroup()
+                .addGap(192, 192, 192)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(182, Short.MAX_VALUE))
+        );
+        FBCpanelLayout.setVerticalGroup(
+            FBCpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(FBCpanelLayout.createSequentialGroup()
+                .addGap(103, 103, 103)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(128, Short.MAX_VALUE))
+        );
+
+        jLabel3.setText("UFR");
+
+        javax.swing.GroupLayout UFRpanelLayout = new javax.swing.GroupLayout(UFRpanel);
+        UFRpanel.setLayout(UFRpanelLayout);
+        UFRpanelLayout.setHorizontalGroup(
+            UFRpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(UFRpanelLayout.createSequentialGroup()
+                .addGap(171, 171, 171)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(213, Short.MAX_VALUE))
+        );
+        UFRpanelLayout.setVerticalGroup(
+            UFRpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, UFRpanelLayout.createSequentialGroup()
+                .addContainerGap(136, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(95, 95, 95))
+        );
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Description", "Result", "Units", "Reference"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        javax.swing.GroupLayout LPpanelLayout = new javax.swing.GroupLayout(LPpanel);
+        LPpanel.setLayout(LPpanelLayout);
+        LPpanelLayout.setHorizontalGroup(
+            LPpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
+        );
+        LPpanelLayout.setVerticalGroup(
+            LPpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(LPpanelLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 260, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout detailPanelLayout = new javax.swing.GroupLayout(detailPanel);
+        detailPanel.setLayout(detailPanelLayout);
+        detailPanelLayout.setHorizontalGroup(
+            detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(FBSpanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(detailPanelLayout.createSequentialGroup()
+                    .addGap(0, 194, Short.MAX_VALUE)
+                    .addComponent(FBCpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 195, Short.MAX_VALUE)))
+            .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(detailPanelLayout.createSequentialGroup()
+                    .addGap(0, 194, Short.MAX_VALUE)
+                    .addComponent(UFRpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 195, Short.MAX_VALUE)))
+            .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(detailPanelLayout.createSequentialGroup()
+                    .addGap(0, 194, Short.MAX_VALUE)
+                    .addComponent(TCpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 195, Short.MAX_VALUE)))
+            .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(detailPanelLayout.createSequentialGroup()
+                    .addGap(0, 194, Short.MAX_VALUE)
+                    .addComponent(LPpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 195, Short.MAX_VALUE)))
+        );
+        detailPanelLayout.setVerticalGroup(
+            detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(FBSpanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(detailPanelLayout.createSequentialGroup()
+                    .addGap(0, 89, Short.MAX_VALUE)
+                    .addComponent(FBCpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 89, Short.MAX_VALUE)))
+            .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(detailPanelLayout.createSequentialGroup()
+                    .addGap(0, 89, Short.MAX_VALUE)
+                    .addComponent(UFRpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 89, Short.MAX_VALUE)))
+            .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(detailPanelLayout.createSequentialGroup()
+                    .addGap(0, 89, Short.MAX_VALUE)
+                    .addComponent(TCpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 89, Short.MAX_VALUE)))
+            .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(detailPanelLayout.createSequentialGroup()
+                    .addGap(0, 89, Short.MAX_VALUE)
+                    .addComponent(LPpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 89, Short.MAX_VALUE)))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -114,30 +361,32 @@ public class LabReport extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(detailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(titleName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(reportName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(patientID, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textPatientID, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+                        .addComponent(textPatientID, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                         .addGap(103, 103, 103)
-                        .addComponent(testID, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                        .addComponent(testID, javax.swing.GroupLayout.DEFAULT_SIZE, 104, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textTestNo, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
-                        .addGap(100, 100, 100)
-                        .addComponent(testName, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                        .addComponent(TestBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(122, 122, 122)
+                        .addComponent(testName, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textTestName, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                    .addComponent(detailsOfTestLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
+                        .addComponent(textTestName, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(detailsOfTestLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(60, 60, 60))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labTechnicianID)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textLabTechnicianID)
+                        .addComponent(textLabTechnicianID, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
                         .addGap(422, 422, 422)
-                        .addComponent(date, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(date, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textDate)))
+                        .addComponent(textDate, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -153,14 +402,14 @@ public class LabReport extends javax.swing.JFrame {
                         .addComponent(patientID)
                         .addComponent(textPatientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(textTestNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(testName, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(textTestName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(testID)))
+                        .addComponent(testID)
+                        .addComponent(TestBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(detailsOfTestLable)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
+                .addComponent(detailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labTechnicianID)
@@ -182,27 +431,63 @@ public class LabReport extends javax.swing.JFrame {
         
     }//GEN-LAST:event_textTestNameActionPerformed
 
-    private void textTestNoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textTestNoActionPerformed
+    private void textTestNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textTestNameFocusGained
         
-    }//GEN-LAST:event_textTestNoActionPerformed
+    }//GEN-LAST:event_textTestNameFocusGained
 
-    private void textTestNoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textTestNoKeyPressed
-        
-        if(evt.getKeyCode()==10){
-            switch (textTestNo.getText()) {
-                case "01":
-                    textTestName.setText("Fasting Blood Suger");
-                    break;
-                case "02":
-                    textTestName.setText("Urine Filtration Rate");
-                    break;
-                default:
-                    textTestNo.setText(null);
-                    JOptionPane.showMessageDialog(textTestNo,"Test number is incorrect..!");
-                    break;
-            }
+    private void TestBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TestBoxActionPerformed
+        String s=(String) TestBox.getSelectedItem();
+        switch (s) {
+            case "01":
+                textTestName.setText("Fasting Blood Sugar");
+                FBCpanel.setVisible(false);
+                FBSpanel.setVisible(true);
+                TCpanel.setVisible(false);
+                UFRpanel.setVisible(false);
+                LPpanel.setVisible(false);
+                break;
+            case "02":
+                textTestName.setText("Urine Full Report");
+                FBCpanel.setVisible(false);
+                FBSpanel.setVisible(false);
+                TCpanel.setVisible(false);
+                UFRpanel.setVisible(true);
+                LPpanel.setVisible(false);
+                break;
+            case "03":
+                textTestName.setText("Full Blood Count");
+                FBCpanel.setVisible(true);
+                FBSpanel.setVisible(false);
+                TCpanel.setVisible(false);
+                UFRpanel.setVisible(false);
+                LPpanel.setVisible(false);
+                break;
+            case "04":
+                textTestName.setText("Serum Lipid Profile");
+                FBCpanel.setVisible(false);
+                FBSpanel.setVisible(false);
+                TCpanel.setVisible(false);
+                UFRpanel.setVisible(false);
+                LPpanel.setVisible(true);
+                break;
+            case "05":
+                textTestName.setText("Total Cholesterol");
+                FBCpanel.setVisible(false);
+                FBSpanel.setVisible(false);
+                TCpanel.setVisible(true);
+                UFRpanel.setVisible(false);
+                LPpanel.setVisible(false);
+                break;
         }
-    }//GEN-LAST:event_textTestNoKeyPressed
+    }//GEN-LAST:event_TestBoxActionPerformed
+
+    private void jLabel7AncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel7AncestorMoved
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel7AncestorMoved
+
+    private void CholesterolAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CholesterolAmountActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CholesterolAmountActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,6 +518,7 @@ public class LabReport extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 LabReport l=new LabReport();
                 l.setTitle("Lab Report");
@@ -241,10 +527,29 @@ public class LabReport extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField CholesterolAmount;
+    private javax.swing.JPanel FBCpanel;
+    private javax.swing.JPanel FBSpanel;
+    private javax.swing.JPanel LPpanel;
+    private javax.swing.JPanel TCpanel;
+    private javax.swing.JComboBox TestBox;
+    private javax.swing.JPanel UFRpanel;
     private javax.swing.JLabel date;
-    private javax.swing.JTextArea detailsOfTest;
+    private javax.swing.JPanel detailPanel;
     private javax.swing.JLabel detailsOfTestLable;
+    private javax.swing.JTextField fbsAmount;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labTechnicianID;
     private javax.swing.JLabel patientID;
     private javax.swing.JLabel reportName;
@@ -254,7 +559,6 @@ public class LabReport extends javax.swing.JFrame {
     private javax.swing.JTextField textLabTechnicianID;
     private javax.swing.JTextField textPatientID;
     private javax.swing.JTextField textTestName;
-    private javax.swing.JTextField textTestNo;
     private javax.swing.JLabel titleName;
     // End of variables declaration//GEN-END:variables
 }
