@@ -10,7 +10,7 @@ public class ChronicConditionsReport extends Document{
     private boolean diabetes;
     private boolean obesity;
     private boolean arthritis;
-    private String chronicConditionsCol1;
+   
 
     /**
      * @return the PID
@@ -67,13 +67,5 @@ public class ChronicConditionsReport extends Document{
     public boolean isArthritis() {
         return arthritis;
     }
-
-    /**
-     * @return the chronicConditionsCol1
-     */
-    public String getChronicConditionsCol1() {
-        return chronicConditionsCol1;
-    }
-    
     
 }

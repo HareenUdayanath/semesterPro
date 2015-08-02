@@ -1,7 +1,7 @@
 package Domain;
 
 public abstract class Employee {
-    private String id;    
+    private int EID;    
     private String position;
     private String name;
     private String NIC;
@@ -9,10 +9,10 @@ public abstract class Employee {
     private String password;
 
     /**
-     * @return the id
+     * @return the EID
      */
-    public String getId() {
-        return id;
+    public int getEID() {
+        return EID;
     }
 
     /**
