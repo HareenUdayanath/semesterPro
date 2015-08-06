@@ -15,15 +15,17 @@ public class DBOperations {
     Connection con = null;
     PreparedStatement pst = null;
     ResultSet use = null;
-    String url = "jdbc:odbc://192.168.173.1:3306/test2";    
+    //String url = "jdbc:odbc://192.168.173.1:3306/test2";    
+    //String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
+    String url = "jdbc:mysql://localhost:3306/SemesterProject";
     String user = "hosdataadmin";
     String password = "coperativehos7456391";
    
     public boolean addPatient(Patient patient){
         boolean result = false; 
         try{               
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
+            Class.forName("com.mysql.jdbc.Driver").newInstance();            
+            con = DriverManager.getConnection(url, user, password);             
             pst = con.prepareStatement("INSERT INTO PatientFile VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");               
 
             pst.setInt(1,patient.getPID());
@@ -56,20 +58,21 @@ public class DBOperations {
     }
     public boolean addMedicalReport(MedicalReport medicalReport){
         boolean result = false; 
+        // For insert to medical report there should be a PID which has same PID in medical report
         try{               
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver").newInstance();
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
             pst = con.prepareStatement("INSERT INTO MedicalReport VALUES(?,?,?,?,?,?)");               
-
+             
             pst.setInt(1,medicalReport.getPID());
             pst.setDate(2, medicalReport.getDate());
             pst.setInt(3, medicalReport.getDoctorID());
             pst.setInt(4,medicalReport.getMedicalReportNum());
             pst.setString(5, medicalReport.getTestTypes());
-            pst.setString(6, medicalReport.getTreatmentDescription());
-            
+            pst.setString(6, medicalReport.getTreatmentDescription());            
+           
             pst.executeUpdate();
-
+            
             result = true;
         }catch(SQLException ex){
             System.out.println("dd");
@@ -85,9 +88,9 @@ public class DBOperations {
     public boolean addLabReport(LabReport labReport){
         boolean result = false; 
         try{               
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver").newInstance();
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("INSERT INTO LabReport VALUES(?,?,?,?,?)");  
+            pst = con.prepareStatement("INSERT INTO LabReport VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");  
             int index;
 
             pst.setInt(1,labReport.getPID());
@@ -99,12 +102,14 @@ public class DBOperations {
             for(String data:labReport.getDataList()){
                 pst.setString(index++, data);
             }
-            
+            for(int i = 0;(i+index)<22;i++){               
+                pst.setString(index+i, null);
+            }           
             pst.executeUpdate();
 
             result = true;
         }catch(SQLException ex){
-            System.out.println("dd");
+            System.out.println(ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -117,10 +122,9 @@ public class DBOperations {
     public boolean addEmployee(Employee employee){
         boolean result = false; 
         try{               
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver").newInstance();
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?)");  
-            
+            pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?)");              
 
             pst.setInt(1,employee.getEID());            
             pst.setString(2, employee.getPosition());
@@ -145,7 +149,7 @@ public class DBOperations {
      public boolean addChronicConditionsReport(ChronicConditionsReport chronicConditionsReport){
         boolean result = false; 
         try{               
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver").newInstance();
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
             pst = con.prepareStatement("INSERT INTO ChronicConditions VALUES(?,?,?,?,?,?,?,?)");     
 
@@ -182,7 +186,7 @@ public class DBOperations {
         }catch(SQLException se){}
         return result;
     }
-    public void loadPatient(ArrayList<Patient> patientList){
+    public void loadPatients(ArrayList<Patient> patientList){
         try{
 
             con = DriverManager.getConnection(url, user, password);               
@@ -191,11 +195,7 @@ public class DBOperations {
             patientList.clear();                
             while(use.next()){                   
                 Patient patient = new Patient();
-               /* patient.setIndex(use.getInt(1));
-                patient.setFirstName(use.getString(2));
-                patient.setLastName(use.getString(3));
-                patient.setAddress(use.getString(4));
-                patient.setAge(use.getInt(5));*/
+               
                 patient.setPID(use.getInt(1));
                 patient.setFirstName(use.getString(2));
                 patient.setFullName(use.getString(3));
@@ -204,17 +204,34 @@ public class DBOperations {
                 patient.setGender(use.getString(6));
                 patient.setAddress(use.getString(7));
                 patient.setNIC(use.getString(8));
-                      
-                pst.setDate(5,patient.getDateOfBirth());
-                pst.setString(6, patient.getGender());
-                pst.setString(7, patient.getAddress());
-                pst.setString(8, patient.getNIC());
-                pst.setInt(9, patient.getPatientContactNo());
-                pst.setString(10, patient.getNameOfTheGuardian());
-                pst.setInt(11, patient.getGuardianCinatactNo());
-                pst.setString(12, patient.getBloodGroup());
-                pst.setString(13, patient.getAllergies());
+                patient.setPatientContactNo(use.getInt(9));
+                patient.setNameOfTheGuardian(use.getString(10));
+                patient.setGuardianCinatactNo(use.getInt(11));
+                patient.setBloodGroup(use.getString(12));
+                patient.setAllergies(use.getString(13));              
                 patientList.add(patient);
+            }               
+        }catch(SQLException ex){
+            System.out.println("ssss");
+        }
+    }
+    public void loadDoctors(ArrayList<Employee> doctorList){
+        try{
+
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE Position='Doctor'");              
+            use = pst.executeQuery();                
+            doctorList.clear();                
+            while(use.next()){                   
+                Employee doctor = new Doctor();
+                
+                doctor.setEID(use.getInt(1));
+                doctor.setName(use.getString(3));
+                doctor.setNIC(use.getString(4));
+                doctor.setUsername(use.getString(5));
+                doctor.setPassword(use.getString(6));   
+                             
+                doctorList.add(doctor);
             }               
         }catch(SQLException ex){
             System.out.println("ssss");

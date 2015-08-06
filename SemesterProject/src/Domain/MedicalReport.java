@@ -54,5 +54,47 @@ public class MedicalReport {
         return treatmentDescription;
     }
 
+    /**
+     * @param PID the PID to set
+     */
+    public void setPID(int PID) {
+        this.PID = PID;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    /**
+     * @param doctorID the doctorID to set
+     */
+    public void setDoctorID(int doctorID) {
+        this.doctorID = doctorID;
+    }
+
+    /**
+     * @param medicalReportNum the medicalReportNum to set
+     */
+    public void setMedicalReportNum(int medicalReportNum) {
+        this.medicalReportNum = medicalReportNum;
+    }
+
+    /**
+     * @param testTypes the testTypes to set
+     */
+    public void setTestTypes(String testTypes) {
+        this.testTypes = testTypes;
+    }
+
+    /**
+     * @param treatmentDescription the treatmentDescription to set
+     */
+    public void setTreatmentDescription(String treatmentDescription) {
+        this.treatmentDescription = treatmentDescription;
+    }
+
     
 }

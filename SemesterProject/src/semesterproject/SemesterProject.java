@@ -1,14 +1,81 @@
 package semesterproject;
 
-import gui.login.ChangeLogInSetting;
-import gui.login.LoginFace;
+
+import DataBase.*;
+import Domain.*;
+import java.sql.Date;
+
 
 
 public class SemesterProject {
 
    
     public static void main(String[] args) {
-       //new ChangeLogInSetting().setVisible(true);
-       new LoginFace().setVisible(true);
+        
+        DBOperations ad = new DBOperations();
+        // Check for add patient
+        /*Patient patient = new Patient();
+        patient.setPID(0);
+        patient.setFirstName("Saman");
+        patient.setFullName("Saman Perera");
+        patient.setLastName("Perera");
+        patient.setDateOfBirth(new Date(1992,02,03));
+        patient.setGender("M");
+        patient.setAddress("ABC");
+        patient.setNIC("123456789V");
+        patient.setPatientContactNo(0412222222);
+        patient.setNameOfTheGuardian("Akila");
+        patient.setGuardianCinatactNo(0412222222);
+        patient.setBloodGroup("B+");
+        patient.setAllergies("None");        
+        ad.addPatient(patient);*/
+        
+        //Check for add medical report
+        /*
+        MedicalReport mr = new MedicalReport();
+        mr.setPID(1);
+        mr.setDate(new Date(2001,02,03));
+        mr.setDoctorID(0);
+        mr.setMedicalReportNum(0);
+        mr.setTestTypes("A,B");
+        mr.setTreatmentDescription("ABC");
+        ad.addMedicalReport(mr);*/
+      
+       //Check for LabReport
+        
+        /*LabReport lr = new LabReport();
+        lr.setPID(1);
+        lr.setDate(new Date(1992,02,03));
+        lr.setLabReportNo(1);
+        lr.setTestType(1);
+        lr.setLabTechID(1);
+        
+        for(int i=0;i<3;i++){
+            lr.addDataToTheList("A"+i);
+        }
+        ad.addLabReport(lr);*/
+        
+       /* Employee e = new Employee();
+        e.setEID(0);
+        e.setPosition("Doctor");
+        e.setName("Saman");
+        e.setNIC("123456789V");
+        e.setUsername("Saman");
+        e.setPassword("Saman");
+        ad.addEmployee(e);*/
+      
+        /*ChronicConditionsReport cr = new ChronicConditionsReport();
+        cr.setPID(1);
+        cr.setChronicConditionsCol("AAA");
+        cr.setHeartDisease(false);
+        cr.setStroke(true);
+        cr.setCancer(true);
+        cr.setDiabetes(true);
+        cr.setObesity(true);
+        cr.setArthritis(true);
+        ad.addChronicConditionsReport(cr);*/
+       
+        
+                
     }
 }
