@@ -2,7 +2,7 @@ package Domain;
 
 
 public class ChronicConditionsReport extends Document{
-    private int PID;        
+           
     private String chronicConditionsCol;    
     private boolean heartDisease;
     private boolean stroke;
@@ -12,13 +12,7 @@ public class ChronicConditionsReport extends Document{
     private boolean arthritis;
    
 
-    /**
-     * @return the PID
-     */
-    public int getPID() {
-        return PID;
-    }
-
+   
     /**
      * @return the chronicConditionsCol
      */
@@ -68,12 +62,6 @@ public class ChronicConditionsReport extends Document{
         return arthritis;
     }
 
-    /**
-     * @param PID the PID to set
-     */
-    public void setPID(int PID) {
-        this.PID = PID;
-    }
 
     /**
      * @param chronicConditionsCol the chronicConditionsCol to set
