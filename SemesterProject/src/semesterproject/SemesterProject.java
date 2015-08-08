@@ -107,7 +107,6 @@ public class SemesterProject {
             System.out.println(p.getPassword());              
         }
         */
-       gui.lab.LabReport l = new gui.lab.LabReport();
-       l.setVisible(true);
+      
     }
 }
