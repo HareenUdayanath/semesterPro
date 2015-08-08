@@ -5,19 +5,13 @@ import java.util.ArrayList;
 
 
 public class LabReport extends Document{
-    private int PID;
+   
     private Date date;
     private int labReportNo;
     private int testType;
     private int labTechID;
     private ArrayList<String> dataList = new ArrayList();
 
-    /**
-     * @return the PID
-     */
-    public int getPID() {
-        return PID;
-    }
 
     /**
      * @return the date
@@ -54,12 +48,7 @@ public class LabReport extends Document{
         return dataList;
     }
 
-    /**
-     * @param PID the PID to set
-     */
-    public void setPID(int PID) {
-        this.PID = PID;
-    }
+    
 
     /**
      * @param date the date to set

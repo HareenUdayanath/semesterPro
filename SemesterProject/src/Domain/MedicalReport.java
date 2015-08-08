@@ -3,8 +3,8 @@ package Domain;
 import java.sql.Date;
 
 
-public class MedicalReport {
-    private int PID;    
+public class MedicalReport extends Document{
+   
     private Date date;
     private int doctorID;
     private int medicalReportNum;
@@ -12,12 +12,6 @@ public class MedicalReport {
     private String treatmentDescription;
        
 
-    /**
-     * @return the PID
-     */
-    public int getPID() {
-        return PID;
-    }
 
     /**
      * @return the date
@@ -54,13 +48,7 @@ public class MedicalReport {
         return treatmentDescription;
     }
 
-    /**
-     * @param PID the PID to set
-     */
-    public void setPID(int PID) {
-        this.PID = PID;
-    }
-
+  
     /**
      * @param date the date to set
      */

@@ -27,6 +27,9 @@ public class DBOperations {
         this.emfac = new EmployeeFactory();
     }
    
+    /*
+     * Add Data......................................................................
+     */
     public boolean addPatient(Patient patient){
         boolean result = false; 
         try{               
@@ -182,6 +185,10 @@ public class DBOperations {
            return result;
     }
    
+    /*
+     * Load Data.................................................
+     */
+    
     public void loadPatients(ArrayList<Patient> patientList){
         try{
 
@@ -236,7 +243,6 @@ public class DBOperations {
     public Employee getEmplyee(int EID){
         Employee employee=null;
         try{
-
             con = DriverManager.getConnection(url, user, password);               
             pst = con.prepareStatement("SELECT * FROM Employee WHERE EID=?");              
             pst.setInt(1, EID);
@@ -318,13 +324,13 @@ public class DBOperations {
         ArrayList<LabReport> labReportList = new ArrayList<>();
         try{
             con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM LabReport WHERE PID= ? AND Date =?");
+            pst = con.prepareStatement("SELECT * FROM LabReport WHERE PID = ? AND Date = ?");
             pst.setInt(1,PID);
             pst.setDate(2, date);
-            use = pst.executeQuery();                
-            System.out.println("rr");
+            use = pst.executeQuery();             
+            
             while(use.next()){       
-                System.out.println("rraa");
+                
                 LabReport labReport =  new LabReport();
                 labReport.setPID(use.getInt(1));
                 labReport.setDate(use.getDate(2));
@@ -346,5 +352,82 @@ public class DBOperations {
             System.out.println(ex);
         }
         return labReportList;
+    }
+     public int getLastPID(){
+        int pid = -1;
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT MAX(PID) FROM PatientFile");
+            use = pst.executeQuery();   
+            if(use.next())
+                pid = use.getInt(1);
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return pid;
+    }
+     
+    /*
+     * Search Data...........................................................................
+     */
+     
+    public ArrayList<Patient> searchPatients(String name,String NIC){
+        ArrayList<Patient> patientList = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FirstName=? OR NIC=?");
+            pst.setString(1,name);
+            pst.setString(2, NIC);
+            use = pst.executeQuery();                
+                        
+            while(use.next()){     
+                
+                Patient patient = new Patient();               
+                patient.setPID(use.getInt(1));
+                patient.setFirstName(use.getString(2));
+                patient.setFullName(use.getString(3));
+                patient.setLastName(use.getString(4));
+                patient.setDateOfBirth(use.getDate(5));
+                patient.setGender(use.getString(6));
+                patient.setAddress(use.getString(7));
+                patient.setNIC(use.getString(8));
+                patient.setPatientContactNo(use.getInt(9));
+                patient.setNameOfTheGuardian(use.getString(10));
+                patient.setGuardianCinatactNo(use.getInt(11));
+                patient.setBloodGroup(use.getString(12));
+                patient.setAllergies(use.getString(13));   
+                
+                patientList.add(patient);
+            }               
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return patientList;
+    }
+    
+    /*
+     * Delete Data............................................................................
+     */
+    
+    public boolean deleteEmployee(int EID){
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);              
+            pst = con.prepareStatement("DELETE FROM Employee WHERE EID=?");
+            pst.setInt(1, EID);
+
+            pst.executeUpdate();
+            result = true;
+        }catch(SQLException ex){
+            System.out.println(ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           return result;
     }
 }
