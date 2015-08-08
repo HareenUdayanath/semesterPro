@@ -2,7 +2,7 @@ package Domain;
 
 public abstract class Employee {
     private int EID;    
-    private String position;
+    protected String position;
     private String name;
     private String NIC;
     private String username;
@@ -55,13 +55,6 @@ public abstract class Employee {
      */
     public void setEID(int EID) {
         this.EID = EID;
-    }
-
-    /**
-     * @param position the position to set
-     */
-    public void setPosition(String position) {
-        this.position = position;
     }
 
     /**

@@ -9,17 +9,23 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Domain.*;
+import java.sql.Date;
 
 
 public class DBOperations {
     Connection con = null;
     PreparedStatement pst = null;
     ResultSet use = null;
+    EmployeeFactory emfac = null;
     //String url = "jdbc:odbc://192.168.173.1:3306/test2";    
     //String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
     String url = "jdbc:mysql://localhost:3306/SemesterProject";
     String user = "hosdataadmin";
     String password = "coperativehos7456391";
+    
+    public DBOperations(){
+        this.emfac = new EmployeeFactory();
+    }
    
     public boolean addPatient(Patient patient){
         boolean result = false; 
@@ -146,7 +152,7 @@ public class DBOperations {
         }
            return result;
     }
-     public boolean addChronicConditionsReport(ChronicConditionsReport chronicConditionsReport){
+    public boolean addChronicConditionsReport(ChronicConditionsReport chronicConditionsReport){
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -175,17 +181,7 @@ public class DBOperations {
         }
            return result;
     }
-    public boolean deleteStudent(int index){
-        boolean result = false;
-        try{
-            con = DriverManager.getConnection(url, user, password);
-            pst = con.prepareStatement("DELETE FROM Table1 WHERE Table1.index = ?");
-            pst.setInt(1,index);               
-            pst.executeUpdate();
-            result = true;
-        }catch(SQLException se){}
-        return result;
-    }
+   
     public void loadPatients(ArrayList<Patient> patientList){
         try{
 
@@ -236,5 +232,119 @@ public class DBOperations {
         }catch(SQLException ex){
             System.out.println(ex);
         }
+    }
+    public Employee getEmplyee(int EID){
+        Employee employee=null;
+        try{
+
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE EID=?");              
+            pst.setInt(1, EID);
+            use = pst.executeQuery();                
+                           
+            while(use.next()){                    
+                employee = emfac.getEmployee(use.getString(2));                
+                employee.setEID(use.getInt(1));
+                employee.setName(use.getString(3));
+                employee.setNIC(use.getString(4));
+                employee.setUsername(use.getString(5));
+                employee.setPassword(use.getString(6));         
+            }               
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return employee;
+    }
+    public ArrayList<Date> getLabDates(int PID){
+        ArrayList<Date> dateList = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM LabReport WHERE PID= ?");
+            pst.setInt(1,PID);
+            use = pst.executeQuery();                
+                            
+            while(use.next()){                   
+                dateList.add(use.getDate(2));
+            }         
+            return dateList;
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return dateList;
+    }
+    public ArrayList<Date> getMedicalDates(int PID){
+        ArrayList<Date> dateList = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE PID= ?");
+            pst.setInt(1,PID);
+            use = pst.executeQuery();                
+                            
+            while(use.next()){                   
+                dateList.add(use.getDate(2));
+            }         
+            return dateList;
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return dateList;
+    }
+    public ArrayList<MedicalReport> getMedicalReports(int PID,Date date){
+        ArrayList<MedicalReport> medicalReportList = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE PID= ? AND Date =?");
+            pst.setInt(1,PID);
+            pst.setDate(2, date);
+            use = pst.executeQuery();                
+                            
+            while(use.next()){                  
+                MedicalReport medicalReport =  new MedicalReport();
+                medicalReport.setPID(use.getInt(1));
+                medicalReport.setDate(use.getDate(2));
+                medicalReport.setDoctorID(use.getInt(3));
+                medicalReport.setMedicalReportNum(use.getInt(4));
+                medicalReport.setTestTypes(use.getString(5));
+                medicalReport.setTreatmentDescription(use.getString(6));     
+                medicalReportList.add(medicalReport);
+            }         
+            return medicalReportList;
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return medicalReportList;
+    }
+    public ArrayList<LabReport> getLabReports(int PID,Date date){
+        ArrayList<LabReport> labReportList = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM LabReport WHERE PID= ? AND Date =?");
+            pst.setInt(1,PID);
+            pst.setDate(2, date);
+            use = pst.executeQuery();                
+            System.out.println("rr");
+            while(use.next()){       
+                System.out.println("rraa");
+                LabReport labReport =  new LabReport();
+                labReport.setPID(use.getInt(1));
+                labReport.setDate(use.getDate(2));
+                labReport.setLabReportNo(use.getInt(3));
+                labReport.setTestType(use.getInt(4));
+                labReport.setLabTechID(use.getInt(5));          
+                
+                int index = 6;
+                
+                for(int i = 0;(i+index)<22;i++){               
+                    String data = use.getString(index++);
+                    if(data!=null)
+                        labReport.addDataToTheList(data);
+                }                
+                labReportList.add(labReport);
+            }         
+            return labReportList;
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return labReportList;
     }
 }
