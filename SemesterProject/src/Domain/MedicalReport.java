@@ -4,12 +4,12 @@ import java.sql.Date;
 
 
 public class MedicalReport {
-        private int PID;    
-        private Date date;
-        private int doctorID;
-        private int medicalReportNum;
-        private String testTypes;    
-        private String treatmentDescription;
+    private int PID;    
+    private Date date;
+    private int doctorID;
+    private int medicalReportNum;
+    private String testTypes;    
+    private String treatmentDescription;
        
 
     /**

@@ -107,6 +107,14 @@ public class SemesterProject {
             System.out.println(p.getPassword());              
         }
         */
-      
+        /*ArrayList<Date> dateList = ad.getMedicalDates(1);
+        System.out.println(dateList.get(0));*/
+       /* ArrayList<LabReport> labDataList = ad.getLabReports(1,new Date(1992,02,03));
+        System.out.println(labDataList.get(0).getPID());
+        for(String s:labDataList.get(0).getDataList()){
+            System.out.println(s);
+        }*/
+        Employee em = ad.getEmplyee(1);
+        System.out.println(em.getName());
     }
 }
