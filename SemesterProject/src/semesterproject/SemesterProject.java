@@ -118,7 +118,8 @@ public class SemesterProject {
         for(String s:labDataList.get(0).getDataList()){
             System.out.println(s);
         }*/
-        Employee em = ad.getEmplyee(1);
-        System.out.println(em.getName());
+       /* Employee em = ad.getEmplyee(1);
+        System.out.println(em.getName());*/
+        
     }
 }
