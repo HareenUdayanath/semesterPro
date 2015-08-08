@@ -6,7 +6,8 @@ package gui.manager;
 
 import DataBase.DBOperations;
 import Domain.Employee;
-import com.sun.glass.events.KeyEvent;
+import java.awt.event.KeyEvent;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -364,7 +365,7 @@ public class ManagerFace extends javax.swing.JFrame {
     private void eidTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_eidTextKeyTyped
         // TODO add your handling code here:
         char c = evt.getKeyChar();
-        if((Character.isDigit(c)||(c==KeyEvent.VK_BACKSPACE)||(c==KeyEvent.VK_DELETE))){
+        if((Character.isDigit(c)||(c==KeyEvent.VK_BACK_SPACE)||(c==KeyEvent.VK_DELETE))){
         } else {
             evt.consume();
         }
@@ -373,7 +374,7 @@ public class ManagerFace extends javax.swing.JFrame {
     private void nameTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameTextKeyTyped
         // TODO add your handling code here:
          char c = evt.getKeyChar();
-        if(!(Character.isDigit(c)||(c==KeyEvent.VK_BACKSPACE)||(c==KeyEvent.VK_DELETE))){
+        if(!(Character.isDigit(c)||(c==KeyEvent.VK_BACK_SPACE)||(c==KeyEvent.VK_DELETE))){
         } else {
             evt.consume();
         }
@@ -382,7 +383,7 @@ public class ManagerFace extends javax.swing.JFrame {
     private void nicTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nicTextKeyTyped
         // TODO add your handling code here:
          char c = evt.getKeyChar();
-        if((Character.isDigit(c)||(c==KeyEvent.VK_BACKSPACE)||(c==KeyEvent.VK_DELETE))){
+        if((Character.isDigit(c)||(c==KeyEvent.VK_BACK_SPACE)||(c==KeyEvent.VK_DELETE))){
         } else {
             evt.consume();
         }
