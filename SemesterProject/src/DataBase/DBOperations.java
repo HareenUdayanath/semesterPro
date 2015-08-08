@@ -136,7 +136,7 @@ public class DBOperations {
 
             result = true;
         }catch(SQLException ex){
-            System.out.println("dd");
+            System.out.println(ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -165,7 +165,7 @@ public class DBOperations {
 
             result = true;
         }catch(SQLException ex){
-            System.out.println("dd");
+            System.out.println(ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -212,14 +212,14 @@ public class DBOperations {
                 patientList.add(patient);
             }               
         }catch(SQLException ex){
-            System.out.println("ssss");
+            System.out.println(ex);
         }
     }
     public void loadDoctors(ArrayList<Employee> doctorList){
         try{
 
             con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE Position='Doctor'");              
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE Position='Doctor'");              
             use = pst.executeQuery();                
             doctorList.clear();                
             while(use.next()){                   
@@ -234,7 +234,7 @@ public class DBOperations {
                 doctorList.add(doctor);
             }               
         }catch(SQLException ex){
-            System.out.println("ssss");
+            System.out.println(ex);
         }
     }
 }

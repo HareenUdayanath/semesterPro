@@ -1,6 +1,6 @@
 package Domain;
 
-public class Employee {
+public abstract class Employee {
     private int EID;    
     private String position;
     private String name;

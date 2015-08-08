@@ -4,6 +4,7 @@ package semesterproject;
 import DataBase.*;
 import Domain.*;
 import java.sql.Date;
+import java.util.ArrayList;
 
 
 
@@ -74,8 +75,39 @@ public class SemesterProject {
         cr.setObesity(true);
         cr.setArthritis(true);
         ad.addChronicConditionsReport(cr);*/
-       
-        
-                
+        /*
+        ArrayList<Patient> patientList = new ArrayList<>();
+        ad.loadPatients(patientList);
+        for(Patient p:patientList){
+            
+            System.out.println(p.getPID());
+            System.out.println(p.getFirstName());
+            System.out.println(p.getFullName());
+            System.out.println(p.getLastName());
+            System.out.println(p.getDateOfBirth());
+            System.out.println(p.getGender());
+            System.out.println(p.getAddress());
+            System.out.println(p.getNIC());
+            System.out.println(p.getPatientContactNo());
+            System.out.println(p.getNameOfTheGuardian());
+            System.out.println(p.getGuardianCinatactNo());
+            System.out.println(p.getBloodGroup());
+            System.out.println(p.getAllergies());   
+        }*/
+        /*
+        ArrayList<Employee> doctorlist = new ArrayList<>();
+        ad.loadDoctors(doctorlist);
+        for(Employee p:doctorlist){
+            
+            System.out.println(p.getEID());
+            System.out.println(p.getPosition());
+            System.out.println(p.getName());            
+            System.out.println(p.getNIC());
+            System.out.println(p.getUsername());
+            System.out.println(p.getPassword());              
+        }
+        */
+       gui.lab.LabReport l = new gui.lab.LabReport();
+       l.setVisible(true);
     }
 }
