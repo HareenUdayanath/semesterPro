@@ -240,9 +240,9 @@ public class DBOperations {
             con = DriverManager.getConnection(url, user, password);               
             pst = con.prepareStatement("SELECT * FROM Employee WHERE EID=?");              
             pst.setInt(1, EID);
-            use = pst.executeQuery();                
-                           
-            while(use.next()){                    
+            use = pst.executeQuery();
+            
+            while(use.next()){                   
                 employee = emfac.getEmployee(use.getString(2));                
                 employee.setEID(use.getInt(1));
                 employee.setName(use.getString(3));
