@@ -243,7 +243,7 @@ public class DBOperations {
             use = pst.executeQuery();                
                            
             while(use.next()){                    
-                employee = emfac.getEmployee(use.getString(url));                
+                employee = emfac.getEmployee(use.getString(2));                
                 employee.setEID(use.getInt(1));
                 employee.setName(use.getString(3));
                 employee.setNIC(use.getString(4));
