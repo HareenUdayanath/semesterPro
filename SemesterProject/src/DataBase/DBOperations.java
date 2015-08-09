@@ -6,8 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import Domain.*;
 import java.sql.Date;
 
@@ -52,18 +50,13 @@ public class DBOperations {
             pst.setString(13, patient.getAllergies());
             
             pst.executeUpdate();
-
+            con.close();
+            
             result = true;
-        }catch(SQLException ex){
-            System.out.println("SQLException");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
         }
-           return result;
+        return result;
     }
     public boolean addMedicalReport(MedicalReport medicalReport){
         boolean result = false; 
@@ -81,16 +74,12 @@ public class DBOperations {
             pst.setString(6, medicalReport.getTreatmentDescription());            
            
             pst.executeUpdate();
+            con.close();
             
             result = true;
-        }catch(SQLException ex){
-            System.out.println("dd");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+           
+        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
         }
            return result;
     }
@@ -115,16 +104,11 @@ public class DBOperations {
                 pst.setString(index+i, null);
             }           
             pst.executeUpdate();
+            con.close();
 
             result = true;
-        }catch(SQLException ex){
+        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
         }
            return result;
     }
@@ -142,16 +126,11 @@ public class DBOperations {
             pst.setString(5, employee.getUsername());
             pst.setString(6, employee.getPassword());           
             pst.executeUpdate();
+            con.close();
 
             result = true;
-        }catch(SQLException ex){
+        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
         }
            return result;
     }
@@ -171,16 +150,11 @@ public class DBOperations {
             pst.setBoolean(7, chronicConditionsReport.isObesity()); 
             pst.setBoolean(8, chronicConditionsReport.isArthritis()); 
             pst.executeUpdate();
+            con.close();
 
             result = true;
-        }catch(SQLException ex){
+        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
         }
            return result;
     }
@@ -189,13 +163,14 @@ public class DBOperations {
      * Load Data.................................................
      */
     
-    public void loadPatients(ArrayList<Patient> patientList){
+    public  ArrayList<Patient> loadPatients(){
+        ArrayList<Patient> patientList = new ArrayList<>();
         try{
 
             con = DriverManager.getConnection(url, user, password);               
             pst = con.prepareStatement("SELECT * FROM PatientFile");              
             use = pst.executeQuery();                
-            patientList.clear();                
+                           
             while(use.next()){                   
                 Patient patient = new Patient();
                
@@ -213,18 +188,22 @@ public class DBOperations {
                 patient.setBloodGroup(use.getString(12));
                 patient.setAllergies(use.getString(13));              
                 patientList.add(patient);
-            }               
+            }       
+            
+            con.close();
         }catch(SQLException ex){
             System.out.println(ex);
         }
+        return patientList;
     }
-    public void loadDoctors(ArrayList<Employee> doctorList){
+    public ArrayList<Employee> loadDoctors(){
+        ArrayList<Employee> doctorList = new ArrayList<>();
         try{
 
             con = DriverManager.getConnection(url, user, password);               
             pst = con.prepareStatement("SELECT * FROM Employee WHERE Position='Doctor'");              
             use = pst.executeQuery();                
-            doctorList.clear();                
+                          
             while(use.next()){                   
                 Employee doctor = new Doctor();
                 
@@ -235,10 +214,12 @@ public class DBOperations {
                 doctor.setPassword(use.getString(6));   
                              
                 doctorList.add(doctor);
-            }               
+            }             
+            con.close();
         }catch(SQLException ex){
             System.out.println(ex);
         }
+        return doctorList;
     }
     public Employee getEmplyee(int EID){
         Employee employee=null;
@@ -255,7 +236,8 @@ public class DBOperations {
                 employee.setNIC(use.getString(4));
                 employee.setUsername(use.getString(5));
                 employee.setPassword(use.getString(6));         
-            }               
+            }             
+            con.close();
         }catch(SQLException ex){
             System.out.println(ex);
         }
@@ -272,7 +254,7 @@ public class DBOperations {
             while(use.next()){                   
                 dateList.add(use.getDate(2));
             }         
-            return dateList;
+            con.close();            
         }catch(SQLException ex){
             System.out.println(ex);
         }
@@ -289,7 +271,7 @@ public class DBOperations {
             while(use.next()){                   
                 dateList.add(use.getDate(2));
             }         
-            return dateList;
+            con.close();
         }catch(SQLException ex){
             System.out.println(ex);
         }
@@ -314,7 +296,7 @@ public class DBOperations {
                 medicalReport.setTreatmentDescription(use.getString(6));     
                 medicalReportList.add(medicalReport);
             }         
-            return medicalReportList;
+            con.close();;
         }catch(SQLException ex){
             System.out.println(ex);
         }
@@ -347,7 +329,7 @@ public class DBOperations {
                 }                
                 labReportList.add(labReport);
             }         
-            return labReportList;
+            con.close();
         }catch(SQLException ex){
             System.out.println(ex);
         }
@@ -398,7 +380,8 @@ public class DBOperations {
                 patient.setAllergies(use.getString(13));   
                 
                 patientList.add(patient);
-            }               
+            }    
+            con.close();
         }catch(SQLException ex){
             System.out.println(ex);
         }
@@ -418,15 +401,11 @@ public class DBOperations {
             pst.setInt(1, EID);
 
             pst.executeUpdate();
+            con.close();
+             
             result = true;
-        }catch(SQLException ex){
+        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
         }
            return result;
     }

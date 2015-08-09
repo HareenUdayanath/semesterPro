@@ -5,7 +5,7 @@ import DataBase.*;
 import Domain.*;
 import java.sql.Date;
 import java.util.ArrayList;
-
+import gui.manager.*;
 
 
 public class SemesterProject {
@@ -76,8 +76,7 @@ public class SemesterProject {
         cr.setArthritis(true);
         ad.addChronicConditionsReport(cr);*/
         /*
-        ArrayList<Patient> patientList = new ArrayList<>();
-        ad.loadPatients(patientList);
+        ArrayList<Patient> patientList = ad.loadPatients();        
         for(Patient p:patientList){
             
             System.out.println(p.getPID());
@@ -95,8 +94,8 @@ public class SemesterProject {
             System.out.println(p.getAllergies());   
         }*/
         /*
-        ArrayList<Employee> doctorlist = new ArrayList<>();
-        ad.loadDoctors(doctorlist);
+        ArrayList<Employee> doctorlist = ad.loadDoctors();
+        
         for(Employee p:doctorlist){
             
             System.out.println(p.getEID());
@@ -128,6 +127,9 @@ public class SemesterProject {
             System.out.println(p.getFullName());
         }
          */
-        ad.deleteEmployee(3);
+        //ad.deleteEmployee(3);
+        /*
+        ManagerFace mf = new ManagerFace();
+        mf.setVisible(true);*/
     }
 }
