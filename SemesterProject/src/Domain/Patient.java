@@ -12,7 +12,7 @@ public class Patient {
     private String NIC;
     private int patientContactNo;
     private String nameOfTheGuardian;
-    private int guardianCinatactNo;
+    private int guardianContactNo;
     private String bloodGroup;
     private String Allergies;
 
@@ -89,8 +89,8 @@ public class Patient {
     /**
      * @return the guardianCinatactNo
      */
-    public int getGuardianCinatactNo() {
-        return guardianCinatactNo;
+    public int getGuardianContactNo() {
+        return guardianContactNo;
     }
 
     /**
@@ -180,8 +180,8 @@ public class Patient {
     /**
      * @param guardianCinatactNo the guardianCinatactNo to set
      */
-    public void setGuardianCinatactNo(int guardianCinatactNo) {
-        this.guardianCinatactNo = guardianCinatactNo;
+    public void setGuardianContactNo(int guardianCinatactNo) {
+        this.guardianContactNo = guardianCinatactNo;
     }
 
     /**

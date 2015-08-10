@@ -9,7 +9,7 @@ public class MedicalReport extends Document{
     private int doctorID;
     private int medicalReportNum;
     private String testTypes;    
-    private String treatmentDescription;
+    private String treatementDescription;
        
 
 
@@ -44,8 +44,8 @@ public class MedicalReport extends Document{
     /**
      * @return the treatmentDescription
      */
-    public String getTreatmentDescription() {
-        return treatmentDescription;
+    public String getTreatementDescription() {
+        return treatementDescription;
     }
 
   
@@ -80,8 +80,8 @@ public class MedicalReport extends Document{
     /**
      * @param treatmentDescription the treatmentDescription to set
      */
-    public void setTreatmentDescription(String treatmentDescription) {
-        this.treatmentDescription = treatmentDescription;
+    public void setTreatementDescription(String treatmentDescription) {
+        this.treatementDescription = treatmentDescription;
     }
 
     
