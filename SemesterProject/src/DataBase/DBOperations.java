@@ -553,7 +553,7 @@ public class DBOperations {
         return labReportList;
     }
     
-    public LabReport getLabReports(int labReportNo){
+    public LabReport getLabReport(int labReportNo){
         LabReport labReport = null;
         try{
             con = DriverManager.getConnection(url, user, password);               
@@ -586,6 +586,40 @@ public class DBOperations {
         }
         return labReport;
     }
+     public LabReport getLastLabReport(){
+        LabReport labReport = null;
+        int labReportNo = getLastLabReportNo();
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM LabReport WHERE LabReportNo = ?");
+            
+            pst.setInt(1,labReportNo);            
+            use = pst.executeQuery();      
+            if(use.next()){       
+                
+                labReport =  new LabReport();
+                labReport.setPID(use.getInt(1));
+                labReport.setDate(use.getDate(2));
+                labReport.setLabReportNo(use.getInt(3));
+                labReport.setTestType(use.getInt(4));
+                labReport.setLabTechID(use.getInt(5));          
+                
+                int index = 6;
+                
+                for(int i = 0;(i+index)<22;i++){               
+                    String data = use.getString(index++);
+                    if(data!=null)
+                        labReport.addDataToTheList(data);
+                }                
+               
+            }         
+            con.close();
+        }catch(SQLException ex){
+            System.out.println("ee"+ex);
+            
+        }
+        return labReport;
+    }
     public int getLastPID(){
         int pid = -1;
         try{
@@ -604,9 +638,11 @@ public class DBOperations {
         try{
             con = DriverManager.getConnection(url, user, password);               
             pst = con.prepareStatement("SELECT MAX(LabReportNo) FROM LabReport");
-            use = pst.executeQuery();   
+            use = pst.executeQuery();  
+            
             if(use.next())
-                labReportNo = use.getInt(3);
+                labReportNo = use.getInt(1);
+            
         }catch(SQLException ex){
             System.out.println(ex);
         }
