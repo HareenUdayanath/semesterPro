@@ -19,7 +19,7 @@ public class ManagerFace extends javax.swing.JFrame {
     /**
      * Creates new form ManegerFace
      */
-    DBOperations empDB = new DBOperations();
+    DBOperations empDB = DBOperations.getInstace();
     int searchID;
     public ManagerFace() {
         initComponents();
@@ -354,7 +354,7 @@ public class ManagerFace extends javax.swing.JFrame {
 
     private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
         // TODO add your handling code here:
-        DBOperations removeEmpDB = new DBOperations();
+        DBOperations removeEmpDB = DBOperations.getInstace();
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to remove this employee?","Remove Employee",dialogButton);
         if(dialogResult == JOptionPane.YES_OPTION){
