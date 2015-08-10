@@ -14,7 +14,7 @@ public class SemesterProject {
    
     public static void main(String[] args) {
         
-        DBOperations ad = new DBOperations();
+        DBOperations ad = DBOperations.getInstace();
         /*LabReportGUI l=new LabReportGUI();
         l.setVisible(true);
         */
