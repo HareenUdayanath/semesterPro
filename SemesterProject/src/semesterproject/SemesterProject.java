@@ -136,8 +136,11 @@ public class SemesterProject {
         ManagerFace mf = new ManagerFace();
         mf.setVisible(true);*/
         
-        Employee n = ad.checkEmplyee("H","DS");
-        System.out.println(n.getPosition());
+       /* Employee n = ad.checkEmplyee("H","DS");
+        System.out.println(n.getPosition());*/
+        
+        ArrayList<Patient>  list = ad.searchPatients("Perera","123456789V");
+        System.out.println(list.get(0).getFullName());
         
     }
 }

@@ -236,6 +236,28 @@ public class DBOperations {
         }
         return doctorList;
     }
+   public ArrayList<Employee> loadEmplyee(){
+        ArrayList<Employee> employeeList = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE Position<>'Manager'");              
+            
+            use = pst.executeQuery();
+            
+            while(use.next()){                   
+                Employee employee = emfac.getEmployee(use.getString(2));                
+                employee.setEID(use.getInt(1));
+                employee.setName(use.getString(3));
+                employee.setNIC(use.getString(4));
+                employee.setUsername(use.getString(5));
+                employee.setPassword(use.getString(6));         
+            }             
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return employeeList;
+    }
     public Employee getEmplyee(int EID){
         Employee employee=null;
         try{
@@ -372,7 +394,7 @@ public class DBOperations {
         ArrayList<Patient> patientList = new ArrayList<>();
         try{
             con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FirstName=? OR NIC=?");
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FulName LIKE %?% OR NIC=?");
             pst.setString(1,name);
             pst.setString(2, NIC);
             use = pst.executeQuery();                
