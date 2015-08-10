@@ -5,6 +5,8 @@
  */
 package gui.reception;
 
+import javax.swing.table.AbstractTableModel;
+
 /**
  *
  * @author Irfad Hussain
@@ -12,7 +14,9 @@ package gui.reception;
 public class DetailsForm extends javax.swing.JFrame {
     
     private ReceptionFace parent;
+    private DoctorDetailsModel tableMOdel; 
     private int mode;
+    private AbstractTableModel tableModel;
 
     /**
      * Creates new form SearchPatientForm
@@ -29,8 +33,14 @@ public class DetailsForm extends javax.swing.JFrame {
             jLabel2.setVisible(false);
             txtSearchNIC.setVisible(false);
         }
+        
     }
 
+    public void setTableModel(AbstractTableModel tabelModel){
+        this.tableModel = tabelModel;
+        tblDetails.setModel(tabelModel);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,7 +52,7 @@ public class DetailsForm extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblDetails = new javax.swing.JTable();
         txtSeacrhName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtSearchNIC = new javax.swing.JTextField();
@@ -60,7 +70,7 @@ public class DetailsForm extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText("Search By :      Name");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblDetails.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -71,7 +81,7 @@ public class DetailsForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblDetails);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -163,7 +173,7 @@ public class DetailsForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblDetails;
     private javax.swing.JTextField txtSeacrhName;
     private javax.swing.JTextField txtSearchNIC;
     // End of variables declaration//GEN-END:variables
