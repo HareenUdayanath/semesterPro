@@ -373,7 +373,7 @@ public class DBOperations {
             use = pst.executeQuery();                
                           
             while(use.next()){                   
-                Employee doctor = new Doctor();
+                Doctor doctor = new Doctor();
                 
                 doctor.setEID(use.getInt(1));
                 doctor.setName(use.getString(3));
@@ -381,7 +381,7 @@ public class DBOperations {
                 doctor.setUsername(use.getString(5));
                 doctor.setPassword(use.getString(6));   
                              
-                doctorList.add((Doctor)doctor);
+                doctorList.add(doctor);
             }             
             con.close();
         }catch(SQLException ex){
