@@ -150,8 +150,8 @@ public class SemesterProject {
         r.setDate(Help.getDate(1992,10,5));
         ad.updateMedicalReport(r);*/
         
-        LabReport l = ad.getLabReports(1);
+        /*LabReport l = ad.getLabReports(1);
         l.setDate(Help.getDate(1992,10,5));
-        ad.updateLabReport(l);
+        ad.updateLabReport(l);*/
     }
 }

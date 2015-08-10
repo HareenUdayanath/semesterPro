@@ -7,6 +7,7 @@ package gui.lab;
 import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.LabReport;
+import java.sql.SQLException;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -807,7 +808,10 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
-       // ad.addLabReport(l);
+        JOptionPane.showMessageDialog(null, "Date is successfully added");
+        this.dispose();
+        new LabReportGUI().setVisible(true);
+        //ad.addLabReport(l);
     }//GEN-LAST:event_btnConfirmUFRActionPerformed
 
     private void btnConfirmTCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmTCActionPerformed
@@ -905,7 +909,12 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
-        //ad.addLabReport(l);
+        JOptionPane.showMessageDialog(null, "Date is successfully added");
+        this.dispose();
+        new LabReportGUI().setVisible(true);
+        
+            ad.addLabReport(l);
+       
     }//GEN-LAST:event_btnconfirmFBSActionPerformed
 
     private void btnConfirmLPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmLPActionPerformed
@@ -950,6 +959,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
+        JOptionPane.showMessageDialog(null, "Date is successfully added");
+        this.dispose();
+        new LabReportGUI().setVisible(true);
        // ad.addLabReport(l);
     }//GEN-LAST:event_btnConfirmLPActionPerformed
 
@@ -1013,6 +1025,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
+        JOptionPane.showMessageDialog(null, "Date is successfully added");
+        this.dispose();
+        new LabReportGUI().setVisible(true);
        // ad.addLabReport(l);
     }//GEN-LAST:event_btnConfirmFBCActionPerformed
 
