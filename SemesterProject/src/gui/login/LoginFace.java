@@ -1,15 +1,19 @@
 package gui.login;
 
 import DataBase.*;
+import Domain.Employee;
+import javax.swing.JOptionPane;
+import sun.security.util.Password;
 
 public class LoginFace extends javax.swing.JFrame {
     
     DBOperations dataBase;
-
+    InterFaceFactory iFactory;
     /**
      * Creates new form LoginFace
      */
     public LoginFace() {
+        this.iFactory = new InterFaceFactory();
         initComponents();
     }
 
@@ -130,7 +134,15 @@ public class LoginFace extends javax.swing.JFrame {
 
     private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
         dataBase = DBOperations.getInstace();
-        dataBase.checkEmplyee(txtUserName.getText(),pasPassword.getPassword());
+        Employee employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pasPassword.getPassword()));
+        if(employee!=null){
+            iFactory.getInterFace(employee).setVisible(true);
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(null,"Invalid username or password");
+            txtUserName.setText(null);
+            pasPassword.setText(null);
+        }
     }//GEN-LAST:event_btnLogInActionPerformed
 
     /**
