@@ -1,10 +1,8 @@
 package gui.login;
 
-import Domain.DataEntryClerk;
-import Domain.Doctor;
+
 import Domain.Employee;
-import Domain.LabTechniciant;
-import Domain.Reception;
+import gui.dataEntryClerk.DataEntryGUI;
 import gui.doctor.DocGUI;
 import gui.lab.LabReportGUI;
 import gui.reception.ReceptionGUI;
@@ -20,8 +18,8 @@ public class InterFaceFactory {
                 return new DocGUI();
             case "Reception":
                 return new ReceptionGUI();
-            //case "DataEntryClerck":
-              //  return new DataEntryClerkFace();
+            case "DataEntryClerck":
+                return new DataEntryGUI();
             case "LabTechniciant":
                 return new LabReportGUI();
             default:
