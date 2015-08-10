@@ -394,7 +394,7 @@ public class DBOperations {
         ArrayList<Patient> patientList = new ArrayList<>();
         try{
             con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FulName LIKE %?% OR NIC=?");
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FullName LIKE '%'?'%' OR NIC=?");
             pst.setString(1,name);
             pst.setString(2, NIC);
             use = pst.executeQuery();                
