@@ -60,7 +60,7 @@ public class DBOperations {
             pst.setString(8, patient.getNIC());
             pst.setInt(9, patient.getPatientContactNo());
             pst.setString(10, patient.getNameOfTheGuardian());
-            pst.setInt(11, patient.getGuardianCinatactNo());
+            pst.setInt(11, patient.getGuardianContactNo());
             pst.setString(12, patient.getBloodGroup());
             pst.setString(13, patient.getAllergies());
             
@@ -86,7 +86,7 @@ public class DBOperations {
             pst.setInt(3, medicalReport.getDoctorID());
             pst.setInt(4,medicalReport.getMedicalReportNum());
             pst.setString(5, medicalReport.getTestTypes());
-            pst.setString(6, medicalReport.getTreatmentDescription());            
+            pst.setString(6, medicalReport.getTreatementDescription());            
            
             pst.executeUpdate();
             con.close();
@@ -173,7 +173,100 @@ public class DBOperations {
         }
            return result;
     }
-   
+    /*
+     * Update data 
+     */
+    public boolean updatePatient(Patient patient){
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();            
+            con = DriverManager.getConnection(url, user, password);             
+            pst = con.prepareStatement("UPDATE PatientFile SET FirstName = ?,FullName = ?,LastName = ?,DateOfBirth = ?,Gender = ?,"
+                    + "Address = ?,NIC = ?,PatientContactNo = ?,NameOfTheGuardian = ?,GuardianContactNo = ?,BloodGroup = ?,Allergies = ?"
+                    + " WHERE PID = ?");               
+
+            pst.setInt(13,patient.getPID());
+            pst.setString(1,patient.getFirstName());
+            pst.setString(2,patient.getFullName());
+            pst.setString(3,patient.getLastName());            
+            pst.setDate(4,patient.getDateOfBirth());
+            pst.setString(5, patient.getGender());
+            pst.setString(6, patient.getAddress());
+            pst.setString(7, patient.getNIC());
+            pst.setInt(8, patient.getPatientContactNo());
+            pst.setString(9, patient.getNameOfTheGuardian());
+            pst.setInt(10, patient.getGuardianContactNo());
+            pst.setString(11, patient.getBloodGroup());
+            pst.setString(12, patient.getAllergies());
+            
+            pst.executeUpdate();
+            con.close();
+            
+            result = true;
+        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+        return result;
+    }
+    
+    public boolean updateMedicalReport(MedicalReport medicalReport){
+        boolean result = false; 
+        // For insert to medical report there should be a PID which has same PID in medical report
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);              
+            pst = con.prepareStatement("Update MedicalReport SET PID = ?,Date = ?,DoctorID = ?,TestTypes = ?, TreatementDescription = ? WHERE MedicalReportNum = ?");               
+             
+            pst.setInt(1,medicalReport.getPID());
+            pst.setDate(2, medicalReport.getDate());
+            pst.setInt(3, medicalReport.getDoctorID());
+            pst.setInt(6,medicalReport.getMedicalReportNum());
+            pst.setString(4, medicalReport.getTestTypes());
+            pst.setString(5, medicalReport.getTreatementDescription());            
+           
+            pst.executeUpdate();
+            con.close();
+            
+            result = true;
+           
+        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
+    
+    public boolean updateLabReport(LabReport labReport){
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);              
+            pst = con.prepareStatement("UPDATE LabReport SET PID = ?,Date = ?,TestType = ?,LabTechID = ?,"
+                    + "Data1 = ?,Data2 = ?,Data3 = ?,Data4 = ?,Data5 = ?,Data6 = ?,Data7 = ?,Data8 = ?,Data9 = ?,Data10 = ?,"
+                    + "Data11 = ?,Data12 = ?,Data13 = ?,Data14 = ?,Data15 = ?,Data16 = ? WHERE LabReportNo = ?");  
+            int index;
+
+            pst.setInt(1,labReport.getPID());
+            pst.setDate(2, labReport.getDate());
+            pst.setInt(21, labReport.getLabReportNo());
+            pst.setInt(3,labReport.getTestType());
+            pst.setInt(4, labReport.getLabTechID());
+            index = 5;
+            for(String data:labReport.getDataList()){
+                pst.setString(index++, data);
+            }
+            for(int i = 0;(i+index)<21;i++){               
+                pst.setString(index+i, null);
+            }           
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
+    
     /*
      * Load Data.................................................
      */
@@ -199,7 +292,7 @@ public class DBOperations {
                 patient.setNIC(use.getString(8));
                 patient.setPatientContactNo(use.getInt(9));
                 patient.setNameOfTheGuardian(use.getString(10));
-                patient.setGuardianCinatactNo(use.getInt(11));
+                patient.setGuardianContactNo(use.getInt(11));
                 patient.setBloodGroup(use.getString(12));
                 patient.setAllergies(use.getString(13));              
                 patientList.add(patient);
@@ -211,6 +304,42 @@ public class DBOperations {
         }
         return patientList;
     }
+    
+    public Patient getPatient(int PID){
+        Patient patient = null;
+        try{
+
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE PID = ?");
+            pst.setInt(1,PID);
+            use = pst.executeQuery();                
+                           
+            if(use.next()){                   
+                patient = new Patient();
+               
+                patient.setPID(use.getInt(1));
+                patient.setFirstName(use.getString(2));
+                patient.setFullName(use.getString(3));
+                patient.setLastName(use.getString(4));
+                patient.setDateOfBirth(use.getDate(5));
+                patient.setGender(use.getString(6));
+                patient.setAddress(use.getString(7));
+                patient.setNIC(use.getString(8));
+                patient.setPatientContactNo(use.getInt(9));
+                patient.setNameOfTheGuardian(use.getString(10));
+                patient.setGuardianContactNo(use.getInt(11));
+                patient.setBloodGroup(use.getString(12));
+                patient.setAllergies(use.getString(13));              
+                
+            }       
+            
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return patient;
+    }
+    
     public ArrayList<Employee> loadDoctors(){
         ArrayList<Employee> doctorList = new ArrayList<>();
         try{
@@ -235,6 +364,28 @@ public class DBOperations {
             System.out.println(ex);
         }
         return doctorList;
+    }
+   public ArrayList<Employee> loadEmplyee(){
+        ArrayList<Employee> employeeList = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE Position<>'Manager'");              
+            
+            use = pst.executeQuery();
+            
+            while(use.next()){                   
+                Employee employee = emfac.getEmployee(use.getString(2));                
+                employee.setEID(use.getInt(1));
+                employee.setName(use.getString(3));
+                employee.setNIC(use.getString(4));
+                employee.setUsername(use.getString(5));
+                employee.setPassword(use.getString(6));         
+            }             
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return employeeList;
     }
     public Employee getEmplyee(int EID){
         Employee employee=null;
@@ -308,7 +459,7 @@ public class DBOperations {
                 medicalReport.setDoctorID(use.getInt(3));
                 medicalReport.setMedicalReportNum(use.getInt(4));
                 medicalReport.setTestTypes(use.getString(5));
-                medicalReport.setTreatmentDescription(use.getString(6));     
+                medicalReport.setTreatementDescription(use.getString(6));     
                 medicalReportList.add(medicalReport);
             }         
             con.close();;
@@ -317,6 +468,33 @@ public class DBOperations {
         }
         return medicalReportList;
     }
+    
+    public MedicalReport getMedicalReport(int medicalReportNum){
+        MedicalReport medicalReport = null;
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE MedicalReportNum = ?");
+            pst.setInt(1,medicalReportNum);
+           
+            use = pst.executeQuery();                
+                            
+            if(use.next()){                  
+                medicalReport =  new MedicalReport();
+                medicalReport.setPID(use.getInt(1));
+                medicalReport.setDate(use.getDate(2));
+                medicalReport.setDoctorID(use.getInt(3));
+                medicalReport.setMedicalReportNum(use.getInt(4));
+                medicalReport.setTestTypes(use.getString(5));
+                medicalReport.setTreatementDescription(use.getString(6));     
+                
+            }         
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return medicalReport;
+    }
+    
     public ArrayList<LabReport> getLabReports(int PID,Date date){
         ArrayList<LabReport> labReportList = new ArrayList<>();
         try{
@@ -350,7 +528,41 @@ public class DBOperations {
         }
         return labReportList;
     }
-     public int getLastPID(){
+    
+    public LabReport getLabReports(int labReportNo){
+        LabReport labReport = null;
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM LabReport WHERE LabReportNo = ?");
+            pst.setInt(1,labReportNo);
+            
+            use = pst.executeQuery();             
+            
+            if(use.next()){       
+                
+                labReport =  new LabReport();
+                labReport.setPID(use.getInt(1));
+                labReport.setDate(use.getDate(2));
+                labReport.setLabReportNo(use.getInt(3));
+                labReport.setTestType(use.getInt(4));
+                labReport.setLabTechID(use.getInt(5));          
+                
+                int index = 6;
+                
+                for(int i = 0;(i+index)<22;i++){               
+                    String data = use.getString(index++);
+                    if(data!=null)
+                        labReport.addDataToTheList(data);
+                }                
+               
+            }         
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return labReport;
+    }
+    public int getLastPID(){
         int pid = -1;
         try{
             con = DriverManager.getConnection(url, user, password);               
@@ -372,7 +584,7 @@ public class DBOperations {
         ArrayList<Patient> patientList = new ArrayList<>();
         try{
             con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FirstName=? OR NIC=?");
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FullName LIKE '%'?'%' OR NIC=?");
             pst.setString(1,name);
             pst.setString(2, NIC);
             use = pst.executeQuery();                
@@ -390,7 +602,7 @@ public class DBOperations {
                 patient.setNIC(use.getString(8));
                 patient.setPatientContactNo(use.getInt(9));
                 patient.setNameOfTheGuardian(use.getString(10));
-                patient.setGuardianCinatactNo(use.getInt(11));
+                patient.setGuardianContactNo(use.getInt(11));
                 patient.setBloodGroup(use.getString(12));
                 patient.setAllergies(use.getString(13));   
                 
