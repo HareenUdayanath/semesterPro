@@ -174,7 +174,7 @@ public class DBOperations {
            return result;
     }
     /*
-     * Update data 
+     * Update data............................................................................. 
      */
     public boolean updatePatient(Patient patient){
         boolean result = false; 
@@ -211,7 +211,7 @@ public class DBOperations {
     
     public boolean updateMedicalReport(MedicalReport medicalReport){
         boolean result = false; 
-        // For insert to medical report there should be a PID which has same PID in medical report
+        
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
@@ -266,6 +266,30 @@ public class DBOperations {
         }
            return result;
     }
+    
+    public boolean updateEmployee(Employee employee){
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);              
+            pst = con.prepareStatement("UPDATE Employee SET ");              
+
+            pst.setInt(1,employee.getEID());            
+            pst.setString(2, employee.getPosition());
+            pst.setString(3,employee.getName());
+            pst.setString(4, employee.getNIC());
+            pst.setString(5, employee.getUsername());
+            pst.setString(6, employee.getPassword());           
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
+    
     
     /*
      * Load Data.................................................
@@ -340,8 +364,8 @@ public class DBOperations {
         return patient;
     }
     
-    public ArrayList<Employee> loadDoctors(){
-        ArrayList<Employee> doctorList = new ArrayList<>();
+    public ArrayList<Doctor> loadDoctors(){
+        ArrayList<Doctor> doctorList = new ArrayList<>();
         try{
 
             con = DriverManager.getConnection(url, user, password);               
@@ -357,7 +381,7 @@ public class DBOperations {
                 doctor.setUsername(use.getString(5));
                 doctor.setPassword(use.getString(6));   
                              
-                doctorList.add(doctor);
+                doctorList.add((Doctor)doctor);
             }             
             con.close();
         }catch(SQLException ex){
@@ -574,6 +598,19 @@ public class DBOperations {
             System.out.println(ex);
         }
         return pid;
+    }
+    public int getLastLabReportNo(){
+        int labReportNo = -1;
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT MAX(LabReportNo) FROM LabReport");
+            use = pst.executeQuery();   
+            if(use.next())
+                labReportNo = use.getInt(3);
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return labReportNo;
     }
      
     /*
