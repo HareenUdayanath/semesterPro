@@ -138,9 +138,20 @@ public class SemesterProject {
         
        /* Employee n = ad.checkEmplyee("H","DS");
         System.out.println(n.getPosition());*/
-        
+        /*
         ArrayList<Patient>  list = ad.searchPatients("Perera","123456789V");
-        System.out.println(list.get(0).getFullName());
+        System.out.println(list.get(0).getFullName());*/
         
+        /*Patient pa = ad.getPatient(1);
+        pa.setDateOfBirth(Help.getDate(1992,10,5));
+        ad.updatePatient(pa);*/
+        
+        /*MedicalReport r = ad.getMedicalReport(3);
+        r.setDate(Help.getDate(1992,10,5));
+        ad.updateMedicalReport(r);*/
+        
+        LabReport l = ad.getLabReports(1);
+        l.setDate(Help.getDate(1992,10,5));
+        ad.updateLabReport(l);
     }
 }
