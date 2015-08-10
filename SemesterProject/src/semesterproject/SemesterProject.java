@@ -15,9 +15,9 @@ public class SemesterProject {
     public static void main(String[] args) {
         
         DBOperations ad = DBOperations.getInstace();
-        /*LabReportGUI l=new LabReportGUI();
+        LabReportGUI l=new LabReportGUI();
         l.setVisible(true);
-        */
+        
         // Check for add patient
         /*Patient patient = new Patient();
         patient.setPID(0);
