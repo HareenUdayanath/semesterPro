@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class LabReport extends Document{
    
     private Date date;
-    private int labReportNo;
+    private int labReportNo=0;
     private int testType;
     private int labTechID;
     private ArrayList<String> dataList = new ArrayList();

@@ -6,7 +6,7 @@ import Domain.*;
 import gui.lab.LabReportGUI;
 import java.sql.Date;
 import java.util.ArrayList;
-
+import gui.manager.*;
 
 
 public class SemesterProject {
@@ -14,10 +14,10 @@ public class SemesterProject {
    
     public static void main(String[] args) {
         
-        DBOperations ad = new DBOperations();
-        LabReportGUI l=new LabReportGUI();
+        DBOperations ad = DBOperations.getInstace();
+        /*LabReportGUI l=new LabReportGUI();
         l.setVisible(true);
-        l.setResizable(false);
+        */
         // Check for add patient
         /*Patient patient = new Patient();
         patient.setPID(0);
@@ -80,8 +80,7 @@ public class SemesterProject {
         cr.setArthritis(true);
         ad.addChronicConditionsReport(cr);*/
         /*
-        ArrayList<Patient> patientList = new ArrayList<>();
-        ad.loadPatients(patientList);
+        ArrayList<Patient> patientList = ad.loadPatients();        
         for(Patient p:patientList){
             
             System.out.println(p.getPID());
@@ -99,8 +98,8 @@ public class SemesterProject {
             System.out.println(p.getAllergies());   
         }*/
         /*
-        ArrayList<Employee> doctorlist = new ArrayList<>();
-        ad.loadDoctors(doctorlist);
+        ArrayList<Employee> doctorlist = ad.loadDoctors();
+        
         for(Employee p:doctorlist){
             
             System.out.println(p.getEID());
@@ -132,6 +131,27 @@ public class SemesterProject {
             System.out.println(p.getFullName());
         }
          */
-        ad.deleteEmployee(3);
+        //ad.deleteEmployee(3);
+        /*
+        ManagerFace mf = new ManagerFace();
+        mf.setVisible(true);*/
+        
+       /* Employee n = ad.checkEmplyee("H","DS");
+        System.out.println(n.getPosition());*/
+        /*
+        ArrayList<Patient>  list = ad.searchPatients("Perera","123456789V");
+        System.out.println(list.get(0).getFullName());*/
+        
+        /*Patient pa = ad.getPatient(1);
+        pa.setDateOfBirth(Help.getDate(1992,10,5));
+        ad.updatePatient(pa);*/
+        
+        /*MedicalReport r = ad.getMedicalReport(3);
+        r.setDate(Help.getDate(1992,10,5));
+        ad.updateMedicalReport(r);*/
+        
+        LabReport l = ad.getLabReports(1);
+        l.setDate(Help.getDate(1992,10,5));
+        ad.updateLabReport(l);
     }
 }
