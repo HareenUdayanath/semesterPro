@@ -21,7 +21,7 @@ import javax.swing.JTextField;
  * @author Toshiba
  */
 public class LabReportGUI extends javax.swing.JFrame {
-
+    java.awt.event.ActionEvent evtt;
     String testNumber;
     String str="";
     private DefaultCellEditor cellEditor;
@@ -38,6 +38,52 @@ public class LabReportGUI extends javax.swing.JFrame {
         TCpanel.setVisible(false);
         UFRpanel.setVisible(false);
         LPpanel.setVisible(false);
+    }
+    private void chooseTest(){
+        String s=(String) TestBox.getSelectedItem();
+        //System.out.println(s);
+        switch (s) {
+            case "01":
+                textTestName.setText("Fasting Blood Sugar");
+                FBCpanel.setVisible(false);
+                FBSpanel.setVisible(true);
+                TCpanel.setVisible(false);
+                UFRpanel.setVisible(false);
+                LPpanel.setVisible(false);
+                break;
+            case "02":
+                textTestName.setText("Urine Full Report");
+                FBCpanel.setVisible(false);
+                FBSpanel.setVisible(false);
+                TCpanel.setVisible(false);
+                UFRpanel.setVisible(true);
+                LPpanel.setVisible(false);
+                break;
+            case "03":
+                textTestName.setText("Full Blood Count");
+                FBCpanel.setVisible(true);
+                FBSpanel.setVisible(false);
+                TCpanel.setVisible(false);
+                UFRpanel.setVisible(false);
+                LPpanel.setVisible(false);
+                break;
+            case "04":
+                textTestName.setText("Serum Lipid Profile");
+                FBCpanel.setVisible(false);
+                FBSpanel.setVisible(false);
+                TCpanel.setVisible(false);
+                UFRpanel.setVisible(false);
+                LPpanel.setVisible(true);
+                break;
+            case "05":
+                textTestName.setText("Total Cholesterol");
+                FBCpanel.setVisible(false);
+                FBSpanel.setVisible(false);
+                TCpanel.setVisible(true);
+                UFRpanel.setVisible(false);
+                LPpanel.setVisible(false);
+                break;
+        }
     }
 
     /**
@@ -706,50 +752,7 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_textTestNameFocusGained
 
     private void TestBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TestBoxActionPerformed
-         
-        String s=(String) TestBox.getSelectedItem();
-        switch (s) {
-            case "01":
-                textTestName.setText("Fasting Blood Sugar");
-                FBCpanel.setVisible(false);
-                FBSpanel.setVisible(true);
-                TCpanel.setVisible(false);
-                UFRpanel.setVisible(false);
-                LPpanel.setVisible(false);
-                break;
-            case "02":
-                textTestName.setText("Urine Full Report");
-                FBCpanel.setVisible(false);
-                FBSpanel.setVisible(false);
-                TCpanel.setVisible(false);
-                UFRpanel.setVisible(true);
-                LPpanel.setVisible(false);
-                break;
-            case "03":
-                textTestName.setText("Full Blood Count");
-                FBCpanel.setVisible(true);
-                FBSpanel.setVisible(false);
-                TCpanel.setVisible(false);
-                UFRpanel.setVisible(false);
-                LPpanel.setVisible(false);
-                break;
-            case "04":
-                textTestName.setText("Serum Lipid Profile");
-                FBCpanel.setVisible(false);
-                FBSpanel.setVisible(false);
-                TCpanel.setVisible(false);
-                UFRpanel.setVisible(false);
-                LPpanel.setVisible(true);
-                break;
-            case "05":
-                textTestName.setText("Total Cholesterol");
-                FBCpanel.setVisible(false);
-                FBSpanel.setVisible(false);
-                TCpanel.setVisible(true);
-                UFRpanel.setVisible(false);
-                LPpanel.setVisible(false);
-                break;
-        }
+         chooseTest();
     }//GEN-LAST:event_TestBoxActionPerformed
 
     private void jLabel7AncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel7AncestorMoved
@@ -1086,11 +1089,12 @@ public class LabReportGUI extends javax.swing.JFrame {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         updateState=true;
         //LabReport lr=ad.getLastLabReport();
+        
         LabReport lr = new LabReport();
         lr.setPID(1);
         lr.setDate(new Date(1992,02,03));
         lr.setLabReportNo(1);
-        lr.setTestType(01);
+        lr.setTestType(02);
         lr.setLabTechID(1);
         
         for(int i=0;i<3;i++){
@@ -1098,7 +1102,9 @@ public class LabReportGUI extends javax.swing.JFrame {
         }
         
         String s=String.valueOf(lr.getTestType());
-        TestBox.setSelectedItem(lr.getTestType());
+        TestBox.setSelectedIndex(Integer.valueOf(lr.getTestType())-1);
+        chooseTest();
+        
         TestBox.setEditable(false);
         textPatientID.setText(String.valueOf(lr.getPID()));
         textLabTecID.setText(String.valueOf(lr.getLabTechID()));
