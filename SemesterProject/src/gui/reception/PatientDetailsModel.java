@@ -20,7 +20,9 @@ public class PatientDetailsModel extends AbstractTableModel {
     private ArrayList<Patient> values;
     
     public PatientDetailsModel(){
-        new DBOperations().loadPatients(values);
+        /* With time there could be thousands of patients entered in database. Loading all of them would be inefficient. So initialize an
+           empty arrayList to avoid null pointer exception*/
+        values = new ArrayList<Patient>();
     }
 
     @Override
@@ -52,6 +54,11 @@ public class PatientDetailsModel extends AbstractTableModel {
     @Override
     public String getColumnName(int columnIndex){
         return COLUMN_NAMES[columnIndex];
+    }
+    
+    public void setValues(ArrayList<Patient> values){
+        this.values = values;
+        fireTableStructureChanged();
     }
     
 }

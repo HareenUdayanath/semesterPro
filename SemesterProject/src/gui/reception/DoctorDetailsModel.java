@@ -20,7 +20,7 @@ public class DoctorDetailsModel extends AbstractTableModel{
     private ArrayList<Doctor> values;
     
     public DoctorDetailsModel(){
-        //new DBOperations().loadDoctors(values);
+       values = DBOperations.getInstace().loadDoctors();    // load avilable doctors at begining
     }
     
     @Override
@@ -51,5 +51,7 @@ public class DoctorDetailsModel extends AbstractTableModel{
     public String getColumnName(int columnIndex){
         return COLUMN_NAMES[columnIndex];
     }
+    
+    //public void
     
 }

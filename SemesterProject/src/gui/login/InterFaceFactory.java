@@ -7,7 +7,7 @@ import Domain.LabTechniciant;
 import Domain.Reception;
 import gui.doctor.DocGUI;
 import gui.lab.LabReportGUI;
-import gui.reception.ReceptionFace;
+import gui.reception.ReceptionGUI;
 import javax.swing.JFrame;
 
 
@@ -19,7 +19,7 @@ public class InterFaceFactory {
             case "Doctor":
                 return new DocGUI();
             case "Reception":
-                return new ReceptionFace();
+                return new ReceptionGUI();
             //case "DataEntryClerck":
               //  return new DataEntryClerkFace();
             case "LabTechniciant":

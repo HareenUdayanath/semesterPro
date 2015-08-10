@@ -13,7 +13,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class DetailsForm extends javax.swing.JFrame {
     
-    private ReceptionFace parent;
+    private ReceptionGUI parent;
     private DoctorDetailsModel tableMOdel; 
     private int mode;
     private AbstractTableModel tableModel;
@@ -25,7 +25,7 @@ public class DetailsForm extends javax.swing.JFrame {
         initComponents();
     }
 
-    DetailsForm(ReceptionFace parent,int mode) {
+    DetailsForm(ReceptionGUI parent,int mode) {
         this();
         this.parent = parent;
         this.mode = mode;

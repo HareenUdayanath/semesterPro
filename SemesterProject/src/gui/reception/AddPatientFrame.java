@@ -15,7 +15,7 @@ import Domain.Patient;
  */
 public class AddPatientFrame extends javax.swing.JFrame {
 
-    private ReceptionFace parent;
+    private ReceptionGUI parent;
     
     /**
      * Creates new form AddPatientFrame
@@ -24,7 +24,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
         initComponents();
     }
     
-    public AddPatientFrame(ReceptionFace parent){
+    public AddPatientFrame(ReceptionGUI parent){
         this();
         this.parent = parent;
     }
@@ -341,7 +341,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
         p.setNIC(txtNIC.getText());
         p.setPatientContactNo(Integer.parseInt(txtPatientContactNo.getText()));
         p.setNameOfTheGuardian(txtNameOfGuardian.getText());
-        p.setGuardianCinatactNo(Integer.parseInt(txtGuardianContact.getText()));
+        p.setGuardianContactNo(Integer.parseInt(txtGuardianContact.getText()));
         p.setBloodGroup(txtBloodGroup.getText());
         p.setAllergies(txtAllergies1.getText()+" "+txtAllergies2.getText());
     }//GEN-LAST:event_btnAddPatientActionPerformed
