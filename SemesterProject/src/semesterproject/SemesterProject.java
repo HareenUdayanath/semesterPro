@@ -3,6 +3,7 @@ package semesterproject;
 
 import DataBase.*;
 import Domain.*;
+import gui.lab.LabReportGUI;
 import java.sql.Date;
 import java.util.ArrayList;
 import gui.manager.*;
@@ -14,6 +15,9 @@ public class SemesterProject {
     public static void main(String[] args) {
         
         DBOperations ad = new DBOperations();
+        LabReportGUI l=new LabReportGUI();
+        l.setVisible(true);
+        l.setResizable(false);
         // Check for add patient
         /*Patient patient = new Patient();
         patient.setPID(0);
