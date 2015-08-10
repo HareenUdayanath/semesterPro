@@ -92,7 +92,7 @@ public class LoginFace extends javax.swing.JFrame {
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Log in");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

@@ -86,6 +86,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         textMonth = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         titleName.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         titleName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -224,9 +225,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
                 jLabel7AncestorMoved(evt);
             }
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             }
         });
 
@@ -781,7 +782,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         LabReport l=new LabReport();
         DBOperations ad = new DBOperations();
         String item=(String)TestBox.getSelectedItem();
-        l.setLabReportNo(Integer.valueOf(item));
+        l.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
         String pid=textPatientID.getText();
         String data=fbsAmount.getText();
@@ -822,7 +823,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
-        //ad.addLabReport(l);
+        ad.addLabReport(l);
     }//GEN-LAST:event_btnconfirmFBSActionPerformed
 
     private void btnConfirmLPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmLPActionPerformed
@@ -978,9 +979,9 @@ public class LabReportGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                LabReportGUI l=new LabReportGUI();
+               /* LabReportGUI l=new LabReportGUI();
                 l.setTitle("Lab Report");
-                l.setVisible(true);
+                l.setVisible(true);*/
             }
         });
     }

@@ -15,9 +15,9 @@ public class SemesterProject {
     public static void main(String[] args) {
         
         DBOperations ad = new DBOperations();
-        LabReportGUI l=new LabReportGUI();
+        /*LabReportGUI l=new LabReportGUI();
         l.setVisible(true);
-        l.setResizable(false);
+        */
         // Check for add patient
         /*Patient patient = new Patient();
         patient.setPID(0);
@@ -135,5 +135,9 @@ public class SemesterProject {
         /*
         ManagerFace mf = new ManagerFace();
         mf.setVisible(true);*/
+        
+        Employee n = ad.checkEmplyee("H","DS");
+        System.out.println(n.getPosition());
+        
     }
 }

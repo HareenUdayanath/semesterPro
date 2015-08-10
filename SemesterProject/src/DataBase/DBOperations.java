@@ -11,20 +11,35 @@ import java.sql.Date;
 
 
 public class DBOperations {
-    Connection con = null;
-    PreparedStatement pst = null;
-    ResultSet use = null;
-    EmployeeFactory emfac = null;
+    private Connection con = null;
+    private PreparedStatement pst = null;
+    private ResultSet use = null;
+    private EmployeeFactory emfac = null;
+    private static DBOperations instance = null;
     //String url = "jdbc:odbc://192.168.173.1:3306/test2";    
     //String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
-    String url = "jdbc:mysql://localhost:3306/SemesterProject";
-    String user = "hosdataadmin";
-    String password = "coperativehos7456391";
+    private String url = "jdbc:mysql://localhost:3306/SemesterProject";
+    private String user = "hosdataadmin";
+    private String password = "coperativehos7456391";
     
-    public DBOperations(){
+    private DBOperations(){
         this.emfac = new EmployeeFactory();
     }
-   
+    
+    /*
+     * Add singleton................................................................
+     */
+    public static DBOperations getInstace(){
+        if(instance==null){
+            synchronized(DBOperations.class){
+                if(instance==null){
+                    instance = new DBOperations();
+                }
+            }
+        }     
+        return instance;
+    }
+    
     /*
      * Add Data......................................................................
      */
@@ -408,5 +423,31 @@ public class DBOperations {
             System.out.println(ex);
         }
            return result;
+    }
+    /*
+     * check Data
+     */
+     public Employee checkEmplyee(String uname,String pword){
+        Employee employee=null;
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");              
+            pst.setString(1,uname);
+            pst.setString(2,pword);
+            use = pst.executeQuery();
+            
+            while(use.next()){                   
+                employee = emfac.getEmployee(use.getString(2));                
+                employee.setEID(use.getInt(1));
+                employee.setName(use.getString(3));
+                employee.setNIC(use.getString(4));
+                employee.setUsername(use.getString(5));
+                employee.setPassword(use.getString(6));         
+            }             
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return employee;
     }
 }
