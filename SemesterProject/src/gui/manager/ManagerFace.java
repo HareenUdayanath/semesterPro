@@ -7,6 +7,7 @@ package gui.manager;
 import DataBase.DBOperations;
 import Domain.Employee;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -21,6 +22,7 @@ public class ManagerFace extends javax.swing.JFrame {
      */
     DBOperations empDB ;
     int searchID;
+    Employee emp;
     public ManagerFace() {
         initComponents();
         nameLabel.setEnabled(false);
@@ -328,7 +330,7 @@ public class ManagerFace extends javax.swing.JFrame {
         posLabel.setEnabled(true);
         nicLabel.setEnabled(true);
         searchID = Integer.parseInt(eidText.getText());
-        Employee emp = empDB.getEmplyee(searchID);
+        emp = empDB.getEmplyee(searchID);
         nameLabel.setText(emp.getName());
         posLabel.setText(emp.getPosition());
         nicLabel.setText(emp.getNIC());
@@ -413,7 +415,10 @@ public class ManagerFace extends javax.swing.JFrame {
     private void eListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eListBtnActionPerformed
         
         EmployeeList elist = new EmployeeList();
-        
+        elist.empList = empDB.loadEmplyee();
+        for(Employee em : elist.empList){
+            elist.addRow(em.getEID(), em.getName(),em.getPosition(), em.getNIC());
+        }
         elist.setVisible(true);
                 
     }//GEN-LAST:event_eListBtnActionPerformed
