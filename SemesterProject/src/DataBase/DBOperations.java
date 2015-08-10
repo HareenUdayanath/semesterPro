@@ -43,7 +43,7 @@ public class DBOperations {
     /*
      * Add Data......................................................................
      */
-    public boolean addPatient(Patient patient){
+    public boolean addPatient(Patient patient) throws SQLException{
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();            
@@ -68,12 +68,12 @@ public class DBOperations {
             con.close();
             
             result = true;
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
         return result;
     }
-    public boolean addMedicalReport(MedicalReport medicalReport){
+    public boolean addMedicalReport(MedicalReport medicalReport) throws SQLException{
         boolean result = false; 
         // For insert to medical report there should be a PID which has same PID in medical report
         try{               
@@ -93,12 +93,12 @@ public class DBOperations {
             
             result = true;
            
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
            return result;
     }
-    public boolean addLabReport(LabReport labReport){
+    public boolean addLabReport(LabReport labReport) throws SQLException {
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -122,7 +122,7 @@ public class DBOperations {
             con.close();
 
             result = true;
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
            return result;
