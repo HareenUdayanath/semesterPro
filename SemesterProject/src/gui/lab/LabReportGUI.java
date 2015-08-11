@@ -631,12 +631,12 @@ public class LabReportGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(generalDetailPanelLayout.createSequentialGroup()
-                        .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(textTestName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(testName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(testName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(testID)
-                                .addComponent(TestBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(TestBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(textTestName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(date)
@@ -810,6 +810,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         new LabReportGUI().setVisible(true);
         try{
             if(updateState){
+                System.out.println("updated report");
                 ad.updateLabReport(l);
             }else{
                 ad.addLabReport(l);
@@ -1087,6 +1088,7 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        btnEdit.setEnabled(false);
         updateState=true;
         //LabReport lr=ad.getLastLabReport();
         
@@ -1094,7 +1096,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         lr.setPID(1);
         lr.setDate(new Date(1992,02,03));
         lr.setLabReportNo(1);
-        lr.setTestType(02);
+        lr.setTestType(04);
         lr.setLabTechID(1);
         
         for(int i=0;i<3;i++){

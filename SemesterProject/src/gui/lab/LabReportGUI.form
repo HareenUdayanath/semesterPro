@@ -757,13 +757,13 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="textTestName" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="testName" alignment="1" max="32767" attributes="0"/>
-                              <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                                   <Component id="testID" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="TestBox" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="textTestName" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
