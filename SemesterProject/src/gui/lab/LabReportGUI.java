@@ -505,7 +505,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(detailPanelLayout.createSequentialGroup()
                 .addComponent(FBSpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
             .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(detailPanelLayout.createSequentialGroup()
                     .addGap(0, 28, Short.MAX_VALUE)
@@ -664,7 +664,7 @@ public class LabReportGUI extends javax.swing.JFrame {
 
         titleName.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         titleName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleName.setText("COOPERATIVE HOSPITAL - MATARA");
+        titleName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/Secound4.png"))); // NOI18N
 
         reportName.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         reportName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -675,18 +675,19 @@ public class LabReportGUI extends javax.swing.JFrame {
         titlePanelLayout.setHorizontalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(titlePanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(reportName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(titleName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(titleName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(titlePanelLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(reportName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         titlePanelLayout.setVerticalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(titlePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(titleName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(titleName, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(reportName)
                 .addGap(0, 10, Short.MAX_VALUE))
         );
@@ -774,7 +775,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer){
+            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
@@ -807,9 +808,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
-        JOptionPane.showMessageDialog(null, "Date is successfully added");
-        this.dispose();
-        new LabReportGUI().setVisible(true);
+        
         try{
             if(updateState){
                 System.out.println("updated report");
@@ -817,7 +816,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             }else{
                 ad.addLabReport(l);
             }
-            
+            JOptionPane.showMessageDialog(null, "Date is successfully added");
+            this.dispose();
+            new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error in patient id or tecnician id");
         }
@@ -832,7 +833,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data=CholesterolAmount.getText();
         try{
-            if(Integer.valueOf(pid) instanceof Integer){
+            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in TC confirm btn");
             }
@@ -867,15 +868,16 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
-        JOptionPane.showMessageDialog(null, "Date is successfully added");
-        this.dispose();
-        new LabReportGUI().setVisible(true);
+       
         try{
             if(updateState){
                 ad.updateLabReport(l);
             }else{
                 ad.addLabReport(l);
             }
+            JOptionPane.showMessageDialog(null, "Date is successfully added");
+            this.dispose();
+            new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error in patient id or tecnician id");
         }
@@ -890,7 +892,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data=fbsAmount.getText();
         try{
-            if(Integer.valueOf(pid) instanceof Integer){
+            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
@@ -926,18 +928,20 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
-        JOptionPane.showMessageDialog(null, "Date is successfully added");
-        this.dispose();
-        new LabReportGUI().setVisible(true);
+        
         try{
             if(updateState){
                 ad.updateLabReport(l);
             }else{
                 ad.addLabReport(l);
             }
+            JOptionPane.showMessageDialog(null, "Date is successfully added");
+            this.dispose();
+            new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error in patient id or tecnician id");
         }
+        
        
     }//GEN-LAST:event_btnconfirmFBSActionPerformed
 
@@ -950,7 +954,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer){
+            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
@@ -983,15 +987,16 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
-        JOptionPane.showMessageDialog(null, "Date is successfully added");
-        this.dispose();
-        new LabReportGUI().setVisible(true);
+        
         try{
             if(updateState){
                 ad.updateLabReport(l);
             }else{
                 ad.addLabReport(l);
             }
+            JOptionPane.showMessageDialog(null, "Date is successfully added");
+        this.dispose();
+        new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error in patient id or tecnician id");
         }
@@ -1021,7 +1026,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer){
+            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
@@ -1054,15 +1059,16 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
-        JOptionPane.showMessageDialog(null, "Date is successfully added");
-        this.dispose();
-        new LabReportGUI().setVisible(true);
+        
         try{
             if(updateState){
                 ad.updateLabReport(l);
             }else{
                 ad.addLabReport(l);
             }
+            JOptionPane.showMessageDialog(null, "Date is successfully added");
+            this.dispose();
+            new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error in patient id or tecnician id");
         }
@@ -1093,7 +1099,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         lr.setDate(new Date(1992,02,03));
         lr.setDate(Help.getDate(2015, 1, 5));
         lr.setLabReportNo(1);
-        lr.setTestType(4);
+        lr.setTestType(1);
         lr.setLabTechID(1);
         
         
@@ -1143,7 +1149,7 @@ public class LabReportGUI extends javax.swing.JFrame {
                 break;
             case "05":
                 CholesterolAmount.setText(datalist.get(0));
-                System.out.println("after setting fbsamount");
+                System.out.println("after setting tc");
                 break;
         }
         TestBox.setEnabled(true);
@@ -1183,9 +1189,9 @@ public class LabReportGUI extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-               /* LabReportGUI l=new LabReportGUI();
+                LabReportGUI l=new LabReportGUI();
                 l.setTitle("Lab Report");
-                l.setVisible(true);*/
+                l.setVisible(true);
             }
         });
     }
