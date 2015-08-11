@@ -5,7 +5,6 @@
  */
 package gui.reception;
 
-import javax.swing.table.AbstractTableModel;
 
 /**
  *
@@ -14,9 +13,8 @@ import javax.swing.table.AbstractTableModel;
 public class DetailsForm extends javax.swing.JFrame {
     
     private ReceptionGUI parent;
-    private DoctorDetailsModel tableMOdel; 
+    private DetailsTableModel tableModel; 
     private int mode;
-    private AbstractTableModel tableModel;
 
     /**
      * Creates new form SearchPatientForm
@@ -36,7 +34,7 @@ public class DetailsForm extends javax.swing.JFrame {
         
     }
 
-    public void setTableModel(AbstractTableModel tabelModel){
+    public void setTableModel(DetailsTableModel tabelModel){
         this.tableModel = tabelModel;
         tblDetails.setModel(tabelModel);
     }
@@ -56,7 +54,7 @@ public class DetailsForm extends javax.swing.JFrame {
         txtSeacrhName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         txtSearchNIC = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search Patient");
@@ -87,8 +85,13 @@ public class DetailsForm extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("or  NIC");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jButton1.setText("Search");
+        btnSearch.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,7 +110,7 @@ public class DetailsForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtSearchNIC, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -119,7 +122,7 @@ public class DetailsForm extends javax.swing.JFrame {
                     .addComponent(txtSeacrhName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(txtSearchNIC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -131,6 +134,10 @@ public class DetailsForm extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         parent.setEnabled(true);
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        tableModel.search(txtSeacrhName.getText(), txtSearchNIC.getText());
+    }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
      * @param args the command line arguments
@@ -169,7 +176,7 @@ public class DetailsForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
