@@ -791,4 +791,22 @@ public class DBOperations {
         }
         return employee;
     }
+    public boolean checkPatientNIC(String NIC){
+        
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
+            
+            pst.setString(1, NIC);
+            use = pst.executeQuery();                
+            System.out.println(pst);
+            while(use.next()){     
+                return true;
+            }    
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return false;
+    }
 }
