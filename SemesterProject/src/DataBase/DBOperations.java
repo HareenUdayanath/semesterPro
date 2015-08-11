@@ -17,8 +17,8 @@ public class DBOperations {
     private EmployeeFactory emfac = null;
     private static DBOperations instance = null;
     //private String url = "jdbc:odbc://192.168.173.1:3306/test2";    
-    private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
-   // private String url = "jdbc:mysql://localhost:3306/SemesterProject";
+    //private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
+    private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
     
@@ -327,7 +327,7 @@ public class DBOperations {
         }
         return patientList;
     }
-    
+   
     public Patient getPatient(int PID){
         Patient patient = null;
         try{
@@ -388,7 +388,8 @@ public class DBOperations {
         }
         return doctorList;
     }
-   public ArrayList<Employee> loadEmplyee(){
+    
+    public ArrayList<Employee> loadEmplyee(){
         ArrayList<Employee> employeeList = new ArrayList<>();
         try{
             con = DriverManager.getConnection(url, user, password);               
@@ -651,16 +652,40 @@ public class DBOperations {
     /*
      * Search Data...........................................................................
      */
-     
+     public ArrayList<Doctor> searchDoctors(String name){
+        ArrayList<Doctor> doctorList = new ArrayList<>();
+        try{
+
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE Position='Doctor' AND Name LIKE '%"+name+"%'");              
+            use = pst.executeQuery();                
+            System.out.println(pst);              
+            while(use.next()){                   
+                Doctor doctor = new Doctor();
+                
+                doctor.setEID(use.getInt(1));
+                doctor.setName(use.getString(3));
+                doctor.setNIC(use.getString(4));
+                doctor.setUsername(use.getString(5));
+                doctor.setPassword(use.getString(6));   
+                             
+                doctorList.add(doctor);
+            }             
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return doctorList;
+    } 
     public ArrayList<Patient> searchPatients(String name,String NIC){
         ArrayList<Patient> patientList = new ArrayList<>();
         try{
             con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FullName LIKE '%'?'%' OR NIC=?");
-            pst.setString(1,name);
-            pst.setString(2, NIC);
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FullName LIKE '%"+name+"%' OR NIC=?");
+            
+            pst.setString(1, NIC);
             use = pst.executeQuery();                
-                        
+            System.out.println(pst);
             while(use.next()){     
                 
                 Patient patient = new Patient();               
@@ -686,7 +711,40 @@ public class DBOperations {
         }
         return patientList;
     }
-    
+    public ArrayList<Patient> searchPatientsByNIC(String NIC){
+        ArrayList<Patient> patientList = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
+            
+            pst.setString(1, NIC);
+            use = pst.executeQuery();                
+            System.out.println(pst);
+            while(use.next()){     
+                
+                Patient patient = new Patient();               
+                patient.setPID(use.getInt(1));
+                patient.setFirstName(use.getString(2));
+                patient.setFullName(use.getString(3));
+                patient.setLastName(use.getString(4));
+                patient.setDateOfBirth(use.getDate(5));
+                patient.setGender(use.getString(6));
+                patient.setAddress(use.getString(7));
+                patient.setNIC(use.getString(8));
+                patient.setPatientContactNo(use.getInt(9));
+                patient.setNameOfTheGuardian(use.getString(10));
+                patient.setGuardianContactNo(use.getInt(11));
+                patient.setBloodGroup(use.getString(12));
+                patient.setAllergies(use.getString(13));   
+                
+                patientList.add(patient);
+            }    
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return patientList;
+    }
     /*
      * Delete Data............................................................................
      */
@@ -709,7 +767,7 @@ public class DBOperations {
            return result;
     }
     /*
-     * check Data
+     * check Data.....................................................................
      */
      public Employee checkEmplyee(String uname,String pword){
         Employee employee=null;
