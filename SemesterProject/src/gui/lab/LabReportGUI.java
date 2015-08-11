@@ -22,13 +22,14 @@ import javax.swing.JTextField;
  */
 public class LabReportGUI extends javax.swing.JFrame {
     java.awt.event.ActionEvent evtt;
-    String testNumber;
-    String str="";
+    private String testNumber;
+    private String str;
     private DefaultCellEditor cellEditor;
-    DBOperations ad ; 
-    LabReport l;
+    private DBOperations ad ; 
+    private LabReport l;
     public boolean updateState;
     public LabReportGUI() {
+        this.str = "";
         ad=DBOperations.getInstace();
         l=new LabReport();
         initComponents();
@@ -39,9 +40,8 @@ public class LabReportGUI extends javax.swing.JFrame {
         UFRpanel.setVisible(false);
         LPpanel.setVisible(false);
     }
-    private void chooseTest(){
+    private String chooseTest(){
         String s=(String) TestBox.getSelectedItem();
-        //System.out.println(s);
         switch (s) {
             case "01":
                 textTestName.setText("Fasting Blood Sugar");
@@ -50,7 +50,7 @@ public class LabReportGUI extends javax.swing.JFrame {
                 TCpanel.setVisible(false);
                 UFRpanel.setVisible(false);
                 LPpanel.setVisible(false);
-                break;
+                return s;
             case "02":
                 textTestName.setText("Urine Full Report");
                 FBCpanel.setVisible(false);
@@ -58,7 +58,7 @@ public class LabReportGUI extends javax.swing.JFrame {
                 TCpanel.setVisible(false);
                 UFRpanel.setVisible(true);
                 LPpanel.setVisible(false);
-                break;
+                return s;
             case "03":
                 textTestName.setText("Full Blood Count");
                 FBCpanel.setVisible(true);
@@ -66,7 +66,7 @@ public class LabReportGUI extends javax.swing.JFrame {
                 TCpanel.setVisible(false);
                 UFRpanel.setVisible(false);
                 LPpanel.setVisible(false);
-                break;
+                return s;
             case "04":
                 textTestName.setText("Serum Lipid Profile");
                 FBCpanel.setVisible(false);
@@ -74,7 +74,7 @@ public class LabReportGUI extends javax.swing.JFrame {
                 TCpanel.setVisible(false);
                 UFRpanel.setVisible(false);
                 LPpanel.setVisible(true);
-                break;
+                return s;
             case "05":
                 textTestName.setText("Total Cholesterol");
                 FBCpanel.setVisible(false);
@@ -82,8 +82,10 @@ public class LabReportGUI extends javax.swing.JFrame {
                 TCpanel.setVisible(true);
                 UFRpanel.setVisible(false);
                 LPpanel.setVisible(false);
-                break;
+                return s;
         }
+        return null;
+        
     }
 
     /**
@@ -792,8 +794,8 @@ public class LabReportGUI extends javax.swing.JFrame {
         for(int i=0;i<UFRtable.getRowCount();i++){
             data=(String)UFRtable.getValueAt(i,1);
            // System.out.println(Double.valueOf(data));
-                l.addDataToTheList(data);
-                System.out.println(data+" result "+i);
+            l.addDataToTheList(data);
+            System.out.println(data+" result "+i);
         }  
         try{
             if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
@@ -868,7 +870,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Date is successfully added");
         this.dispose();
         new LabReportGUI().setVisible(true);
-       try{
+        try{
             if(updateState){
                 ad.updateLabReport(l);
             }else{
@@ -968,8 +970,8 @@ public class LabReportGUI extends javax.swing.JFrame {
         for(int i=0;i<LPtable.getRowCount();i++){
             data=(String)LPtable.getValueAt(i,1);
            // System.out.println(Double.valueOf(data));
-                l.addDataToTheList(data);
-                System.out.println(data+" result "+i);
+            l.addDataToTheList(data);
+            System.out.println(data+" result "+i);
         }  
         try{
             if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
@@ -984,7 +986,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Date is successfully added");
         this.dispose();
         new LabReportGUI().setVisible(true);
-       try{
+        try{
             if(updateState){
                 ad.updateLabReport(l);
             }else{
@@ -1003,9 +1005,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         }else{
             cellEditor=(DefaultCellEditor)LPtable.getCellEditor(LPtable.getSelectedRow(),LPtable.getSelectedColumn());
             ((JTextField)cellEditor.getComponent()).setText(str);
-          
-            
-            //JOptionPane.showMessageDialog(null, "Date is incorrect");
         }
     }//GEN-LAST:event_LPtableKeyReleased
 
@@ -1042,8 +1041,8 @@ public class LabReportGUI extends javax.swing.JFrame {
         for(int i=0;i<FBCtable.getRowCount();i++){
             data=(String)FBCtable.getValueAt(i,1);
            // System.out.println(Double.valueOf(data));
-                l.addDataToTheList(data);
-                System.out.println(data+" result "+i);
+            l.addDataToTheList(data);
+            System.out.println(data+" result "+i);
         }  
         try{
             if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
@@ -1058,7 +1057,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Date is successfully added");
         this.dispose();
         new LabReportGUI().setVisible(true);
-       try{
+        try{
             if(updateState){
                 ad.updateLabReport(l);
             }else{
@@ -1077,9 +1076,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         }else{
             cellEditor=(DefaultCellEditor)FBCtable.getCellEditor(FBCtable.getSelectedRow(),FBCtable.getSelectedColumn());
             ((JTextField)cellEditor.getComponent()).setText(null);
-          
-            
-            //JOptionPane.showMessageDialog(null, "Date is incorrect");
         }
     }//GEN-LAST:event_FBCtableKeyReleased
 
@@ -1095,82 +1091,62 @@ public class LabReportGUI extends javax.swing.JFrame {
         LabReport lr = new LabReport();
         lr.setPID(1);
         lr.setDate(new Date(1992,02,03));
+        lr.setDate(Help.getDate(2015, 1, 5));
         lr.setLabReportNo(1);
-        lr.setTestType(04);
+        lr.setTestType(4);
         lr.setLabTechID(1);
         
-        for(int i=0;i<3;i++){
-            lr.addDataToTheList("A"+i);
+        
+        for(int i=0;i<6;i++){
+            lr.addDataToTheList(""+i);
         }
         
         String s=String.valueOf(lr.getTestType());
         TestBox.setSelectedIndex(Integer.valueOf(lr.getTestType())-1);
-        chooseTest();
+        //chooseTest();
         
-        TestBox.setEditable(false);
+        TestBox.setEnabled(false);
         textPatientID.setText(String.valueOf(lr.getPID()));
         textLabTecID.setText(String.valueOf(lr.getLabTechID()));
-        textYear.setText(s);
+        textDate.setText(String.valueOf(Help.getDay(lr.getDate())));
+        textMonth.setText(String.valueOf(Help.getMonth(lr.getDate())));
+        textYear.setText(String.valueOf(Help.getYear(lr.getDate())));
+        
         ArrayList<String> datalist=lr.getDataList();
+        System.out.println(datalist.get(0));
+        String test=chooseTest();
         System.out.println("sahan");
-        switch (s) {
+        switch (test) {
             case "01":
                 System.out.println("test 01");
-                textTestName.setText("Fasting Blood Sugar");
-                FBCpanel.setVisible(false);
-                FBSpanel.setVisible(true);
-                TCpanel.setVisible(false);
-                UFRpanel.setVisible(false);
-                LPpanel.setVisible(false);
                 fbsAmount.setText(datalist.get(0));
+                System.out.println("after setting fbsamount");
                 break;
             case "02":
-                textTestName.setText("Urine Full Report");
-                FBCpanel.setVisible(false);
-                FBSpanel.setVisible(false);
-                TCpanel.setVisible(false);
-                UFRpanel.setVisible(true);
-                LPpanel.setVisible(false);
-                
-                 for(int i=0;i<datalist.size();i++){
+                for(int i=0;i<datalist.size();i++){
                     UFRtable.setValueAt(datalist.get(i), i, 1);
                 }
+                System.out.println("after setting ufr");
                 break;
             case "03":
-                textTestName.setText("Full Blood Count");
-                FBCpanel.setVisible(true);
-                FBSpanel.setVisible(false);
-                TCpanel.setVisible(false);
-                UFRpanel.setVisible(false);
-                LPpanel.setVisible(false);
-                
-                 for(int i=0;i<datalist.size();i++){
+                for(int i=0;i<datalist.size();i++){
                     FBCtable.setValueAt(datalist.get(i), i, 1);
                 }
+                System.out.println("after setting fbc");
                 break;
             case "04":
-                textTestName.setText("Serum Lipid Profile");
-                FBCpanel.setVisible(false);
-                FBSpanel.setVisible(false);
-                TCpanel.setVisible(false);
-                UFRpanel.setVisible(false);
-                LPpanel.setVisible(true);
-                
+                System.out.println("in editing lp");
                 for(int i=0;i<datalist.size();i++){
                     LPtable.setValueAt(datalist.get(i), i, 1);
                 }
+                System.out.println("after setting lp");
                 break;
             case "05":
-                textTestName.setText("Total Cholesterol");
-                FBCpanel.setVisible(false);
-                FBSpanel.setVisible(false);
-                TCpanel.setVisible(true);
-                UFRpanel.setVisible(false);
-                LPpanel.setVisible(false);
                 CholesterolAmount.setText(datalist.get(0));
+                System.out.println("after setting fbsamount");
                 break;
         }
-        TestBox.setEditable(true);
+        TestBox.setEnabled(true);
          
         
         
