@@ -388,31 +388,7 @@ public class DBOperations {
         }
         return doctorList;
     }
-     public ArrayList<Doctor> searchDoctors(String name){
-        ArrayList<Doctor> doctorList = new ArrayList<>();
-        try{
-
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM Employee WHERE Position='Doctor' AND Name LIKE '%"+name+"%'");              
-            use = pst.executeQuery();                
-            System.out.println(pst);              
-            while(use.next()){                   
-                Doctor doctor = new Doctor();
-                
-                doctor.setEID(use.getInt(1));
-                doctor.setName(use.getString(3));
-                doctor.setNIC(use.getString(4));
-                doctor.setUsername(use.getString(5));
-                doctor.setPassword(use.getString(6));   
-                             
-                doctorList.add(doctor);
-            }             
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
-        return doctorList;
-    }
+    
     public ArrayList<Employee> loadEmplyee(){
         ArrayList<Employee> employeeList = new ArrayList<>();
         try{
@@ -676,7 +652,31 @@ public class DBOperations {
     /*
      * Search Data...........................................................................
      */
-     
+     public ArrayList<Doctor> searchDoctors(String name){
+        ArrayList<Doctor> doctorList = new ArrayList<>();
+        try{
+
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE Position='Doctor' AND Name LIKE '%"+name+"%'");              
+            use = pst.executeQuery();                
+            System.out.println(pst);              
+            while(use.next()){                   
+                Doctor doctor = new Doctor();
+                
+                doctor.setEID(use.getInt(1));
+                doctor.setName(use.getString(3));
+                doctor.setNIC(use.getString(4));
+                doctor.setUsername(use.getString(5));
+                doctor.setPassword(use.getString(6));   
+                             
+                doctorList.add(doctor);
+            }             
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return doctorList;
+    } 
     public ArrayList<Patient> searchPatients(String name,String NIC){
         ArrayList<Patient> patientList = new ArrayList<>();
         try{
@@ -767,7 +767,7 @@ public class DBOperations {
            return result;
     }
     /*
-     * check Data
+     * check Data.....................................................................
      */
      public Employee checkEmplyee(String uname,String pword){
         Employee employee=null;

@@ -196,7 +196,7 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Asus\Documents\NetBeansProjects\SemesterProject\src\res\Secound2.png"/>
+              <Image iconType="3" name="/gui/login/Secound4.png"/>
             </Property>
           </Properties>
         </Component>

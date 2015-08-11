@@ -105,7 +105,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         );
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asus\\Documents\\NetBeansProjects\\SemesterProject\\src\\res\\Secound2.png")); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/Secound4.png"))); // NOI18N
 
         changeBut.setText("Change");
 
