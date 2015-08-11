@@ -1133,7 +1133,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         lr.setDate(new Date(1992,02,03));
         lr.setDate(Help.getDate(2015, 1, 5));
         lr.setLabReportNo(1);
-        lr.setTestType(4);
+        lr.setTestType(5);
         lr.setLabTechID(1);
         
         
