@@ -16,8 +16,8 @@ public class DBOperations {
     private ResultSet use = null;
     private EmployeeFactory emfac = null;
     private static DBOperations instance = null;
-    //String url = "jdbc:odbc://192.168.173.1:3306/test2";    
-    String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
+    //private String url = "jdbc:odbc://192.168.173.1:3306/test2";    
+    private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
    // private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
@@ -132,7 +132,8 @@ public class DBOperations {
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?)");              
+            //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
+            pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?)");  
 
             pst.setInt(1,employee.getEID());            
             pst.setString(2, employee.getPosition());
@@ -272,14 +273,12 @@ public class DBOperations {
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("UPDATE Employee SET ");              
+            pst = con.prepareStatement("UPDATE Employee SET EID = ?,Name = ?,NIC = ?");              
 
-            pst.setInt(1,employee.getEID());            
-            pst.setString(2, employee.getPosition());
+            pst.setInt(1,employee.getEID());          
             pst.setString(3,employee.getName());
             pst.setString(4, employee.getNIC());
-            pst.setString(5, employee.getUsername());
-            pst.setString(6, employee.getPassword());           
+             
             pst.executeUpdate();
             con.close();
 
@@ -716,7 +715,8 @@ public class DBOperations {
         Employee employee=null;
         try{
             con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");              
+            //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");   
             pst.setString(1,uname);
             pst.setString(2,pword);
             use = pst.executeQuery();

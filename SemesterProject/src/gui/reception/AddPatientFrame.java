@@ -5,13 +5,17 @@
  */
 package gui.reception;
 
+import DataBase.DBOperations;
+import DataBase.Help;
+import Domain.Patient;
+
 /**
  *
  * @author Irfad Hussain
  */
 public class AddPatientFrame extends javax.swing.JFrame {
 
-    private ReceptionFace parent;
+    private ReceptionGUI parent;
     
     /**
      * Creates new form AddPatientFrame
@@ -20,7 +24,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
         initComponents();
     }
     
-    public AddPatientFrame(ReceptionFace parent){
+    public AddPatientFrame(ReceptionGUI parent){
         this();
         this.parent = parent;
     }
@@ -327,7 +331,19 @@ public class AddPatientFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPatientActionPerformed
-        // TODO add your handling code here:
+        Patient p = new Patient();
+        p.setFirstName(txtFirstName.getText());
+        p.setLastName(txtLastName.getText());
+        p.setFullName(txtFullName1.getText()+" "+txtFullName2.getText());
+        p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
+        p.setGender((String) cmbxGender.getSelectedItem());
+        p.setAddress(txtAddress1.getText()+" "+txtAddress2.getText()+" "+txtAddress3.getText());
+        p.setNIC(txtNIC.getText());
+        p.setPatientContactNo(Integer.parseInt(txtPatientContactNo.getText()));
+        p.setNameOfTheGuardian(txtNameOfGuardian.getText());
+        p.setGuardianContactNo(Integer.parseInt(txtGuardianContact.getText()));
+        p.setBloodGroup(txtBloodGroup.getText());
+        p.setAllergies(txtAllergies1.getText()+" "+txtAllergies2.getText());
     }//GEN-LAST:event_btnAddPatientActionPerformed
 
     private void btnCanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCanelActionPerformed
