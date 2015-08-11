@@ -27,11 +27,12 @@ public class LabReportGUI extends javax.swing.JFrame {
     private DefaultCellEditor cellEditor;
     private DBOperations ad ; 
     private LabReport l;
-    public boolean updateState;
+    private boolean updateState;
     public LabReportGUI() {
+        
         this.str = "";
         ad=DBOperations.getInstace();
-        l=new LabReport();
+        //l=new LabReport();
         initComponents();
         updateState=false;
         FBCpanel.setVisible(false);
@@ -505,7 +506,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(detailPanelLayout.createSequentialGroup()
                 .addComponent(FBSpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addContainerGap(99, Short.MAX_VALUE))
             .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(detailPanelLayout.createSequentialGroup()
                     .addGap(0, 28, Short.MAX_VALUE)
@@ -664,7 +665,7 @@ public class LabReportGUI extends javax.swing.JFrame {
 
         titleName.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         titleName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/Secound4.png"))); // NOI18N
+        titleName.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/Secound5.png"))); // NOI18N
 
         reportName.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         reportName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -763,10 +764,16 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel7AncestorMoved
 
     private void CholesterolAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CholesterolAmountActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_CholesterolAmountActionPerformed
 
     private void btnConfirmUFRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmUFRActionPerformed
+        if(updateState){
+              DBOperations ad = DBOperations.getInstace(); 
+              l=ad.getLastLabReport();
+            }else{
+                l=new LabReport();
+            }
         //LabReport l=new LabReport();
         //DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
@@ -825,6 +832,12 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfirmUFRActionPerformed
 
     private void btnConfirmTCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmTCActionPerformed
+        if(updateState){
+              DBOperations ad = DBOperations.getInstace(); 
+              l=ad.getLastLabReport();
+            }else{
+                l=new LabReport();
+            }
         //LabReport l=new LabReport();
         //DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
@@ -884,6 +897,12 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfirmTCActionPerformed
 
     private void btnconfirmFBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconfirmFBSActionPerformed
+            if(updateState){
+              DBOperations ad = DBOperations.getInstace(); 
+              l=ad.getLastLabReport();
+            }else{
+                l=new LabReport();
+            }
         //LabReport l=new LabReport();
         //DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
@@ -932,6 +951,9 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(updateState){
                 ad.updateLabReport(l);
+                System.out.println(l.getLabTechID()+" lab tec id");
+                System.out.println(l.getPID()+" pid");
+                System.out.println(l.getDataList()+" datalist");
             }else{
                 ad.addLabReport(l);
             }
@@ -946,6 +968,12 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnconfirmFBSActionPerformed
 
     private void btnConfirmLPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmLPActionPerformed
+        if(updateState){
+              DBOperations ad = DBOperations.getInstace(); 
+              l=ad.getLastLabReport();
+            }else{
+                l=new LabReport();
+            }
         //LabReport l=new LabReport();
         //DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
@@ -1018,6 +1046,12 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_LPtableKeyTyped
 
     private void btnConfirmFBCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmFBCActionPerformed
+        if(updateState){
+              DBOperations ad = DBOperations.getInstace(); 
+              l=ad.getLastLabReport();
+            }else{
+                l=new LabReport();
+            }
         //LabReport l=new LabReport();
         //DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
@@ -1099,7 +1133,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         lr.setDate(new Date(1992,02,03));
         lr.setDate(Help.getDate(2015, 1, 5));
         lr.setLabReportNo(1);
-        lr.setTestType(1);
+        lr.setTestType(4);
         lr.setLabTechID(1);
         
         
@@ -1126,6 +1160,8 @@ public class LabReportGUI extends javax.swing.JFrame {
             case "01":
                 System.out.println("test 01");
                 fbsAmount.setText(datalist.get(0));
+                fbsAmount.setEditable(updateState);
+                System.out.println(fbsAmount.getText());
                 System.out.println("after setting fbsamount");
                 break;
             case "02":
