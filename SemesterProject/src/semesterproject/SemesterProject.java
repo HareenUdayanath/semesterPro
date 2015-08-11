@@ -19,7 +19,7 @@ public class SemesterProject {
     public static void main(String[] args) {
         
         DBOperations ad = DBOperations.getInstace();
-       /* LabReportGUI l=new LabReportGUI();
+       /*LabReportGUI l=new LabReportGUI();
         l.setVisible(true);*/
         
         // Check for add patient
@@ -39,7 +39,7 @@ public class SemesterProject {
         patient.setAllergies("None");        
         try {
             ad.addPatient(patient);
-             } catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println(ex);
         }*/
             //Check for add medical report
@@ -147,9 +147,9 @@ public class SemesterProject {
             Employee n = ad.checkEmplyee("S","P");
             System.out.println(n.getPosition());*/
             /*
-            ArrayList<Patient>  list = ad.searchPatients("Perera","123456789V");
-            System.out.println(list.get(0).getFullName());*/
-            
+            ArrayList<Patient>  list = ad.searchPatients("123456789V");
+            System.out.println(list.get(0).getFullName());
+            */
             /*Patient pa = ad.getPatient(1);
             pa.setDateOfBirth(Help.getDate(1992,10,5));
             ad.updatePatient(pa);*/

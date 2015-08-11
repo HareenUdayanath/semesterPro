@@ -711,7 +711,40 @@ public class DBOperations {
         }
         return patientList;
     }
-    
+        public ArrayList<Patient> searchPatients(String NIC){
+        ArrayList<Patient> patientList = new ArrayList<>();
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
+            
+            pst.setString(1, NIC);
+            use = pst.executeQuery();                
+            System.out.println(pst);
+            while(use.next()){     
+                
+                Patient patient = new Patient();               
+                patient.setPID(use.getInt(1));
+                patient.setFirstName(use.getString(2));
+                patient.setFullName(use.getString(3));
+                patient.setLastName(use.getString(4));
+                patient.setDateOfBirth(use.getDate(5));
+                patient.setGender(use.getString(6));
+                patient.setAddress(use.getString(7));
+                patient.setNIC(use.getString(8));
+                patient.setPatientContactNo(use.getInt(9));
+                patient.setNameOfTheGuardian(use.getString(10));
+                patient.setGuardianContactNo(use.getInt(11));
+                patient.setBloodGroup(use.getString(12));
+                patient.setAllergies(use.getString(13));   
+                
+                patientList.add(patient);
+            }    
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return patientList;
+    }
     /*
      * Delete Data............................................................................
      */
