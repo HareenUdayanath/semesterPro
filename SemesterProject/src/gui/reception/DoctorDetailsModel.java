@@ -8,31 +8,20 @@ package gui.reception;
 import DataBase.DBOperations;
 import Domain.Doctor;
 import java.util.ArrayList;
-import javax.swing.table.AbstractTableModel;
 
 /**
  *
  * @author Irfad Hussain
  */
-public class DoctorDetailsModel extends AbstractTableModel{
+public class DoctorDetailsModel extends DetailsTableModel{
 
-    private final String[] COLUMN_NAMES = {"Employee ID","Name","Availability"};
     private ArrayList<Doctor> values;
     
     public DoctorDetailsModel(){
-       values = DBOperations.getInstace().loadDoctors();    // load avilable doctors at begining
+        super(new String[]{"Employee ID","Name","Availability"});
+        values = DBOperations.getInstace().loadDoctors();    // load avilable doctors at begining
     }
     
-    @Override
-    public int getRowCount() {
-        return values.size();
-    }
-
-    @Override
-    public int getColumnCount() {
-        return COLUMN_NAMES.length;
-    }
-
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch(columnIndex){
@@ -46,12 +35,15 @@ public class DoctorDetailsModel extends AbstractTableModel{
                 return "";
         }
     }
-    
+
     @Override
-    public String getColumnName(int columnIndex){
-        return COLUMN_NAMES[columnIndex];
+    public void search(String name, String NIC) {
+        System.out.println(name+" "+NIC+"1");
     }
-    
-    //public void
+
+    @Override
+    public int getRowCount() {
+        return values.size();
+    }
     
 }
