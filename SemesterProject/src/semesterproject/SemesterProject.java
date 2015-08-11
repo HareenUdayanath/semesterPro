@@ -146,10 +146,10 @@ public class SemesterProject {
             /*
             Employee n = ad.checkEmplyee("S","P");
             System.out.println(n.getPosition());*/
-            /*
-            ArrayList<Patient>  list = ad.searchPatients("123456789V");
-            System.out.println(list.get(0).getFullName());
-            */
+            
+            /*ArrayList<Patient>  list = ad.searchPatients("12");
+            System.out.println(list.get(0).getFullName());*/
+            
             /*Patient pa = ad.getPatient(1);
             pa.setDateOfBirth(Help.getDate(1992,10,5));
             ad.updatePatient(pa);*/

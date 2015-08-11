@@ -677,15 +677,13 @@ public class DBOperations {
         }
         return doctorList;
     } 
-    public ArrayList<Patient> searchPatients(String name,String NIC){
+    public ArrayList<Patient> searchPatients(String name){
         ArrayList<Patient> patientList = new ArrayList<>();
         try{
             con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FullName LIKE '%"+name+"%' OR NIC=?");
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FullName LIKE '%"+name+"%'");          
+            use = pst.executeQuery();      
             
-            pst.setString(1, NIC);
-            use = pst.executeQuery();                
-            System.out.println(pst);
             while(use.next()){     
                 
                 Patient patient = new Patient();               
