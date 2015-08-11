@@ -677,15 +677,13 @@ public class DBOperations {
         }
         return doctorList;
     } 
-    public ArrayList<Patient> searchPatients(String name,String NIC){
+    public ArrayList<Patient> searchPatients(String name){
         ArrayList<Patient> patientList = new ArrayList<>();
         try{
             con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FullName LIKE '%"+name+"%' OR NIC=?");
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FullName LIKE '%"+name+"%'");          
+            use = pst.executeQuery();      
             
-            pst.setString(1, NIC);
-            use = pst.executeQuery();                
-            System.out.println(pst);
             while(use.next()){     
                 
                 Patient patient = new Patient();               
@@ -792,5 +790,41 @@ public class DBOperations {
             System.out.println(ex);
         }
         return employee;
+    }
+    public boolean checkPatientNIC(String NIC){
+        
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
+            
+            pst.setString(1, NIC);
+            use = pst.executeQuery();                
+            System.out.println(pst);
+            while(use.next()){     
+                return true;
+            }    
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return false;
+    }
+    public boolean checkPID(String pid){
+        
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE PID=?");
+            
+            pst.setString(1, pid);
+            use = pst.executeQuery();                
+            System.out.println(pst);
+            while(use.next()){     
+                return true;
+            }    
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return false;
     }
 }
