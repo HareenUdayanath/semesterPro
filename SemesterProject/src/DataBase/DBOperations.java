@@ -17,8 +17,8 @@ public class DBOperations {
     private EmployeeFactory emfac = null;
     private static DBOperations instance = null;
     //private String url = "jdbc:odbc://192.168.173.1:3306/test2";    
-    //private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
-    private String url = "jdbc:mysql://localhost:3306/SemesterProject";
+    private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
+    //private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
     

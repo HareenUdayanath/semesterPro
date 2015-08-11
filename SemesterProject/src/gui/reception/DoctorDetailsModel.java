@@ -36,9 +36,14 @@ public class DoctorDetailsModel extends DetailsTableModel{
         }
     }
 
+    public void setValues(ArrayList<Doctor> values){
+        this.values = values;
+        fireTableStructureChanged();
+    }
+    
     @Override
     public void search(String name, String NIC) {
-        System.out.println(name+" "+NIC+"1");
+        setValues(DBOperations.getInstace().searchDoctors(name));
     }
 
     @Override

@@ -392,15 +392,25 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 p.setLastName(txtLastName.getText());
                 p.setFullName(txtFullName1.getText() + " " + txtFullName2.getText());
                 p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
-                p.setGender((String) cmbxGender.getSelectedItem());
+                p.setGender(cmbxGender.getSelectedItem().toString().substring(0, 1));
                 p.setAddress(txtAddress1.getText() + " " + txtAddress2.getText() + " " + txtAddress3.getText());
                 p.setNIC(txtNIC.getText());
                 if (!txtPatientContactNo.getText().equals("")){
-                    p.setPatientContactNo(Integer.parseInt(txtPatientContactNo.getText()));
+                    try{
+                        p.setPatientContactNo(Integer.parseInt(txtPatientContactNo.getText()));
+                    }catch(NumberFormatException ex){
+                        JOptionPane.showMessageDialog(this, "Invalid Patient Contact number.", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
                 }
                 p.setNameOfTheGuardian(txtNameOfGuardian.getText());
                 if (!txtGuardianContact.getText().equals("")){
-                    p.setGuardianContactNo(Integer.parseInt(txtGuardianContact.getText()));
+                    try{
+                        p.setGuardianContactNo(Integer.parseInt(txtGuardianContact.getText()));
+                    }catch(NumberFormatException ex){
+                        JOptionPane.showMessageDialog(this, "Invalid guardian contact number.", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
                 }
                 p.setBloodGroup(txtBloodGroup.getText());
                 p.setAllergies(txtAllergies1.getText() + " " + txtAllergies2.getText());
@@ -408,6 +418,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Successfully added patient.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 btnCanelActionPerformed(null);
             } catch (SQLException ex) {
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "An error occured while adding.Please try again.", "Error", JOptionPane.WARNING_MESSAGE);
             }
         }
