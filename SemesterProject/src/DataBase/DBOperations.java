@@ -809,4 +809,22 @@ public class DBOperations {
         }
         return false;
     }
+    public boolean checkPID(String pid){
+        
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE PID=?");
+            
+            pst.setString(1, pid);
+            use = pst.executeQuery();                
+            System.out.println(pst);
+            while(use.next()){     
+                return true;
+            }    
+            con.close();
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return false;
+    }
 }
