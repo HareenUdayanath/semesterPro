@@ -711,7 +711,7 @@ public class DBOperations {
         }
         return patientList;
     }
-        public ArrayList<Patient> searchPatients(String NIC){
+    public ArrayList<Patient> searchPatientsByNIC(String NIC){
         ArrayList<Patient> patientList = new ArrayList<>();
         try{
             con = DriverManager.getConnection(url, user, password);               
