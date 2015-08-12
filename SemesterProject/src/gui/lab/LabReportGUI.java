@@ -808,6 +808,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
             textLabTecID.setText(null);
         }
+        l.getDataList().clear();
         for(int i=0;i<UFRtable.getRowCount();i++){
             data=(String)UFRtable.getValueAt(i,1);
            // System.out.println(Double.valueOf(data));
@@ -880,6 +881,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             textLabTecID.setText(null);
         }
         try{
+            l.getDataList().clear();
             if(Double.valueOf(data) instanceof Double){
                  l.addDataToTheList(data);
             }
@@ -952,6 +954,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             textLabTecID.setText(null);
         }
         try{
+            l.getDataList().clear();
             if(Double.valueOf(data) instanceof Double){
                  l.addDataToTheList(data);
                  System.out.println("setting data in FBS");
@@ -1029,6 +1032,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
             textLabTecID.setText(null);
         }
+        l.getDataList().clear();
         for(int i=0;i<LPtable.getRowCount();i++){
             data=(String)LPtable.getValueAt(i,1);
            // System.out.println(Double.valueOf(data));
@@ -1114,6 +1118,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
             textLabTecID.setText(null);
         }
+        l.getDataList().clear();
         for(int i=0;i<FBCtable.getRowCount();i++){
             data=(String)FBCtable.getValueAt(i,1);
            // System.out.println(Double.valueOf(data));
