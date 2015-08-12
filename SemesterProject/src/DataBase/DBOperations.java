@@ -252,6 +252,7 @@ public class DBOperations {
             pst.setInt(3,labReport.getTestType());
             pst.setInt(4, labReport.getLabTechID());
             index = 5;
+            System.out.println("ll "+labReport.getDataList().size());
             for(String data:labReport.getDataList()){
                 pst.setString(index++, data);
             }
@@ -536,11 +537,11 @@ public class DBOperations {
 
             int index = 6;
 
-            for(int i = 0;(i+index)<22;i++){               
+            for(int i = 0;i<16;i++){                
                 String data = use.getString(index++);
                 if(data!=null)
                     labReport.addDataToTheList(data);
-            }                
+            }               
             labReportList.add(labReport);
         }         
         con.close();
@@ -567,7 +568,7 @@ public class DBOperations {
 
             int index = 6;
 
-            for(int i = 0;(i+index)<22;i++){               
+            for(int i = 0;i<16;i++){                
                 String data = use.getString(index++);
                 if(data!=null)
                     labReport.addDataToTheList(data);
@@ -596,14 +597,13 @@ public class DBOperations {
             labReport.setLabTechID(use.getInt(5));          
 
             int index = 6;
-
-            for(int i = 0;(i+index)<22;i++){               
+             for(int i = 0;i<16;i++){                
                 String data = use.getString(index++);
                 if(data!=null)
                     labReport.addDataToTheList(data);
-            }                
-
-        }         
+            }    
+            System.out.println(labReport.getDataList().size());
+        }    
         con.close();
         
         return labReport;

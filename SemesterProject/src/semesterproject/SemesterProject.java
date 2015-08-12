@@ -18,7 +18,7 @@ public class SemesterProject {
 
    
     public static void main(String[] args) {
-        try {
+       
             DBOperations ad = DBOperations.getInstace();
            /*LabReportGUI l=new LabReportGUI();
             l.setVisible(true);*/
@@ -55,7 +55,7 @@ public class SemesterProject {
                 ad.addMedicalReport(mr);*/
               
                //Check for LabReport
-                
+           /*     
                 System.out.println(p.getEID());
                 System.out.println(p.getPosition());
                 System.out.println(p.getName());            
@@ -112,7 +112,8 @@ public class SemesterProject {
             /*
             LoginFace face = new LoginFace();
             face.setVisible(true);*/
-            ChangeLogInSetting c = new ChangeLogInSetting();
-            c.setVisible(true);
+            /*ChangeLogInSetting c = new ChangeLogInSetting();
+            c.setVisible(true);*/
+            
     }
 }
