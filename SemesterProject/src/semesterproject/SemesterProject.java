@@ -63,7 +63,7 @@ public class SemesterProject {
                 System.out.println(p.getUsername());
                 System.out.println(p.getPassword());              
             }
-            */
+            
             
             /*ArrayList<Date> dateList = ad.getMedicalDates(1);
             System.out.println(dateList.get(0));*/

@@ -788,13 +788,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -856,13 +859,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data=CholesterolAmount.getText();
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in TC confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -925,13 +931,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data=fbsAmount.getText();
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -1000,13 +1009,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -1082,13 +1094,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -1146,71 +1161,76 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        btnEdit.setEnabled(false);
-        updateState=true;
-        //LabReport lr=ad.getLastLabReport();
-        
-        LabReport lr = new LabReport();
-        lr.setPID(1);
-        lr.setDate(new Date(1992,02,03));
-        lr.setDate(Help.getDate(2015, 1, 5));
-        lr.setLabReportNo(1);
-        lr.setTestType(5);
-        lr.setLabTechID(1);
-        
-        
-        for(int i=0;i<6;i++){
-            lr.addDataToTheList(""+i);
+        try {
+            btnEdit.setEnabled(false);
+            updateState=true;
+            LabReport lr=ad.getLastLabReport();//instead of this,should use below test case without saver.
+            
+            /*LabReport lr = new LabReport();
+            lr.setPID(1);
+            lr.setDate(new Date(1992,02,03));
+            lr.setDate(Help.getDate(2015, 1, 5));
+            lr.setLabReportNo(1);
+            lr.setTestType(5);
+            lr.setLabTechID(1);
+            
+            
+            for(int i=0;i<6;i++){
+                lr.addDataToTheList(""+i);
+            }*/
+            
+            String s=String.valueOf(lr.getTestType());
+            TestBox.setSelectedIndex(Integer.valueOf(lr.getTestType())-1);
+            //chooseTest();
+            
+            TestBox.setEnabled(false);
+            textPatientID.setText(String.valueOf(lr.getPID()));
+            textLabTecID.setText(String.valueOf(lr.getLabTechID()));
+            textDate.setText(String.valueOf(Help.getDay(lr.getDate())));
+            textMonth.setText(String.valueOf(Help.getMonth(lr.getDate())));
+            textYear.setText(String.valueOf(Help.getYear(lr.getDate())));
+            
+            ArrayList<String> datalist=lr.getDataList();
+            System.out.println(datalist.get(0));
+            String test=chooseTest();
+            System.out.println("sahan");
+            switch (test) {
+                case "01":
+                    System.out.println("test 01");
+                    fbsAmount.setText(datalist.get(0));
+                    fbsAmount.setEditable(updateState);
+                    System.out.println(fbsAmount.getText());
+                    System.out.println("after setting fbsamount");
+                    break;
+                case "02":
+                    for(int i=0;i<datalist.size();i++){
+                        UFRtable.setValueAt(datalist.get(i), i, 1);
+                    }
+                    System.out.println("after setting ufr");
+                    break;
+                case "03":
+                    for(int i=0;i<datalist.size();i++){
+                        FBCtable.setValueAt(datalist.get(i), i, 1);
+                    }
+                    System.out.println("after setting fbc");
+                    break;
+                case "04":
+                    System.out.println("in editing lp");
+                    for(int i=0;i<datalist.size();i++){
+                        LPtable.setValueAt(datalist.get(i), i, 1);
+                    }
+                    System.out.println("after setting lp");
+                    break;
+                case "05":
+                    CholesterolAmount.setText(datalist.get(0));
+                    System.out.println("after setting tc");
+                    break;
+            }
+            TestBox.setEnabled(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("error in editactionperfomed method");
         }
-        
-        String s=String.valueOf(lr.getTestType());
-        TestBox.setSelectedIndex(Integer.valueOf(lr.getTestType())-1);
-        //chooseTest();
-        
-        TestBox.setEnabled(false);
-        textPatientID.setText(String.valueOf(lr.getPID()));
-        textLabTecID.setText(String.valueOf(lr.getLabTechID()));
-        textDate.setText(String.valueOf(Help.getDay(lr.getDate())));
-        textMonth.setText(String.valueOf(Help.getMonth(lr.getDate())));
-        textYear.setText(String.valueOf(Help.getYear(lr.getDate())));
-        
-        ArrayList<String> datalist=lr.getDataList();
-        System.out.println(datalist.get(0));
-        String test=chooseTest();
-        System.out.println("sahan");
-        switch (test) {
-            case "01":
-                System.out.println("test 01");
-                fbsAmount.setText(datalist.get(0));
-                fbsAmount.setEditable(updateState);
-                System.out.println(fbsAmount.getText());
-                System.out.println("after setting fbsamount");
-                break;
-            case "02":
-                for(int i=0;i<datalist.size();i++){
-                    UFRtable.setValueAt(datalist.get(i), i, 1);
-                }
-                System.out.println("after setting ufr");
-                break;
-            case "03":
-                for(int i=0;i<datalist.size();i++){
-                    FBCtable.setValueAt(datalist.get(i), i, 1);
-                }
-                System.out.println("after setting fbc");
-                break;
-            case "04":
-                System.out.println("in editing lp");
-                for(int i=0;i<datalist.size();i++){
-                    LPtable.setValueAt(datalist.get(i), i, 1);
-                }
-                System.out.println("after setting lp");
-                break;
-            case "05":
-                CholesterolAmount.setText(datalist.get(0));
-                System.out.println("after setting tc");
-                break;
-        }
-        TestBox.setEnabled(true);
          
         
         
