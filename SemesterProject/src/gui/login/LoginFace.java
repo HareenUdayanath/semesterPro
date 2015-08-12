@@ -3,6 +3,9 @@ package gui.login;
 import DataBase.*;
 import Domain.Doctor;
 import Domain.Employee;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 
@@ -136,7 +139,12 @@ public class LoginFace extends javax.swing.JFrame {
 
     private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
         dataBase = DBOperations.getInstace();
-        Employee employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pasPassword.getPassword()));
+        Employee employee = null;
+        try {
+            employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pasPassword.getPassword()));
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginFace.class.getName()).log(Level.SEVERE, null, ex);
+        }
         if(employee!=null){
             if(employee.getPosition().equals("Doctor")){
                 

@@ -56,13 +56,14 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel4" max="32767" attributes="0"/>
-                      <Group type="102" attributes="0">
+                      <Component id="jLabel4" pref="600" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="btnChange" min="-2" max="-2" attributes="0"/>
                               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                              <Component id="changeBut" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="158" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -74,10 +75,10 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel4" min="-2" pref="96" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="changeBut" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnChange" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="45" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -110,14 +111,21 @@
                           <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="22" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="passwordPass" pref="302" max="32767" attributes="0"/>
-                          <Component id="confirmPasswordPass" pref="302" max="32767" attributes="0"/>
-                          <Component id="newUserNameText" alignment="1" max="32767" attributes="0"/>
-                          <Component id="userNameText" max="32767" attributes="0"/>
-                          <Component id="newPasswordPass" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="txtUserName" min="-2" pref="302" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="txtNewUserName" min="-2" pref="302" max="-2" attributes="0"/>
+                                  <Component id="pswdPassword" min="-2" pref="302" max="-2" attributes="0"/>
+                                  <Component id="pswdNewPassword" min="-2" pref="302" max="-2" attributes="0"/>
+                                  <Component id="pswdConfirmPassword" min="-2" pref="302" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -126,27 +134,27 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="userNameText" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtUserName" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="newUserNameText" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtNewUserName" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="49" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="passwordPass" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="pswdPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="newPasswordPass" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="pswdNewPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="confirmPasswordPass" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="pswdConfirmPassword" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
@@ -155,14 +163,14 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JTextField" name="userNameText">
+            <Component class="javax.swing.JTextField" name="txtUserName">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
                 <Property name="text" type="java.lang.String" value="User Name"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JPasswordField" name="passwordPass">
+            <Component class="javax.swing.JPasswordField" name="pswdPassword">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
@@ -174,21 +182,21 @@
                 <Property name="text" type="java.lang.String" value="New Password"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JPasswordField" name="newPasswordPass">
+            <Component class="javax.swing.JPasswordField" name="pswdNewPassword">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Confirm Password"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JPasswordField" name="confirmPasswordPass">
+            <Component class="javax.swing.JPasswordField" name="pswdConfirmPassword">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel6">
               <Properties>
                 <Property name="text" type="java.lang.String" value="New User Name"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="newUserNameText">
+            <Component class="javax.swing.JTextField" name="txtNewUserName">
             </Component>
           </SubComponents>
         </Container>
@@ -200,10 +208,13 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="changeBut">
+        <Component class="javax.swing.JButton" name="btnChange">
           <Properties>
             <Property name="text" type="java.lang.String" value="Change"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnChangeActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

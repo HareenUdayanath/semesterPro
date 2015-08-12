@@ -769,4 +769,33 @@ public class DBOperations {
         con.close();
         return false;
     }
+    public boolean checkUserName(String uname) throws SQLException{
+       
+        
+        con = DriverManager.getConnection(url, user, password);
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ?");   
+        pst.setString(1,uname);
+        use = pst.executeQuery();
+
+        if(use.next()){                   
+            return true;        
+        }             
+        con.close();
+       
+        return false;
+    }
+    public boolean checkPassword(String pword) throws SQLException{       
+        
+        con = DriverManager.getConnection(url, user, password);               
+        //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE Password = ?");   
+        pst.setString(1,pword);        
+        use = pst.executeQuery();
+        if(use.next()){                   
+            return true;        
+        }             
+        con.close();
+       
+        return false;
+    }
 }
