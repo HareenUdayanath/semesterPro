@@ -10,6 +10,8 @@ import Domain.LabReport;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -769,11 +771,15 @@ public class LabReportGUI extends javax.swing.JFrame {
 
     private void btnConfirmUFRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmUFRActionPerformed
         if(updateState){
-              DBOperations ad = DBOperations.getInstace(); 
-              l=ad.getLastLabReport();
-            }else{
-                l=new LabReport();
+            try {
+                DBOperations ad = DBOperations.getInstace();
+                l=ad.getLastLabReport();
+            } catch (SQLException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }else{
+                l=new LabReport();
+        }
         //LabReport l=new LabReport();
         //DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
@@ -833,11 +839,15 @@ public class LabReportGUI extends javax.swing.JFrame {
 
     private void btnConfirmTCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmTCActionPerformed
         if(updateState){
-              DBOperations ad = DBOperations.getInstace(); 
-              l=ad.getLastLabReport();
-            }else{
-                l=new LabReport();
+            try {
+                DBOperations ad = DBOperations.getInstace();
+                l=ad.getLastLabReport();
+            } catch (SQLException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }else{
+              l=new LabReport();
+        }
         //LabReport l=new LabReport();
         //DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
@@ -899,7 +909,11 @@ public class LabReportGUI extends javax.swing.JFrame {
     private void btnconfirmFBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconfirmFBSActionPerformed
             if(updateState){
               DBOperations ad = DBOperations.getInstace(); 
-              l=ad.getLastLabReport();
+                try {
+                    l=ad.getLastLabReport();
+                } catch (SQLException ex) {
+                    Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }else{
                 l=new LabReport();
             }
@@ -970,7 +984,11 @@ public class LabReportGUI extends javax.swing.JFrame {
     private void btnConfirmLPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmLPActionPerformed
         if(updateState){
               DBOperations ad = DBOperations.getInstace(); 
-              l=ad.getLastLabReport();
+            try {
+                l=ad.getLastLabReport();
+            } catch (SQLException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }else{
                 l=new LabReport();
             }
@@ -1048,7 +1066,11 @@ public class LabReportGUI extends javax.swing.JFrame {
     private void btnConfirmFBCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmFBCActionPerformed
         if(updateState){
               DBOperations ad = DBOperations.getInstace(); 
-              l=ad.getLastLabReport();
+            try {
+                l=ad.getLastLabReport();
+            } catch (SQLException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }else{
                 l=new LabReport();
             }
