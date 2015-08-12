@@ -788,13 +788,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -856,13 +859,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data=CholesterolAmount.getText();
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in TC confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -925,13 +931,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data=fbsAmount.getText();
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -1000,13 +1009,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -1082,13 +1094,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
