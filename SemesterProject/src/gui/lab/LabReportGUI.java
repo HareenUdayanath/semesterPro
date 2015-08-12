@@ -39,18 +39,6 @@ public class LabReportGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        titleName = new javax.swing.JLabel();
-        reportName = new javax.swing.JLabel();
-        patientID = new javax.swing.JLabel();
-        testID = new javax.swing.JLabel();
-        testName = new javax.swing.JLabel();
-        textPatientID = new javax.swing.JTextField();
-        textTestName = new javax.swing.JTextField();
-        detailsOfTestLable = new javax.swing.JLabel();
-        labTechnicianID = new javax.swing.JLabel();
-        date = new javax.swing.JLabel();
-        textDate = new javax.swing.JTextField();
-        TestBox = new javax.swing.JComboBox();
         detailPanel = new javax.swing.JPanel();
         TCpanel = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
@@ -59,6 +47,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         btnConfirmTC = new javax.swing.JButton();
+        btnUpbateTC = new javax.swing.JButton();
         FBSpanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         fbsAmount = new javax.swing.JTextField();
@@ -66,85 +55,46 @@ public class LabReportGUI extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         btnconfirmFBS = new javax.swing.JButton();
+        btnUpdateFBS = new javax.swing.JButton();
         FBCpanel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         FBCtable = new javax.swing.JTable();
         btnConfirmFBC = new javax.swing.JButton();
+        btnUpdateFBC = new javax.swing.JButton();
         UFRpanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         UFRtable = new javax.swing.JTable();
         btnConfirmUFR = new javax.swing.JButton();
+        btnUpdateUFR = new javax.swing.JButton();
         LPpanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         LPtable = new javax.swing.JTable();
         btnConfirmLP = new javax.swing.JButton();
+        btnUpdateLP = new javax.swing.JButton();
+        generalDetailPanel = new javax.swing.JPanel();
+        patientID = new javax.swing.JLabel();
+        textPatientID = new javax.swing.JTextField();
+        labTechnicianID = new javax.swing.JLabel();
         textLabTecID = new javax.swing.JTextField();
+        testID = new javax.swing.JLabel();
+        TestBox = new javax.swing.JComboBox();
+        testName = new javax.swing.JLabel();
+        textTestName = new javax.swing.JTextField();
+        date = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         textYear = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
         textMonth = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        textDate = new javax.swing.JTextField();
+        titlePanel = new javax.swing.JPanel();
+        titleName = new javax.swing.JLabel();
+        reportName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        titleName.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-        titleName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleName.setText("COOPERATIVE HOSPITAL - MATARA");
-
-        reportName.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
-        reportName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        reportName.setText("Patient Lab Report");
-
-        patientID.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        patientID.setText("Patient ID:");
-
-        testID.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        testID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        testID.setText("Test ID :");
-
-        testName.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        testName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        testName.setText("Test Name:");
-
-        textPatientID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textPatientIDActionPerformed(evt);
-            }
-        });
-
-        textTestName.setEditable(false);
-        textTestName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textTestNameActionPerformed(evt);
-            }
-        });
-        textTestName.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                textTestNameFocusGained(evt);
-            }
-        });
-
-        detailsOfTestLable.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        detailsOfTestLable.setText("Details of the test");
-
-        labTechnicianID.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        labTechnicianID.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        labTechnicianID.setText("Lab Technician ID:");
-
-        date.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        date.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        date.setText("Date:");
-
-        textDate.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-
-        TestBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01", "02", "03", "04", "05", " " }));
-        TestBox.setSelectedIndex(-1);
-        TestBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TestBoxActionPerformed(evt);
-            }
-        });
+        detailPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Details of the test", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Total Cholesterol");
@@ -173,6 +123,13 @@ public class LabReportGUI extends javax.swing.JFrame {
             }
         });
 
+        btnUpbateTC.setText("Update");
+        btnUpbateTC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpbateTCActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout TCpanelLayout = new javax.swing.GroupLayout(TCpanel);
         TCpanel.setLayout(TCpanelLayout);
         TCpanelLayout.setHorizontalGroup(
@@ -190,7 +147,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, TCpanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnConfirmTC)
-                .addGap(216, 216, 216))
+                .addGap(18, 18, 18)
+                .addComponent(btnUpbateTC)
+                .addGap(166, 166, 166))
         );
         TCpanelLayout.setVerticalGroup(
             TCpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,7 +164,9 @@ public class LabReportGUI extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(jLabel10)
                 .addGap(18, 18, 18)
-                .addComponent(btnConfirmTC)
+                .addGroup(TCpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConfirmTC)
+                    .addComponent(btnUpbateTC))
                 .addContainerGap(55, Short.MAX_VALUE))
         );
 
@@ -225,9 +186,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
                 jLabel7AncestorMoved(evt);
             }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
 
@@ -242,23 +203,27 @@ public class LabReportGUI extends javax.swing.JFrame {
             }
         });
 
+        btnUpdateFBS.setText("Update");
+
         javax.swing.GroupLayout FBSpanelLayout = new javax.swing.GroupLayout(FBSpanel);
         FBSpanel.setLayout(FBSpanelLayout);
         FBSpanelLayout.setHorizontalGroup(
             FBSpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FBSpanelLayout.createSequentialGroup()
                 .addGap(240, 240, 240)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(fbsAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
                 .addGap(295, 295, 295))
             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(FBSpanelLayout.createSequentialGroup()
-                .addGap(459, 459, 459)
+                .addGap(363, 363, 363)
                 .addComponent(btnconfirmFBS)
+                .addGap(18, 18, 18)
+                .addComponent(btnUpdateFBS)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         FBSpanelLayout.setVerticalGroup(
@@ -274,7 +239,9 @@ public class LabReportGUI extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
-                .addComponent(btnconfirmFBS)
+                .addGroup(FBSpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnconfirmFBS)
+                    .addComponent(btnUpdateFBS))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -326,14 +293,18 @@ public class LabReportGUI extends javax.swing.JFrame {
             }
         });
 
+        btnUpdateFBC.setText("Update");
+
         javax.swing.GroupLayout FBCpanelLayout = new javax.swing.GroupLayout(FBCpanel);
         FBCpanel.setLayout(FBCpanelLayout);
         FBCpanelLayout.setHorizontalGroup(
             FBCpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 489, Short.MAX_VALUE)
             .addGroup(FBCpanelLayout.createSequentialGroup()
-                .addGap(200, 200, 200)
+                .addGap(165, 165, 165)
                 .addComponent(btnConfirmFBC)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnUpdateFBC)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         FBCpanelLayout.setVerticalGroup(
@@ -341,7 +312,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             .addGroup(FBCpanelLayout.createSequentialGroup()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnConfirmFBC)
+                .addGroup(FBCpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConfirmFBC)
+                    .addComponent(btnUpdateFBC))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -388,6 +361,8 @@ public class LabReportGUI extends javax.swing.JFrame {
             }
         });
 
+        btnUpdateUFR.setText("Update");
+
         javax.swing.GroupLayout UFRpanelLayout = new javax.swing.GroupLayout(UFRpanel);
         UFRpanel.setLayout(UFRpanelLayout);
         UFRpanelLayout.setHorizontalGroup(
@@ -398,8 +373,10 @@ public class LabReportGUI extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(UFRpanelLayout.createSequentialGroup()
-                        .addGap(191, 191, 191)
-                        .addComponent(btnConfirmUFR)))
+                        .addGap(157, 157, 157)
+                        .addComponent(btnConfirmUFR)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUpdateUFR)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         UFRpanelLayout.setVerticalGroup(
@@ -407,7 +384,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             .addGroup(UFRpanelLayout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnConfirmUFR))
+                .addGroup(UFRpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConfirmUFR)
+                    .addComponent(btnUpdateUFR)))
         );
 
         LPtable.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -451,14 +430,18 @@ public class LabReportGUI extends javax.swing.JFrame {
             }
         });
 
+        btnUpdateLP.setText("Update");
+
         javax.swing.GroupLayout LPpanelLayout = new javax.swing.GroupLayout(LPpanel);
         LPpanel.setLayout(LPpanelLayout);
         LPpanelLayout.setHorizontalGroup(
             LPpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
             .addGroup(LPpanelLayout.createSequentialGroup()
-                .addGap(253, 253, 253)
+                .addGap(216, 216, 216)
                 .addComponent(btnConfirmLP)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnUpdateLP)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         LPpanelLayout.setVerticalGroup(
@@ -466,7 +449,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             .addGroup(LPpanelLayout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnConfirmLP)
+                .addGroup(LPpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConfirmLP)
+                    .addComponent(btnUpdateLP))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -477,61 +462,214 @@ public class LabReportGUI extends javax.swing.JFrame {
             .addComponent(FBSpanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(detailPanelLayout.createSequentialGroup()
-                    .addGap(0, 238, Short.MAX_VALUE)
+                    .addGap(0, 196, Short.MAX_VALUE)
                     .addComponent(FBCpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 239, Short.MAX_VALUE)))
+                    .addGap(0, 197, Short.MAX_VALUE)))
             .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(detailPanelLayout.createSequentialGroup()
-                    .addGap(0, 247, Short.MAX_VALUE)
+                    .addGap(0, 205, Short.MAX_VALUE)
                     .addComponent(UFRpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 247, Short.MAX_VALUE)))
+                    .addGap(0, 205, Short.MAX_VALUE)))
             .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(detailPanelLayout.createSequentialGroup()
-                    .addGap(0, 228, Short.MAX_VALUE)
+                    .addGap(0, 186, Short.MAX_VALUE)
                     .addComponent(TCpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 228, Short.MAX_VALUE)))
+                    .addGap(0, 186, Short.MAX_VALUE)))
             .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(detailPanelLayout.createSequentialGroup()
-                    .addGap(0, 194, Short.MAX_VALUE)
+                    .addGap(0, 152, Short.MAX_VALUE)
                     .addComponent(LPpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 195, Short.MAX_VALUE)))
+                    .addGap(0, 153, Short.MAX_VALUE)))
         );
         detailPanelLayout.setVerticalGroup(
             detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(detailPanelLayout.createSequentialGroup()
                 .addComponent(FBSpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 84, Short.MAX_VALUE))
+                .addContainerGap(117, Short.MAX_VALUE))
             .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(detailPanelLayout.createSequentialGroup()
-                    .addGap(0, 21, Short.MAX_VALUE)
+                    .addGap(0, 37, Short.MAX_VALUE)
                     .addComponent(FBCpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 21, Short.MAX_VALUE)))
+                    .addGap(0, 38, Short.MAX_VALUE)))
             .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(detailPanelLayout.createSequentialGroup()
-                    .addGap(0, 19, Short.MAX_VALUE)
+                    .addGap(0, 35, Short.MAX_VALUE)
                     .addComponent(UFRpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 19, Short.MAX_VALUE)))
+                    .addGap(0, 36, Short.MAX_VALUE)))
             .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(detailPanelLayout.createSequentialGroup()
-                    .addGap(0, 58, Short.MAX_VALUE)
+                    .addGap(0, 74, Short.MAX_VALUE)
                     .addComponent(TCpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 58, Short.MAX_VALUE)))
+                    .addGap(0, 75, Short.MAX_VALUE)))
             .addGroup(detailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(detailPanelLayout.createSequentialGroup()
-                    .addGap(0, 77, Short.MAX_VALUE)
+                    .addGap(0, 94, Short.MAX_VALUE)
                     .addComponent(LPpanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 78, Short.MAX_VALUE)))
+                    .addGap(0, 94, Short.MAX_VALUE)))
         );
+
+        generalDetailPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "General details", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 12))); // NOI18N
+
+        patientID.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        patientID.setText("Patient ID:");
+
+        textPatientID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textPatientIDActionPerformed(evt);
+            }
+        });
+
+        labTechnicianID.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        labTechnicianID.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        labTechnicianID.setText("Lab Technician ID:");
+
+        testID.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        testID.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        testID.setText("Test ID :");
+
+        TestBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01", "02", "03", "04", "05", " " }));
+        TestBox.setSelectedIndex(-1);
+        TestBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TestBoxActionPerformed(evt);
+            }
+        });
+
+        testName.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        testName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        testName.setText("Test Name:");
+
+        textTestName.setEditable(false);
+        textTestName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textTestNameActionPerformed(evt);
+            }
+        });
+        textTestName.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                textTestNameFocusGained(evt);
+            }
+        });
+
+        date.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        date.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        date.setText("Date:");
 
         jLabel2.setText("YYYY");
 
+        textYear.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+
         jLabel3.setText("MM");
+
+        textMonth.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
 
         jLabel5.setText("DD");
 
-        textYear.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        textDate.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
 
-        textMonth.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        javax.swing.GroupLayout generalDetailPanelLayout = new javax.swing.GroupLayout(generalDetailPanel);
+        generalDetailPanel.setLayout(generalDetailPanelLayout);
+        generalDetailPanelLayout.setHorizontalGroup(
+            generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, generalDetailPanelLayout.createSequentialGroup()
+                .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(generalDetailPanelLayout.createSequentialGroup()
+                        .addComponent(patientID, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textPatientID))
+                    .addGroup(generalDetailPanelLayout.createSequentialGroup()
+                        .addComponent(labTechnicianID)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textLabTecID, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, generalDetailPanelLayout.createSequentialGroup()
+                        .addGap(186, 186, 186)
+                        .addComponent(testID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(TestBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(171, 171, 171)
+                        .addComponent(testName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textTestName))
+                    .addGroup(generalDetailPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(date, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textYear, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(textDate, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        );
+        generalDetailPanelLayout.setVerticalGroup(
+            generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(generalDetailPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(generalDetailPanelLayout.createSequentialGroup()
+                        .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(textTestName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(testName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(testID)
+                                .addComponent(TestBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(date)
+                            .addComponent(textDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(57, 57, 57))
+                    .addGroup(generalDetailPanelLayout.createSequentialGroup()
+                        .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(patientID)
+                            .addComponent(textPatientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(5, 5, 5)
+                        .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(labTechnicianID)
+                            .addComponent(textLabTecID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+        );
+
+        titlePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0))));
+
+        titleName.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        titleName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        titleName.setText("COOPERATIVE HOSPITAL - MATARA");
+
+        reportName.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        reportName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        reportName.setText("Patient Lab Report");
+
+        javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
+        titlePanel.setLayout(titlePanelLayout);
+        titlePanelLayout.setHorizontalGroup(
+            titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(titlePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(reportName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(titleName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        titlePanelLayout.setVerticalGroup(
+            titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(titlePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(titleName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(reportName)
+                .addGap(0, 10, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -540,79 +678,20 @@ public class LabReportGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(detailsOfTestLable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(70, 70, 70))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(detailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(titleName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(reportName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(patientID, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textPatientID)
-                                .addGap(205, 205, 205)
-                                .addComponent(testID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(TestBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(149, 149, 149)
-                                .addComponent(testName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textTestName, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labTechnicianID)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textLabTecID, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(341, 341, 341)
-                                .addComponent(date, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textYear, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(textMonth, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(textDate, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(23, 23, 23)))
-                        .addContainerGap())))
+                    .addComponent(generalDetailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(detailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(titlePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(titleName, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(titlePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(reportName, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(generalDetailPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(patientID)
-                        .addComponent(textPatientID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(testName)
-                        .addComponent(textTestName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(testID)
-                        .addComponent(TestBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(detailsOfTestLable)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(detailPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labTechnicianID)
-                    .addComponent(date)
-                    .addComponent(textDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textLabTecID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -688,9 +767,9 @@ public class LabReportGUI extends javax.swing.JFrame {
 
     private void btnConfirmUFRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmUFRActionPerformed
         LabReport l=new LabReport();
-        DBOperations ad = new DBOperations();
+        DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
-        l.setLabReportNo(Integer.valueOf(item));
+        l.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
         String pid=textPatientID.getText();
         String data;
@@ -733,9 +812,9 @@ public class LabReportGUI extends javax.swing.JFrame {
 
     private void btnConfirmTCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmTCActionPerformed
         LabReport l=new LabReport();
-        DBOperations ad = new DBOperations();
+        DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
-        l.setLabReportNo(Integer.valueOf(item));
+        l.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
         String pid=textPatientID.getText();
         String data=CholesterolAmount.getText();
@@ -775,12 +854,15 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
+        JOptionPane.showMessageDialog(null, "Date is successfully added");
+        this.dispose();
+        new LabReportGUI().setVisible(true);
         //ad.addLabReport(l);
     }//GEN-LAST:event_btnConfirmTCActionPerformed
 
     private void btnconfirmFBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconfirmFBSActionPerformed
         LabReport l=new LabReport();
-        DBOperations ad = new DBOperations();
+        DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
         l.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
@@ -823,14 +905,14 @@ public class LabReportGUI extends javax.swing.JFrame {
             textMonth.setText(null);
             textDate.setText(null);
         }
-        ad.addLabReport(l);
+        //ad.addLabReport(l);
     }//GEN-LAST:event_btnconfirmFBSActionPerformed
 
     private void btnConfirmLPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmLPActionPerformed
         LabReport l=new LabReport();
-        DBOperations ad = new DBOperations();
+        DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
-        l.setLabReportNo(Integer.valueOf(item));
+        l.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
         String pid=textPatientID.getText();
         String data;
@@ -890,10 +972,10 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_LPtableKeyTyped
 
     private void btnConfirmFBCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmFBCActionPerformed
-       LabReport l=new LabReport();
-        DBOperations ad = new DBOperations();
+        LabReport l=new LabReport();
+        DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
-        l.setLabReportNo(Integer.valueOf(item));
+        l.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
         String pid=textPatientID.getText();
         String data;
@@ -948,6 +1030,10 @@ public class LabReportGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_FBCtableKeyReleased
 
+    private void btnUpbateTCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpbateTCActionPerformed
+        
+    }//GEN-LAST:event_btnUpbateTCActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1000,11 +1086,16 @@ public class LabReportGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnConfirmLP;
     private javax.swing.JButton btnConfirmTC;
     private javax.swing.JButton btnConfirmUFR;
+    private javax.swing.JButton btnUpbateTC;
+    private javax.swing.JButton btnUpdateFBC;
+    private javax.swing.JButton btnUpdateFBS;
+    private javax.swing.JButton btnUpdateLP;
+    private javax.swing.JButton btnUpdateUFR;
     private javax.swing.JButton btnconfirmFBS;
     private javax.swing.JLabel date;
     private javax.swing.JPanel detailPanel;
-    private javax.swing.JLabel detailsOfTestLable;
     private javax.swing.JTextField fbsAmount;
+    private javax.swing.JPanel generalDetailPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1031,5 +1122,6 @@ public class LabReportGUI extends javax.swing.JFrame {
     private javax.swing.JTextField textTestName;
     private javax.swing.JTextField textYear;
     private javax.swing.JLabel titleName;
+    private javax.swing.JPanel titlePanel;
     // End of variables declaration//GEN-END:variables
 }

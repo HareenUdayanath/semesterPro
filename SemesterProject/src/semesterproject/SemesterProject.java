@@ -4,6 +4,7 @@ package semesterproject;
 import DataBase.*;
 import Domain.*;
 import gui.lab.LabReportGUI;
+import gui.login.LoginFace;
 import java.sql.Date;
 import java.util.ArrayList;
 import gui.manager.*;
@@ -15,9 +16,9 @@ public class SemesterProject {
     public static void main(String[] args) {
         
         DBOperations ad = DBOperations.getInstace();
-        /*LabReportGUI l=new LabReportGUI();
-        l.setVisible(true);
-        */
+       /* LabReportGUI l=new LabReportGUI();
+        l.setVisible(true);*/
+        
         // Check for add patient
         /*Patient patient = new Patient();
         patient.setPID(0);
@@ -60,13 +61,13 @@ public class SemesterProject {
         }
         ad.addLabReport(lr);*/
         
-       /* Employee e = new Employee();
+      /* Doctor e = new Doctor();
         e.setEID(0);
-        e.setPosition("Doctor");
-        e.setName("Saman");
+       
+        e.setName("Pasan");
         e.setNIC("123456789V");
-        e.setUsername("Saman");
-        e.setPassword("Saman");
+        e.setUsername("S");
+        e.setPassword("P");
         ad.addEmployee(e);*/
       
         /*ChronicConditionsReport cr = new ChronicConditionsReport();
@@ -135,8 +136,8 @@ public class SemesterProject {
         /*
         ManagerFace mf = new ManagerFace();
         mf.setVisible(true);*/
-        
-       /* Employee n = ad.checkEmplyee("H","DS");
+        /*
+        Employee n = ad.checkEmplyee("S","P");
         System.out.println(n.getPosition());*/
         /*
         ArrayList<Patient>  list = ad.searchPatients("Perera","123456789V");
@@ -150,8 +151,11 @@ public class SemesterProject {
         r.setDate(Help.getDate(1992,10,5));
         ad.updateMedicalReport(r);*/
         
-        LabReport l = ad.getLabReports(1);
-        l.setDate(Help.getDate(1992,10,5));
-        ad.updateLabReport(l);
+        /*LabReport l = ad.getLastLabReport();
+        l.setLabTechID(2);
+        ad.updateLabReport(l*/
+        /*
+        LoginFace face = new LoginFace();
+        face.setVisible(true);*/
     }
 }

@@ -16,9 +16,9 @@ public class DBOperations {
     private ResultSet use = null;
     private EmployeeFactory emfac = null;
     private static DBOperations instance = null;
-    //String url = "jdbc:odbc://192.168.173.1:3306/test2";    
-    //String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
-    private String url = "jdbc:mysql://localhost:3306/SemesterProject";
+    //private String url = "jdbc:odbc://192.168.173.1:3306/test2";    
+    private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
+   // private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
     
@@ -43,7 +43,7 @@ public class DBOperations {
     /*
      * Add Data......................................................................
      */
-    public boolean addPatient(Patient patient){
+    public boolean addPatient(Patient patient) throws SQLException{
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();            
@@ -68,12 +68,12 @@ public class DBOperations {
             con.close();
             
             result = true;
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
         return result;
     }
-    public boolean addMedicalReport(MedicalReport medicalReport){
+    public boolean addMedicalReport(MedicalReport medicalReport) throws SQLException{
         boolean result = false; 
         // For insert to medical report there should be a PID which has same PID in medical report
         try{               
@@ -93,12 +93,12 @@ public class DBOperations {
             
             result = true;
            
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
            return result;
     }
-    public boolean addLabReport(LabReport labReport){
+    public boolean addLabReport(LabReport labReport) throws SQLException {
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -122,7 +122,7 @@ public class DBOperations {
             con.close();
 
             result = true;
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
            return result;
@@ -132,7 +132,8 @@ public class DBOperations {
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?)");              
+            //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
+            pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?)");  
 
             pst.setInt(1,employee.getEID());            
             pst.setString(2, employee.getPosition());
@@ -174,7 +175,7 @@ public class DBOperations {
            return result;
     }
     /*
-     * Update data 
+     * Update data............................................................................. 
      */
     public boolean updatePatient(Patient patient){
         boolean result = false; 
@@ -211,7 +212,7 @@ public class DBOperations {
     
     public boolean updateMedicalReport(MedicalReport medicalReport){
         boolean result = false; 
-        // For insert to medical report there should be a PID which has same PID in medical report
+        
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
@@ -266,6 +267,28 @@ public class DBOperations {
         }
            return result;
     }
+    
+    public boolean updateEmployee(Employee employee){
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);              
+            pst = con.prepareStatement("UPDATE Employee SET EID = ?,Name = ?,NIC = ?");              
+
+            pst.setInt(1,employee.getEID());          
+            pst.setString(3,employee.getName());
+            pst.setString(4, employee.getNIC());
+             
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
+    
     
     /*
      * Load Data.................................................
@@ -340,8 +363,8 @@ public class DBOperations {
         return patient;
     }
     
-    public ArrayList<Employee> loadDoctors(){
-        ArrayList<Employee> doctorList = new ArrayList<>();
+    public ArrayList<Doctor> loadDoctors(){
+        ArrayList<Doctor> doctorList = new ArrayList<>();
         try{
 
             con = DriverManager.getConnection(url, user, password);               
@@ -349,7 +372,7 @@ public class DBOperations {
             use = pst.executeQuery();                
                           
             while(use.next()){                   
-                Employee doctor = new Doctor();
+                Doctor doctor = new Doctor();
                 
                 doctor.setEID(use.getInt(1));
                 doctor.setName(use.getString(3));
@@ -529,7 +552,7 @@ public class DBOperations {
         return labReportList;
     }
     
-    public LabReport getLabReports(int labReportNo){
+    public LabReport getLabReport(int labReportNo){
         LabReport labReport = null;
         try{
             con = DriverManager.getConnection(url, user, password);               
@@ -562,6 +585,40 @@ public class DBOperations {
         }
         return labReport;
     }
+     public LabReport getLastLabReport(){
+        LabReport labReport = null;
+        int labReportNo = getLastLabReportNo();
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM LabReport WHERE LabReportNo = ?");
+            
+            pst.setInt(1,labReportNo);            
+            use = pst.executeQuery();      
+            if(use.next()){       
+                
+                labReport =  new LabReport();
+                labReport.setPID(use.getInt(1));
+                labReport.setDate(use.getDate(2));
+                labReport.setLabReportNo(use.getInt(3));
+                labReport.setTestType(use.getInt(4));
+                labReport.setLabTechID(use.getInt(5));          
+                
+                int index = 6;
+                
+                for(int i = 0;(i+index)<22;i++){               
+                    String data = use.getString(index++);
+                    if(data!=null)
+                        labReport.addDataToTheList(data);
+                }                
+               
+            }         
+            con.close();
+        }catch(SQLException ex){
+            System.out.println("ee"+ex);
+            
+        }
+        return labReport;
+    }
     public int getLastPID(){
         int pid = -1;
         try{
@@ -574,6 +631,21 @@ public class DBOperations {
             System.out.println(ex);
         }
         return pid;
+    }
+    public int getLastLabReportNo(){
+        int labReportNo = -1;
+        try{
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT MAX(LabReportNo) FROM LabReport");
+            use = pst.executeQuery();  
+            
+            if(use.next())
+                labReportNo = use.getInt(1);
+            
+        }catch(SQLException ex){
+            System.out.println(ex);
+        }
+        return labReportNo;
     }
      
     /*
@@ -643,7 +715,8 @@ public class DBOperations {
         Employee employee=null;
         try{
             con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");              
+            //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");   
             pst.setString(1,uname);
             pst.setString(2,pword);
             use = pst.executeQuery();
