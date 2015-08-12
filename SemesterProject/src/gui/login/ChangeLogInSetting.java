@@ -6,6 +6,10 @@ package gui.login;
 
 import DataBase.DBOperations;
 import Domain.Employee;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,22 +20,41 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
 
     
     private DBOperations dataBase;
+    private int empId;
+    private Employee changeEmp ;
+    
     /**
      * Creates new form LoginFace
      */
-    int empId;
-    Employee changeEmp ;
-    DBOperations emDB = DBOperations.getInstace();
+    
     public ChangeLogInSetting() {
         initComponents();
     }
     
-    public void getPreviousData(int eid){        
+    public void getPreviousData(int eid) throws SQLException{   
+        dataBase = DBOperations.getInstace();
         empId = eid;
-        changeEmp = emDB.getEmplyee(eid);
-        this.userNameText.setText(changeEmp.getUsername());    
+        changeEmp = dataBase.getEmplyee(eid);
+        this.txtUserName.setText(changeEmp.getUsername());    
     }
-
+    private boolean checkUserName(String userName){
+        dataBase = DBOperations.getInstace();
+        try {
+            return dataBase.checkUserName(userName);
+        } catch (SQLException ex) {
+            //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    private boolean checkPassword(String pass){
+        dataBase = DBOperations.getInstace();
+        try {
+            return dataBase.checkPassword(pass);
+        } catch (SQLException ex) {
+            //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,7 +77,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtNewUserName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        changeBut = new javax.swing.JButton();
+        btnChange = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -127,9 +150,9 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/Secound5.png"))); // NOI18N
 
-        changeBut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/page_edit.png"))); // NOI18N
-        changeBut.setText("Change");
-        changeBut.addActionListener(new java.awt.event.ActionListener() {
+        btnChange.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/page_edit.png"))); // NOI18N
+        btnChange.setText("Change");
+        btnChange.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changeButActionPerformed(evt);
             }
@@ -145,12 +168,12 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(changeBut)
+                                .addComponent(btnChange)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1)))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -165,7 +188,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(changeBut)
+                    .addComponent(btnChange)
                     .addComponent(jButton1))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
@@ -192,21 +215,45 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
 
     private void changeButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButActionPerformed
         // TODO add your handling code here:
-        String uName = newUserNameText.getText();
-        String pass = newPasswordPass.getPassword().toString();
-        if(uName.equals("")){
-            uName = userNameText.getText();
+        dataBase = DBOperations.getInstace();
+        Employee employee = null;
+        try {
+            employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pswdPassword.getPassword()));
+        } catch (SQLException ex) {
+            //Logger.getLogger(LoginFace.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(pass.equals("")){
-            pass = passwordPass.getPassword().toString();
-        }
-        if(newPasswordPass.getPassword().equals(confirmPasswordPass.getPassword())){
-            changeEmp.setUsername(uName);
-            changeEmp.setPassword(pass);
-            emDB.updateEmployee(changeEmp);
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Error! Password field and Confirm password field do not match.", "Error!", JOptionPane.ERROR_MESSAGE);
+        if(employee!=null){
+            String uName = txtNewUserName.getText();
+            String pass = new String(pswdNewPassword.getPassword()); 
+            if(checkPassword(pass)){
+                JOptionPane.showMessageDialog(null,"The Password already exist");
+                pswdNewPassword.setText("");
+                pswdConfirmPassword.setText("");
+            }else if(checkUserName(uName)){
+                JOptionPane.showMessageDialog(null,"The UserName already exist");
+                txtNewUserName.setText("");
+            }else if(Arrays.equals(pswdNewPassword.getPassword(), pswdConfirmPassword.getPassword())){
+                if(!uName.equals(""))                    
+                    employee.setUsername(uName);
+                if(!pass.equals(""))
+                    employee.setPassword(pass);
+                try {
+                    dataBase.updateEmployeeUserNamePassWord(employee);
+                    JOptionPane.showMessageDialog(null,"The UserName and the Password are succesfully changed");
+                    txtUserName.setText("");
+                    txtNewUserName.setText("");
+                    pswdPassword.setText("");
+                    pswdNewPassword.setText("");
+                    pswdConfirmPassword.setText("");
+                } catch (SQLException ex) {
+                    //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Error! Password field and Confirm password field do not match.", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Invalid username or password");
         }
     }//GEN-LAST:event_changeButActionPerformed
 
@@ -245,8 +292,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton changeBut;
-    private javax.swing.JPasswordField confirmPasswordPass;
+    private javax.swing.JButton btnChange;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

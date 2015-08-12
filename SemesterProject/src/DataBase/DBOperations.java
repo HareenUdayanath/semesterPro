@@ -288,6 +288,26 @@ public class DBOperations {
         }
            return result;
     }
+     public boolean updateEmployeeUserNamePassWord(Employee employee) throws SQLException{
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);              
+            pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = ? WHERE EID = ?");              
+
+            pst.setString(1,employee.getUsername());          
+            pst.setString(2,employee.getPassword());
+            pst.setInt(3,employee.getEID());
+             
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
     
     
     /*

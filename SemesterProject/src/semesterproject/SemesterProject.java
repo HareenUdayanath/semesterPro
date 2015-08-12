@@ -4,6 +4,7 @@ package semesterproject;
 import DataBase.*;
 import Domain.*;
 import gui.lab.LabReportGUI;
+import gui.login.ChangeLogInSetting;
 import gui.login.LoginFace;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -165,6 +166,7 @@ public class SemesterProject {
             /*
             LoginFace face = new LoginFace();
             face.setVisible(true);*/
-       
+            ChangeLogInSetting c = new ChangeLogInSetting();
+            c.setVisible(true);
     }
 }
