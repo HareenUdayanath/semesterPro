@@ -10,7 +10,10 @@ import Domain.LabReport;
 import Domain.MedicalReport;
 import Domain.Patient;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 /**
@@ -212,7 +215,11 @@ public class DocGUI extends javax.swing.JFrame {
         mode = 1;
         pid = Integer.parseInt(SearchBox.getText());
         DBOperations dateOpr = DBOperations.getInstace(); 
-        pnt = dateOpr.getPatient(pid);
+        try {
+            pnt = dateOpr.getPatient(pid);
+        } catch (SQLException ex) {
+            Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         int index = SearchCatChooser.getSelectedIndex();
         if(index==1){
             String nic = SearchBox.getText();
@@ -246,7 +253,12 @@ public class DocGUI extends javax.swing.JFrame {
          
          DefaultListModel model = (DefaultListModel)detailList.getModel(); 
          model.addElement("Hello");
-         ArrayList<Date> medicalDates = ptDB.getMedicalDates(pid);
+         ArrayList<Date> medicalDates = null;
+        try {
+            medicalDates = ptDB.getMedicalDates(pid);
+        } catch (SQLException ex) {
+            Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
          for(Date dt : medicalDates){
              model.addElement(dt);
          }
@@ -262,7 +274,12 @@ public class DocGUI extends javax.swing.JFrame {
         mode = 3;
         detailList.setModel(new DefaultListModel());
         DefaultListModel model = (DefaultListModel)detailList.getModel(); 
-        ArrayList<Date> labDates = ptDB.getLabDates(pid);
+        ArrayList<Date> labDates = null;
+        try {
+            labDates = ptDB.getLabDates(pid);
+        } catch (SQLException ex) {
+            Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for(Date dt : labDates){
              model.addElement(dt);
          }
@@ -272,7 +289,12 @@ public class DocGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(mode == 2){
         Date selectedDate = (Date)detailList.getSelectedValue();
-        ArrayList<MedicalReport> mediReports = ptDB.getMedicalReports(pid, selectedDate);
+        ArrayList<MedicalReport> mediReports = null;
+            try {
+                mediReports = ptDB.getMedicalReports(pid, selectedDate);
+            } catch (SQLException ex) {
+                Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         detailList.setModel(new DefaultListModel());
         DefaultListModel model = (DefaultListModel)detailList.getModel(); 
         for(MedicalReport mdRpt : mediReports){
@@ -283,7 +305,12 @@ public class DocGUI extends javax.swing.JFrame {
         
         if(mode == 3){
         Date selectedDate = (Date)detailList.getSelectedValue();
-        ArrayList<LabReport> labReports = ptDB.getLabReports(pid, selectedDate);
+        ArrayList<LabReport> labReports = null;
+            try {
+                labReports = ptDB.getLabReports(pid, selectedDate);
+            } catch (SQLException ex) {
+                Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         detailList.setModel(new DefaultListModel());
         DefaultListModel model = (DefaultListModel)detailList.getModel(); 
         for(LabReport lbRpt : labReports){

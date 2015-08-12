@@ -6,6 +6,9 @@ package gui.login;
 
 import DataBase.DBOperations;
 import Domain.Employee;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,7 +29,11 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
     
     public void getPreviousData(int eid){        
         empId = eid;
-        changeEmp = emDB.getEmplyee(eid);
+        try {
+            changeEmp = emDB.getEmplyee(eid);
+        } catch (SQLException ex) {
+            Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.userNameText.setText(changeEmp.getUsername());    
     }
 
@@ -195,9 +202,13 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
             pass = passwordPass.getPassword().toString();
         }
         if(newPasswordPass.getPassword().equals(confirmPasswordPass.getPassword())){
-            changeEmp.setUsername(uName);
-            changeEmp.setPassword(pass);
-            emDB.updateEmployee(changeEmp);
+            try {
+                changeEmp.setUsername(uName);
+                changeEmp.setPassword(pass);
+                emDB.updateEmployee(changeEmp);
+            } catch (SQLException ex) {
+                Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else{
             JOptionPane.showMessageDialog(null, "Error! Password field and Confirm password field do not match.", "Error!", JOptionPane.ERROR_MESSAGE);

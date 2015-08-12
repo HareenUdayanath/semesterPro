@@ -8,7 +8,10 @@ import DataBase.DBOperations;
 import Domain.Employee;
 import gui.login.ChangeLogInSetting;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 
@@ -386,7 +389,11 @@ public class ManagerFace extends javax.swing.JFrame {
         posLabel.setEnabled(true);
         nicLabel.setEnabled(true);
         searchID = Integer.parseInt(eidText.getText());
-        emp = empDB.getEmplyee(searchID);
+        try {
+            emp = empDB.getEmplyee(searchID);
+        } catch (SQLException ex) {
+            Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+        }
         nameLabel.setText(emp.getName());
         posLabel.setText(emp.getPosition());
         nicLabel.setText(emp.getNIC());
@@ -406,7 +413,11 @@ public class ManagerFace extends javax.swing.JFrame {
             emp1.setNIC(nic);
             emp1.setPassword(password);
             emp1.setUsername(userName);
-            empDB.addEmployee(emp1);
+            try {
+                empDB.addEmployee(emp1);
+            } catch (SQLException ex) {
+                Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         if(password.equals(conPassword)){
@@ -471,7 +482,11 @@ public class ManagerFace extends javax.swing.JFrame {
     private void eListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eListBtnActionPerformed
         
         EmployeeList elist = new EmployeeList();
-        elist.empList = empDB.loadEmplyee();
+        try {
+            elist.empList = empDB.loadEmplyee();
+        } catch (SQLException ex) {
+            Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for(Employee em : elist.empList){
             elist.addRow(em.getEID(), em.getName(),em.getPosition(), em.getNIC());
         }
@@ -482,7 +497,11 @@ public class ManagerFace extends javax.swing.JFrame {
     private void getEmpListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getEmpListBtnActionPerformed
         // TODO add your handling code here:
           EmployeeList elist = new EmployeeList();
-        elist.empList = empDB.loadEmplyee();
+        try {
+            elist.empList = empDB.loadEmplyee();
+        } catch (SQLException ex) {
+            Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for(Employee em : elist.empList){
             elist.addRow(em.getEID(), em.getName(),em.getPosition(), em.getNIC());
         }
