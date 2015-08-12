@@ -8,31 +8,20 @@ package gui.reception;
 import DataBase.DBOperations;
 import Domain.Patient;
 import java.util.ArrayList;
-import javax.swing.table.AbstractTableModel;
 
 /**
  *
  * @author Irfad Hussain
  */
-public class PatientDetailsModel extends AbstractTableModel {
+public class PatientDetailsModel extends DetailsTableModel {
     
-    private final String[] COLUMN_NAMES = {"Employee ID","First Name","Last Name","NIC"};
     private ArrayList<Patient> values;
     
     public PatientDetailsModel(){
         /* With time there could be thousands of patients entered in database. Loading all of them would be inefficient. So initialize an
            empty arrayList to avoid null pointer exception*/
+        super(new String[]{"Patient ID","First Name","Last Name","NIC"});
         values = new ArrayList<Patient>();
-    }
-
-    @Override
-    public int getRowCount() {
-        return values.size();
-    }
-
-    @Override
-    public int getColumnCount() {
-        return COLUMN_NAMES.length;
     }
 
     @Override
@@ -50,15 +39,20 @@ public class PatientDetailsModel extends AbstractTableModel {
                 return "";
         }
     }
-    
-    @Override
-    public String getColumnName(int columnIndex){
-        return COLUMN_NAMES[columnIndex];
-    }
-    
+
     public void setValues(ArrayList<Patient> values){
         this.values = values;
         fireTableStructureChanged();
+    }
+
+    @Override
+    public void search(String name, String NIC) {
+        setValues(DBOperations.getInstace().searchPatients(name, NIC));
+    }
+
+    @Override
+    public int getRowCount() {
+        return values.size();
     }
     
 }
