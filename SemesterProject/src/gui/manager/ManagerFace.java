@@ -6,6 +6,7 @@ package gui.manager;
 
 import DataBase.DBOperations;
 import Domain.Employee;
+import gui.login.ChangeLogInSetting;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
@@ -68,6 +69,11 @@ public class ManagerFace extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         addBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        changeIdText = new javax.swing.JTextField();
+        changeBtn = new javax.swing.JButton();
+        getEmpListBtn = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,9 +120,9 @@ public class ManagerFace extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addComponent(nameLabel)
-                .addGap(29, 29, 29)
+                .addGap(55, 55, 55)
                 .addComponent(posLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
                 .addComponent(nicLabel)
                 .addGap(35, 35, 35))
         );
@@ -143,18 +149,21 @@ public class ManagerFace extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(removeBtn)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
                         .addComponent(jLabel6)
-                        .addGap(43, 43, 43)
-                        .addComponent(eidText, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
+                        .addComponent(eidText, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                         .addComponent(SearchBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(38, 38, 38)
                         .addComponent(eListBtn))
-                    .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(removeBtn)))
+                .addGap(46, 46, 46))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -166,10 +175,10 @@ public class ManagerFace extends javax.swing.JFrame {
                     .addComponent(SearchBtn)
                     .addComponent(eListBtn))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(removeBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(31, 31, 31))
         );
 
         jTabbedPane1.addTab("Remove Employee", jPanel1);
@@ -218,7 +227,7 @@ public class ManagerFace extends javax.swing.JFrame {
                 .addGap(89, 89, 89)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(nicText)
-                    .addComponent(nameText, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                    .addComponent(nameText, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
                     .addComponent(conPassText)
                     .addComponent(unameText)
                     .addComponent(passText)
@@ -291,9 +300,9 @@ public class ManagerFace extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
+                .addGap(47, 47, 47)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addBtn)
                     .addComponent(cancelBtn))
@@ -301,6 +310,53 @@ public class ManagerFace extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Add new Employee", jPanel2);
+
+        changeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/page_edit.png"))); // NOI18N
+        changeBtn.setText("Change");
+        changeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeBtnActionPerformed(evt);
+            }
+        });
+
+        getEmpListBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/users.png"))); // NOI18N
+        getEmpListBtn.setText("Get Employee List");
+        getEmpListBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getEmpListBtnActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("EID");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(68, 68, 68)
+                .addComponent(jLabel8)
+                .addGap(18, 18, 18)
+                .addComponent(changeIdText, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addComponent(changeBtn)
+                .addGap(18, 18, 18)
+                .addComponent(getEmpListBtn)
+                .addGap(67, 67, 67))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(104, 104, 104)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(getEmpListBtn)
+                    .addComponent(changeBtn)
+                    .addComponent(changeIdText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addContainerGap(279, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Edit data", jPanel5);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -423,6 +479,25 @@ public class ManagerFace extends javax.swing.JFrame {
                 
     }//GEN-LAST:event_eListBtnActionPerformed
 
+    private void getEmpListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getEmpListBtnActionPerformed
+        // TODO add your handling code here:
+          EmployeeList elist = new EmployeeList();
+        elist.empList = empDB.loadEmplyee();
+        for(Employee em : elist.empList){
+            elist.addRow(em.getEID(), em.getName(),em.getPosition(), em.getNIC());
+        }
+        elist.setVisible(true);
+    }//GEN-LAST:event_getEmpListBtnActionPerformed
+
+    private void changeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeBtnActionPerformed
+        // TODO add your handling code here:
+        int eid = Integer.parseInt(changeIdText.getText());
+        
+        ChangeLogInSetting changeEmpLog = new ChangeLogInSetting();
+        changeEmpLog.getPreviousData(eid);
+        changeEmpLog.setVisible(true);
+    }//GEN-LAST:event_changeBtnActionPerformed
+
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -460,9 +535,12 @@ public class ManagerFace extends javax.swing.JFrame {
     private javax.swing.JButton SearchBtn;
     private javax.swing.JButton addBtn;
     private javax.swing.JButton cancelBtn;
+    private javax.swing.JButton changeBtn;
+    private javax.swing.JTextField changeIdText;
     private javax.swing.JPasswordField conPassText;
     private javax.swing.JButton eListBtn;
     private javax.swing.JTextField eidText;
+    private javax.swing.JButton getEmpListBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -470,10 +548,12 @@ public class ManagerFace extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameText;
