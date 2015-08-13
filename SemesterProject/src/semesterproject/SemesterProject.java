@@ -4,6 +4,7 @@ package semesterproject;
 import DataBase.*;
 import Domain.*;
 import gui.lab.LabReportGUI;
+import gui.lab.ShowLabReportGUI;
 import gui.login.ChangeLogInSetting;
 import gui.login.LoginFace;
 import java.sql.Date;
@@ -20,6 +21,20 @@ public class SemesterProject {
     public static void main(String[] args) {
        
             DBOperations ad = DBOperations.getInstace();
+            /*LabReport lr = new LabReport();
+            lr.setPID(1);
+            lr.setDate(new Date(1992,02,03));
+            lr.setDate(Help.getDate(2015, 1, 5));
+            lr.setLabReportNo(1);
+            lr.setTestType(2);
+            lr.setLabTechID(1);
+            
+            
+            for(int i=0;i<16;i++){
+                lr.addDataToTheList(""+i);
+            }
+            new ShowLabReportGUI (lr).setVisible(true);*/
+            
            /*LabReportGUI l=new LabReportGUI();
             l.setVisible(true);*/
                 
