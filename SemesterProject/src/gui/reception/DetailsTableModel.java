@@ -29,6 +29,6 @@ public abstract class DetailsTableModel extends AbstractTableModel{
         return COLUMN_NAMES[columnIndex];
     }
     
-    public abstract void search(String name, String NIC);
+    public abstract void search(String key, boolean searchByName);
     
 }

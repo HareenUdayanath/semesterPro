@@ -6,6 +6,15 @@
 package gui.dataEntryClerk;
 
 import DataBase.DBOperations;
+import DataBase.Help;
+import Domain.MedicalReport;
+import Domain.Patient;
+import gui.login.LoginFace;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import sun.org.mozilla.javascript.internal.ScriptRuntime;
 
 /**
  *
@@ -13,6 +22,8 @@ import DataBase.DBOperations;
  */
 public class DataEntryGUI extends javax.swing.JFrame {
 
+    private Patient p;
+    
     /**
      * Creates new form DataEntryClerkGUI
      */
@@ -73,7 +84,6 @@ public class DataEntryGUI extends javax.swing.JFrame {
         txtPatientContactNo = new javax.swing.JTextField();
         txtNameOfGuardian = new javax.swing.JTextField();
         txtGuardianContact = new javax.swing.JTextField();
-        txtBloodGroup = new javax.swing.JTextField();
         txtAllergies1 = new javax.swing.JTextField();
         cmbxGender = new javax.swing.JComboBox();
         jLabel14 = new javax.swing.JLabel();
@@ -87,13 +97,16 @@ public class DataEntryGUI extends javax.swing.JFrame {
         txtAllergies2 = new javax.swing.JTextField();
         btnUpdatePatient = new javax.swing.JButton();
         btnCanel = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        btnLoadPatient = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        jPanel3 = new javax.swing.JPanel();
-        btnProfileSettings = new javax.swing.JButton();
-        btnLogOut = new javax.swing.JButton();
+        cmbxBloodGroup = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -117,11 +130,6 @@ public class DataEntryGUI extends javax.swing.JFrame {
         jLabel17.setText("Patient ID :");
 
         txtReportPID.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        txtReportPID.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtReportPIDFocusLost(evt);
-            }
-        });
 
         jLabel18.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -158,6 +166,11 @@ public class DataEntryGUI extends javax.swing.JFrame {
 
         btnAddReport.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnAddReport.setText("Add Report");
+        btnAddReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddReportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -299,8 +312,6 @@ public class DataEntryGUI extends javax.swing.JFrame {
 
         txtGuardianContact.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        txtBloodGroup.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
         txtAllergies1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         cmbxGender.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -343,7 +354,14 @@ public class DataEntryGUI extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Load Patient");
+        btnLoadPatient.setText("Load Patient");
+        btnLoadPatient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadPatientActionPerformed(evt);
+            }
+        });
+
+        cmbxBloodGroup.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" }));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -366,7 +384,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(txtGuardianContact, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txtBloodGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(cmbxBloodGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                                 .addComponent(btnCanel, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -424,7 +442,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
                                     .addGroup(jPanel6Layout.createSequentialGroup()
                                         .addComponent(txtPID, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(btnLoadPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(txtFullName1)
                                         .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -433,7 +451,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(108, 108, 108)
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -442,7 +460,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtPID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnLoadPatient))
                 .addGap(7, 7, 7)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -499,7 +517,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(txtBloodGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbxBloodGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
@@ -510,51 +528,12 @@ public class DataEntryGUI extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnUpdatePatient, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCanel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(jPanel6);
 
         jTabbedPane1.addTab("Update Patient Details", jScrollPane1);
-
-        btnProfileSettings.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnProfileSettings.setText("Change Profile Settings");
-        btnProfileSettings.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProfileSettingsActionPerformed(evt);
-            }
-        });
-
-        btnLogOut.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnLogOut.setText("Log Out");
-        btnLogOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLogOutActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(164, 164, 164)
-                .addComponent(btnProfileSettings)
-                .addGap(57, 57, 57)
-                .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(266, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(125, 125, 125)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnProfileSettings, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLogOut, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(138, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Profile", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -581,32 +560,139 @@ public class DataEntryGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdatePatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePatientActionPerformed
-
+            if (validateDetails()){
+                try {
+                    p.setFirstName(txtFirstName.getText());
+                    p.setLastName(txtLastName.getText());
+                    p.setFullName(txtFullName1.getText() + " " + txtFullName2.getText());
+                    if (!txtYear.getText().equals("") && !txtMonth.getText().equals("") && !txtDay.getText().equals("")){
+                        try{
+                            p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
+                        }catch(NumberFormatException ex){
+                            JOptionPane.showMessageDialog(this, "Invalid Date of Birth!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
+                    }
+                    p.setGender(cmbxGender.getSelectedItem().toString().substring(0, 1));
+                    p.setAddress(txtAddress1.getText() + " " + txtAddress2.getText() + " " + txtAddress3.getText());
+                    if (txtNIC.getText().equals("")){
+                        p.setNIC(null);
+                    }else{
+                        p.setNIC(txtNIC.getText());
+                    }
+                    if (!txtPatientContactNo.getText().equals("")){
+                        try{
+                            p.setPatientContactNo(Integer.parseInt(txtPatientContactNo.getText()));
+                        }catch(NumberFormatException ex){
+                            JOptionPane.showMessageDialog(this, "Invalid Patient Contact number!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
+                    }
+                    p.setNameOfTheGuardian(txtNameOfGuardian.getText());
+                    if (!txtGuardianContact.getText().equals("")){
+                        try{
+                            p.setGuardianContactNo(Integer.parseInt(txtGuardianContact.getText()));
+                        }catch(NumberFormatException ex){
+                            JOptionPane.showMessageDialog(this, "Invalid guardian contact number.", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                            return;
+                        }
+                    }
+                    p.setBloodGroup(cmbxBloodGroup.getSelectedItem().toString());
+                    p.setAllergies(txtAllergies1.getText() + " " + txtAllergies2.getText());
+                    DBOperations.getInstace().updatePatient(p);
+                    JOptionPane.showMessageDialog(this, "Successfully updated patient.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    btnCanelActionPerformed(null);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "An error occured while adding.Please try again.", "Error", JOptionPane.WARNING_MESSAGE);
+                }
+            }
     }//GEN-LAST:event_btnUpdatePatientActionPerformed
 
     private void btnCanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCanelActionPerformed
 
     }//GEN-LAST:event_btnCanelActionPerformed
 
-    private void btnProfileSettingsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfileSettingsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnProfileSettingsActionPerformed
-
-    private void btnLogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogOutActionPerformed
-
-    }//GEN-LAST:event_btnLogOutActionPerformed
-
-    private void txtReportPIDFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtReportPIDFocusLost
-        if (!txtReportPID.getText().equals("")){
-            /*new Thread(){
-                @Override
-                public void run(){
-                    
-                    DBOperations.getInstace().getPatient(Integer.parseInt(txtPIDReport.getText()));
-                }
-            }.start();*/
+    private void btnAddReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddReportActionPerformed
+        MedicalReport mReport = null;
+        if (DBOperations.getInstace().checkPID(txtReportPID.getText())){
+            try{
+                mReport = new MedicalReport();
+                mReport.setPID(Integer.parseInt(txtReportPID.getText()));
+                mReport.setDoctorID(Integer.parseInt(txtReportDID.getText()));
+                mReport.setDate(Help.getDate(Integer.parseInt(txtReportYear.getText()), Integer.parseInt(txtReportMonth.getText()), Integer.parseInt(txtReportDay.getText())));
+                mReport.setTreatementDescription(txtTreatmentDescription.getText());
+            }catch(NumberFormatException ex){
+                mReport = null;
+            }
         }
-    }//GEN-LAST:event_txtReportPIDFocusLost
+        if (mReport != null){
+            try {
+                DBOperations.getInstace().addMedicalReport(mReport);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid Detail", null, JOptionPane.WARNING_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Invalid Detail", null, JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAddReportActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?","Confirm Action", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+            this.dispose();
+            LoginFace l = new LoginFace();
+            l.setLocationRelativeTo(null);
+            l.setVisible(true);
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    private void btnLoadPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadPatientActionPerformed
+        p = null;
+        try{
+            p = DBOperations.getInstace().getPatient(Integer.parseInt(txtPID.getText()));
+        }catch(NumberFormatException ex){
+            p = null;
+        }
+        if (p == null){
+            JOptionPane.showMessageDialog(this, "Invalid Patient ID", null, JOptionPane.ERROR_MESSAGE);
+        }else{
+            txtFirstName.setText(p.getFirstName());
+            txtLastName.setText(p.getLastName());
+            txtFullName1.setText(p.getFullName());
+            txtYear.setText(Integer.toString(p.getDateOfBirth().getYear()));
+            txtMonth.setText(Integer.toString(p.getDateOfBirth().getMonth()));
+            txtDay.setText(Integer.toString(p.getDateOfBirth().getDate()));
+            if (p.getGender().equals("M")){
+                cmbxGender.setSelectedIndex(0);
+            }else{
+                cmbxGender.setSelectedIndex(1);
+            }
+            txtAddress1.setText(p.getAddress());
+            txtNIC.setText(p.getNIC());
+            txtPatientContactNo.setText(Integer.toString(p.getPatientContactNo()));
+            txtNameOfGuardian.setText(p.getNameOfTheGuardian());
+            txtGuardianContact.setText(Integer.toString(p.getGuardianContactNo()));
+            switch(p.getBloodGroup()){
+                case "A+":
+                    cmbxBloodGroup.setSelectedIndex(0); break;
+                case "A-":
+                    cmbxBloodGroup.setSelectedIndex(1); break;
+                case "B+":
+                    cmbxBloodGroup.setSelectedIndex(2); break;
+                case "B-":
+                    cmbxBloodGroup.setSelectedIndex(3); break;
+                case "AB+":
+                    cmbxBloodGroup.setSelectedIndex(4); break;
+                case "AB-":
+                    cmbxBloodGroup.setSelectedIndex(5); break;
+                case "O+":
+                    cmbxBloodGroup.setSelectedIndex(6); break;
+                case "O-":
+                    cmbxBloodGroup.setSelectedIndex(7); break;
+            }
+            txtAllergies1.setText(p.getAllergies());
+        }
+    }//GEN-LAST:event_btnLoadPatientActionPerformed
 
     /**
      * @param args the command line arguments
@@ -647,11 +733,10 @@ public class DataEntryGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddReport;
     private javax.swing.JButton btnCanel;
-    private javax.swing.JButton btnLogOut;
-    private javax.swing.JButton btnProfileSettings;
+    private javax.swing.JButton btnLoadPatient;
     private javax.swing.JButton btnUpdatePatient;
+    private javax.swing.JComboBox cmbxBloodGroup;
     private javax.swing.JComboBox cmbxGender;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -677,7 +762,6 @@ public class DataEntryGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -688,7 +772,6 @@ public class DataEntryGUI extends javax.swing.JFrame {
     private javax.swing.JTextField txtAddress3;
     private javax.swing.JTextField txtAllergies1;
     private javax.swing.JTextField txtAllergies2;
-    private javax.swing.JTextField txtBloodGroup;
     private javax.swing.JTextField txtDay;
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtFullName1;
@@ -708,4 +791,25 @@ public class DataEntryGUI extends javax.swing.JFrame {
     private javax.swing.JTextArea txtTreatmentDescription;
     private javax.swing.JTextField txtYear;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validateDetails() {
+        if (txtFirstName.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "First Name cannot be empty!", "Invalid Detail", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (txtFullName1.getText().equals("") && txtFullName2.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Full Name cannot be empty!", "Invalid Detail", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        String NIC = txtNIC.getText();
+        if (!NIC.equals("") && !(NIC.length()==10 && (NIC.substring(NIC.length()-1, NIC.length()).equalsIgnoreCase("V") || NIC.substring(NIC.length()-1, NIC.length()).equalsIgnoreCase("V")))){
+            JOptionPane.showMessageDialog(this, "Invalid NIC","Invalid Detail", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (DBOperations.getInstace().checkPatientNIC(NIC)){
+            JOptionPane.showMessageDialog(this, "NIC already exsits","Invalid Detail", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
 }

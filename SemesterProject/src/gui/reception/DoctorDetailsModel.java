@@ -42,7 +42,7 @@ public class DoctorDetailsModel extends DetailsTableModel{
     }
     
     @Override
-    public void search(String name, String NIC) {
+    public void search(String name, boolean searchByName) {
         setValues(DBOperations.getInstace().searchDoctors(name));
     }
 

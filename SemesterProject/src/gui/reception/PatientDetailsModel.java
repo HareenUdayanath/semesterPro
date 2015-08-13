@@ -46,8 +46,12 @@ public class PatientDetailsModel extends DetailsTableModel {
     }
 
     @Override
-    public void search(String name, String NIC) {
-        setValues(DBOperations.getInstace().searchPatients(name, NIC));
+    public void search(String key,boolean searchByName) {
+        if (searchByName){
+            setValues(DBOperations.getInstace().searchPatients(key));
+        }else{
+            setValues(DBOperations.getInstace().searchPatientsByNIC(key));
+        }
     }
 
     @Override

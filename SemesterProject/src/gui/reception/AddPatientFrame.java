@@ -65,7 +65,6 @@ public class AddPatientFrame extends javax.swing.JFrame {
         txtPatientContactNo = new javax.swing.JTextField();
         txtNameOfGuardian = new javax.swing.JTextField();
         txtGuardianContact = new javax.swing.JTextField();
-        txtBloodGroup = new javax.swing.JTextField();
         txtAllergies1 = new javax.swing.JTextField();
         cmbxGender = new javax.swing.JComboBox();
         jLabel14 = new javax.swing.JLabel();
@@ -79,6 +78,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
         txtAllergies2 = new javax.swing.JTextField();
         btnAddPatient = new javax.swing.JButton();
         btnCanel = new javax.swing.JButton();
+        cmbxBloodGroup = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Add New Patient");
@@ -162,8 +162,6 @@ public class AddPatientFrame extends javax.swing.JFrame {
 
         txtGuardianContact.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
-        txtBloodGroup.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-
         txtAllergies1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         cmbxGender.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -206,6 +204,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
             }
         });
 
+        cmbxBloodGroup.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" }));
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -239,7 +239,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtGuardianContact, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtBloodGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cmbxBloodGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
@@ -280,10 +280,9 @@ public class AddPatientFrame extends javax.swing.JFrame {
                                     .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtNameOfGuardian)
-                                .addComponent(txtPatientContactNo)
-                                .addComponent(txtNIC, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtNameOfGuardian)
+                            .addComponent(txtPatientContactNo)
+                            .addComponent(txtNIC, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtAddress1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
                             .addComponent(txtAddress2)
                             .addComponent(txtAddress3))))
@@ -350,7 +349,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(txtBloodGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbxBloodGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
@@ -391,15 +390,26 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 p.setFirstName(txtFirstName.getText());
                 p.setLastName(txtLastName.getText());
                 p.setFullName(txtFullName1.getText() + " " + txtFullName2.getText());
-                p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
+                if (!txtYear.getText().equals("") && !txtMonth.getText().equals("") && !txtDay.getText().equals("")){
+                    try{
+                        p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
+                    }catch(NumberFormatException ex){
+                        JOptionPane.showMessageDialog(this, "Invalid Date of Birth!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }
                 p.setGender(cmbxGender.getSelectedItem().toString().substring(0, 1));
                 p.setAddress(txtAddress1.getText() + " " + txtAddress2.getText() + " " + txtAddress3.getText());
-                p.setNIC(txtNIC.getText());
+                if (txtNIC.getText().equals("")){
+                    p.setNIC(null);
+                }else{
+                    p.setNIC(txtNIC.getText());
+                }
                 if (!txtPatientContactNo.getText().equals("")){
                     try{
                         p.setPatientContactNo(Integer.parseInt(txtPatientContactNo.getText()));
                     }catch(NumberFormatException ex){
-                        JOptionPane.showMessageDialog(this, "Invalid Patient Contact number.", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Invalid Patient Contact number!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
                         return;
                     }
                 }
@@ -412,7 +422,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
                         return;
                     }
                 }
-                p.setBloodGroup(txtBloodGroup.getText());
+                p.setBloodGroup(cmbxBloodGroup.getSelectedItem().toString());
                 p.setAllergies(txtAllergies1.getText() + " " + txtAllergies2.getText());
                 DBOperations.getInstace().addPatient(p);
                 JOptionPane.showMessageDialog(this, "Successfully added patient.", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -445,6 +455,10 @@ public class AddPatientFrame extends javax.swing.JFrame {
         String NIC = txtNIC.getText();
         if (!NIC.equals("") && !(NIC.length()==10 && (NIC.substring(NIC.length()-1, NIC.length()).equalsIgnoreCase("V") || NIC.substring(NIC.length()-1, NIC.length()).equalsIgnoreCase("V")))){
             JOptionPane.showMessageDialog(this, "Invalid NIC","Invalid Detail", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (DBOperations.getInstace().checkPatientNIC(NIC)){
+            JOptionPane.showMessageDialog(this, "NIC already exsits","Invalid Detail", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         return true;
@@ -488,6 +502,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddPatient;
     private javax.swing.JButton btnCanel;
+    private javax.swing.JComboBox cmbxBloodGroup;
     private javax.swing.JComboBox cmbxGender;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -511,7 +526,6 @@ public class AddPatientFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtAddress3;
     private javax.swing.JTextField txtAllergies1;
     private javax.swing.JTextField txtAllergies2;
-    private javax.swing.JTextField txtBloodGroup;
     private javax.swing.JTextField txtDay;
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtFullName1;
