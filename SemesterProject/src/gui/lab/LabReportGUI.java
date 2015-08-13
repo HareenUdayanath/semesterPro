@@ -536,12 +536,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         patientID.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         patientID.setText("Patient ID:");
 
-        textPatientID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textPatientIDActionPerformed(evt);
-            }
-        });
-
         labTechnicianID.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         labTechnicianID.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         labTechnicianID.setText("Lab Technician ID:");
@@ -743,10 +737,6 @@ public class LabReportGUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void textPatientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textPatientIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textPatientIDActionPerformed
 
     private void textTestNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textTestNameActionPerformed
         

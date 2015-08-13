@@ -804,9 +804,6 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="textPatientID">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textPatientIDActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="labTechnicianID">
           <Properties>
