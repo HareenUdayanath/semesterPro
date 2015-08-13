@@ -126,7 +126,7 @@
         </Component>
         <Component class="javax.swing.JCheckBox" name="ckHeartDis">
           <Properties>
-            <Property name="text" type="java.lang.String" value="HeartDisease"/>
+            <Property name="text" type="java.lang.String" value="Heart Disease"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">

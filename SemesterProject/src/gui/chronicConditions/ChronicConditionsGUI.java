@@ -46,7 +46,7 @@ public class ChronicConditionsGUI extends javax.swing.JFrame {
 
         jLabel1.setText("PID");
 
-        ckHeartDis.setText("HeartDisease");
+        ckHeartDis.setText("Heart Disease");
 
         jLabel2.setText("Ch");
 
