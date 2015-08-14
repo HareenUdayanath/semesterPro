@@ -33,6 +33,7 @@ public class ReportViewer extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        reportTextArea.setEditable(false);
         reportTextArea.setColumns(20);
         reportTextArea.setRows(5);
         jScrollPane1.setViewportView(reportTextArea);
@@ -66,8 +67,8 @@ public class ReportViewer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     
-    public void showReport(String reportData){
-        reportTextArea.setText(reportData);
+    public void showReport(int reportNum,String reportData){
+        reportTextArea.setText("Reoprt number : "+ reportNum + "\r\n" +"Description : \r\n" +reportData);
     }
     /**
      * @param args the command line arguments

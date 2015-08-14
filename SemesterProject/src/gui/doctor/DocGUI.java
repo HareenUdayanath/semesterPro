@@ -9,6 +9,7 @@ import DataBase.DBOperations;
 import Domain.LabReport;
 import Domain.MedicalReport;
 import Domain.Patient;
+import gui.lab.ShowLabReportGUI;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -106,7 +107,7 @@ public class DocGUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -204,13 +205,13 @@ public class DocGUI extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
+                        .addGap(84, 84, 84)
                         .addComponent(ptDetailsBtn)
                         .addGap(18, 18, 18)
                         .addComponent(TreatReportsBtn)
                         .addGap(18, 18, 18)
                         .addComponent(labReportsBtn)
-                        .addContainerGap(138, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -310,7 +311,7 @@ public class DocGUI extends javax.swing.JFrame {
             detailList.setModel(new DefaultListModel());
             DefaultListModel model = (DefaultListModel)detailList.getModel(); 
             for(MedicalReport mdRpt : mediReports){
-                 model.addElement((mdRpt.getMedicalReportNum()+" "+ mdRpt.getTestTypes()));
+                 model.addElement(("Report number : "+mdRpt.getMedicalReportNum()+" Test types : "+ mdRpt.getTestTypes()));
             }
         mode = 4;
         
@@ -327,7 +328,7 @@ public class DocGUI extends javax.swing.JFrame {
         detailList.setModel(new DefaultListModel());
         DefaultListModel model = (DefaultListModel)detailList.getModel(); 
         for(LabReport lbRpt : labReports){
-             model.addElement((lbRpt.getLabReportNo()+" "+ lbRpt.getTestType()));
+             model.addElement(("Lab report number : "+lbRpt.getLabReportNo()+" Test types : "+ lbRpt.getTestType()));
          }
         mode = 5;
         }
@@ -336,21 +337,31 @@ public class DocGUI extends javax.swing.JFrame {
             MedicalReport reqReport = (MedicalReport)detailList.getSelectedValue();
             int reportNum = reqReport.getMedicalReportNum();
             report = new ReportViewer();
-            report.showReport(reqReport.getTreatementDescription());
+            report.showReport(reportNum,reqReport.getTreatementDescription());
         }
         
         if(mode == 5){
             LabReport reqReport = (LabReport)detailList.getSelectedValue();
             int reportNum = reqReport.getLabReportNo();
-            report = new ReportViewer();
-           // report.showReport(reqReport.);
+            ShowLabReportGUI labReport = new ShowLabReportGUI(reqReport);
+            labReport.setVisible(true);
+           
         }
         
     }//GEN-LAST:event_detailListMouseClicked
 
     private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
+        if(mode==5){
+            labReportsBtnActionPerformed(evt);
+        }
+        if(mode==4){
+            TreatReportsBtnActionPerformed(evt);
+        }
         
-        
+        if(mode==3||mode==2){
+            ptDetailsBtnActionPerformed(evt);
+        }
+                      
     }//GEN-LAST:event_backBtnActionPerformed
 
     /**
