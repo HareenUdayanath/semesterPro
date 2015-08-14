@@ -10,6 +10,8 @@ import Domain.LabReport;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -534,12 +536,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         patientID.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         patientID.setText("Patient ID:");
 
-        textPatientID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textPatientIDActionPerformed(evt);
-            }
-        });
-
         labTechnicianID.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         labTechnicianID.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         labTechnicianID.setText("Lab Technician ID:");
@@ -742,10 +738,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textPatientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textPatientIDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textPatientIDActionPerformed
-
     private void textTestNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textTestNameActionPerformed
         
         
@@ -769,11 +761,15 @@ public class LabReportGUI extends javax.swing.JFrame {
 
     private void btnConfirmUFRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmUFRActionPerformed
         if(updateState){
-              DBOperations ad = DBOperations.getInstace(); 
-              l=ad.getLastLabReport();
-            }else{
-                l=new LabReport();
+            try {
+                DBOperations ad = DBOperations.getInstace();
+                l=ad.getLastLabReport();
+            } catch (SQLException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }else{
+                l=new LabReport();
+        }
         //LabReport l=new LabReport();
         //DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
@@ -782,13 +778,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -799,6 +798,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
             textLabTecID.setText(null);
         }
+        l.getDataList().clear();
         for(int i=0;i<UFRtable.getRowCount();i++){
             data=(String)UFRtable.getValueAt(i,1);
            // System.out.println(Double.valueOf(data));
@@ -833,11 +833,15 @@ public class LabReportGUI extends javax.swing.JFrame {
 
     private void btnConfirmTCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmTCActionPerformed
         if(updateState){
-              DBOperations ad = DBOperations.getInstace(); 
-              l=ad.getLastLabReport();
-            }else{
-                l=new LabReport();
+            try {
+                DBOperations ad = DBOperations.getInstace();
+                l=ad.getLastLabReport();
+            } catch (SQLException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }else{
+              l=new LabReport();
+        }
         //LabReport l=new LabReport();
         //DBOperations ad = DBOperations.getInstace();
         String item=(String)TestBox.getSelectedItem();
@@ -846,13 +850,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data=CholesterolAmount.getText();
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in TC confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -864,6 +871,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             textLabTecID.setText(null);
         }
         try{
+            l.getDataList().clear();
             if(Double.valueOf(data) instanceof Double){
                  l.addDataToTheList(data);
             }
@@ -899,7 +907,11 @@ public class LabReportGUI extends javax.swing.JFrame {
     private void btnconfirmFBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconfirmFBSActionPerformed
             if(updateState){
               DBOperations ad = DBOperations.getInstace(); 
-              l=ad.getLastLabReport();
+                try {
+                    l=ad.getLastLabReport();
+                } catch (SQLException ex) {
+                    Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }else{
                 l=new LabReport();
             }
@@ -911,13 +923,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data=fbsAmount.getText();
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -929,6 +944,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             textLabTecID.setText(null);
         }
         try{
+            l.getDataList().clear();
             if(Double.valueOf(data) instanceof Double){
                  l.addDataToTheList(data);
                  System.out.println("setting data in FBS");
@@ -970,7 +986,11 @@ public class LabReportGUI extends javax.swing.JFrame {
     private void btnConfirmLPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmLPActionPerformed
         if(updateState){
               DBOperations ad = DBOperations.getInstace(); 
-              l=ad.getLastLabReport();
+            try {
+                l=ad.getLastLabReport();
+            } catch (SQLException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }else{
                 l=new LabReport();
             }
@@ -982,13 +1002,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -999,6 +1022,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
             textLabTecID.setText(null);
         }
+        l.getDataList().clear();
         for(int i=0;i<LPtable.getRowCount();i++){
             data=(String)LPtable.getValueAt(i,1);
            // System.out.println(Double.valueOf(data));
@@ -1048,7 +1072,11 @@ public class LabReportGUI extends javax.swing.JFrame {
     private void btnConfirmFBCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmFBCActionPerformed
         if(updateState){
               DBOperations ad = DBOperations.getInstace(); 
-              l=ad.getLastLabReport();
+            try {
+                l=ad.getLastLabReport();
+            } catch (SQLException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
             }else{
                 l=new LabReport();
             }
@@ -1060,13 +1088,16 @@ public class LabReportGUI extends javax.swing.JFrame {
         String pid=textPatientID.getText();
         String data;
         try{
-            if(Integer.valueOf(pid) instanceof Integer /*&& Integer.valueOf(pid)<=ad.getLastPID()*/){
+            if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
                 System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Patient ID is not registered");
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -1077,6 +1108,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
             textLabTecID.setText(null);
         }
+        l.getDataList().clear();
         for(int i=0;i<FBCtable.getRowCount();i++){
             data=(String)FBCtable.getValueAt(i,1);
            // System.out.println(Double.valueOf(data));
@@ -1124,71 +1156,76 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        btnEdit.setEnabled(false);
-        updateState=true;
-        //LabReport lr=ad.getLastLabReport();
-        
-        LabReport lr = new LabReport();
-        lr.setPID(1);
-        lr.setDate(new Date(1992,02,03));
-        lr.setDate(Help.getDate(2015, 1, 5));
-        lr.setLabReportNo(1);
-        lr.setTestType(5);
-        lr.setLabTechID(1);
-        
-        
-        for(int i=0;i<6;i++){
-            lr.addDataToTheList(""+i);
+        try {
+            btnEdit.setEnabled(false);
+            updateState=true;
+            LabReport lr=ad.getLastLabReport();//instead of this,should use below test case without saver.
+            
+            /*LabReport lr = new LabReport();
+            lr.setPID(1);
+            lr.setDate(new Date(1992,02,03));
+            lr.setDate(Help.getDate(2015, 1, 5));
+            lr.setLabReportNo(1);
+            lr.setTestType(5);
+            lr.setLabTechID(1);
+            
+            
+            for(int i=0;i<6;i++){
+                lr.addDataToTheList(""+i);
+            }*/
+            
+            String s=String.valueOf(lr.getTestType());
+            TestBox.setSelectedIndex(Integer.valueOf(lr.getTestType())-1);
+            //chooseTest();
+            
+            TestBox.setEnabled(false);
+            textPatientID.setText(String.valueOf(lr.getPID()));
+            textLabTecID.setText(String.valueOf(lr.getLabTechID()));
+            textDate.setText(String.valueOf(Help.getDay(lr.getDate())));
+            textMonth.setText(String.valueOf(Help.getMonth(lr.getDate())));
+            textYear.setText(String.valueOf(Help.getYear(lr.getDate())));
+            
+            ArrayList<String> datalist=lr.getDataList();
+            System.out.println(datalist.get(0));
+            String test=chooseTest();
+            System.out.println("sahan");
+            switch (test) {
+                case "01":
+                    System.out.println("test 01");
+                    fbsAmount.setText(datalist.get(0));
+                    fbsAmount.setEditable(updateState);
+                    System.out.println(fbsAmount.getText());
+                    System.out.println("after setting fbsamount");
+                    break;
+                case "02":
+                    for(int i=0;i<datalist.size();i++){
+                        UFRtable.setValueAt(datalist.get(i), i, 1);
+                    }
+                    System.out.println("after setting ufr");
+                    break;
+                case "03":
+                    for(int i=0;i<datalist.size();i++){
+                        FBCtable.setValueAt(datalist.get(i), i, 1);
+                    }
+                    System.out.println("after setting fbc");
+                    break;
+                case "04":
+                    System.out.println("in editing lp");
+                    for(int i=0;i<datalist.size();i++){
+                        LPtable.setValueAt(datalist.get(i), i, 1);
+                    }
+                    System.out.println("after setting lp");
+                    break;
+                case "05":
+                    CholesterolAmount.setText(datalist.get(0));
+                    System.out.println("after setting tc");
+                    break;
+            }
+            TestBox.setEnabled(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("error in editactionperfomed method");
         }
-        
-        String s=String.valueOf(lr.getTestType());
-        TestBox.setSelectedIndex(Integer.valueOf(lr.getTestType())-1);
-        //chooseTest();
-        
-        TestBox.setEnabled(false);
-        textPatientID.setText(String.valueOf(lr.getPID()));
-        textLabTecID.setText(String.valueOf(lr.getLabTechID()));
-        textDate.setText(String.valueOf(Help.getDay(lr.getDate())));
-        textMonth.setText(String.valueOf(Help.getMonth(lr.getDate())));
-        textYear.setText(String.valueOf(Help.getYear(lr.getDate())));
-        
-        ArrayList<String> datalist=lr.getDataList();
-        System.out.println(datalist.get(0));
-        String test=chooseTest();
-        System.out.println("sahan");
-        switch (test) {
-            case "01":
-                System.out.println("test 01");
-                fbsAmount.setText(datalist.get(0));
-                fbsAmount.setEditable(updateState);
-                System.out.println(fbsAmount.getText());
-                System.out.println("after setting fbsamount");
-                break;
-            case "02":
-                for(int i=0;i<datalist.size();i++){
-                    UFRtable.setValueAt(datalist.get(i), i, 1);
-                }
-                System.out.println("after setting ufr");
-                break;
-            case "03":
-                for(int i=0;i<datalist.size();i++){
-                    FBCtable.setValueAt(datalist.get(i), i, 1);
-                }
-                System.out.println("after setting fbc");
-                break;
-            case "04":
-                System.out.println("in editing lp");
-                for(int i=0;i<datalist.size();i++){
-                    LPtable.setValueAt(datalist.get(i), i, 1);
-                }
-                System.out.println("after setting lp");
-                break;
-            case "05":
-                CholesterolAmount.setText(datalist.get(0));
-                System.out.println("after setting tc");
-                break;
-        }
-        TestBox.setEnabled(true);
          
         
         
