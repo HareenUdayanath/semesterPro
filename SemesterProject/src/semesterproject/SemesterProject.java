@@ -4,6 +4,7 @@ package semesterproject;
 import DataBase.*;
 import Domain.*;
 import gui.lab.LabReportGUI;
+import gui.login.ChangeLogInSetting;
 import gui.login.LoginFace;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -158,13 +159,14 @@ public class SemesterProject {
             r.setDate(Help.getDate(1992,10,5));
             ad.updateMedicalReport(r);*/
             
-            LabReport l = ad.getLastLabReport();
+           /* LabReport l = ad.getLastLabReport();
             System.out.println(l.getLabTechID());
             l.setLabTechID(2);
-            ad.updateLabReport(l);
+            ad.updateLabReport(l);*/
             /*
             LoginFace face = new LoginFace();
             face.setVisible(true);*/
-       
+            ChangeLogInSetting c = new ChangeLogInSetting();
+            c.setVisible(true);
     }
 }

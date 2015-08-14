@@ -17,8 +17,8 @@ public class DBOperations {
     private EmployeeFactory emfac = null;
     private static DBOperations instance = null;
     //private String url = "jdbc:odbc://192.168.173.1:3306/test2";    
-    //private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
-    private String url = "jdbc:mysql://localhost:3306/SemesterProject";
+    private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
+    //private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
     
@@ -278,6 +278,26 @@ public class DBOperations {
             pst.setInt(1,employee.getEID());          
             pst.setString(3,employee.getName());
             pst.setString(4, employee.getNIC());
+             
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
+     public boolean updateEmployeeUserNamePassWord(Employee employee) throws SQLException{
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);              
+            pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = ? WHERE EID = ?");              
+
+            pst.setString(1,employee.getUsername());          
+            pst.setString(2,employee.getPassword());
+            pst.setInt(3,employee.getEID());
              
             pst.executeUpdate();
             con.close();
@@ -767,6 +787,35 @@ public class DBOperations {
             return true;
         }    
         con.close();
+        return false;
+    }
+    public boolean checkUserName(String uname) throws SQLException{
+       
+        
+        con = DriverManager.getConnection(url, user, password);
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ?");   
+        pst.setString(1,uname);
+        use = pst.executeQuery();
+
+        if(use.next()){                   
+            return true;        
+        }             
+        con.close();
+       
+        return false;
+    }
+    public boolean checkPassword(String pword) throws SQLException{       
+        
+        con = DriverManager.getConnection(url, user, password);               
+        //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE Password = ?");   
+        pst.setString(1,pword);        
+        use = pst.executeQuery();
+        if(use.next()){                   
+            return true;        
+        }             
+        con.close();
+       
         return false;
     }
 }

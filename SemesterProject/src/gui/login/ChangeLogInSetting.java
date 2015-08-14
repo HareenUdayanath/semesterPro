@@ -7,6 +7,7 @@ package gui.login;
 import DataBase.DBOperations;
 import Domain.Employee;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -17,26 +18,47 @@ import javax.swing.JOptionPane;
  */
 public class ChangeLogInSetting extends javax.swing.JFrame {
 
+    
+    private DBOperations dataBase;
+    private int empId;
+    private Employee changeEmp ;
+    
     /**
      * Creates new form LoginFace
      */
-    int empId;
-    Employee changeEmp ;
-    DBOperations emDB = DBOperations.getInstace();
+    
     public ChangeLogInSetting() {
         initComponents();
     }
     
-    public void getPreviousData(int eid){        
+    public void getPreviousData(int eid) throws SQLException{   
+        dataBase = DBOperations.getInstace();
         empId = eid;
         try {
-            changeEmp = emDB.getEmplyee(eid);
+            changeEmp = dataBase.getEmplyee(eid);
         } catch (SQLException ex) {
             Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.userNameText.setText(changeEmp.getUsername());    
+        this.txtUserName.setText(changeEmp.getUsername());    
     }
-
+    private boolean checkUserName(String userName){
+        dataBase = DBOperations.getInstace();
+        try {
+            return dataBase.checkUserName(userName);
+        } catch (SQLException ex) {
+            //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    private boolean checkPassword(String pass){
+        dataBase = DBOperations.getInstace();
+        try {
+            return dataBase.checkPassword(pass);
+        } catch (SQLException ex) {
+            //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -48,18 +70,18 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        userNameText = new javax.swing.JTextField();
+        txtUserName = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        passwordPass = new javax.swing.JPasswordField();
+        pswdPassword = new javax.swing.JPasswordField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        newPasswordPass = new javax.swing.JPasswordField();
+        pswdNewPassword = new javax.swing.JPasswordField();
         jLabel5 = new javax.swing.JLabel();
-        confirmPasswordPass = new javax.swing.JPasswordField();
+        pswdConfirmPassword = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
-        newUserNameText = new javax.swing.JTextField();
+        txtNewUserName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        changeBut = new javax.swing.JButton();
+        btnChange = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -91,36 +113,40 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
                     .addComponent(jLabel5)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(passwordPass, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
-                    .addComponent(confirmPasswordPass, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
-                    .addComponent(newUserNameText, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(userNameText)
-                    .addComponent(newPasswordPass))
-                .addContainerGap())
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNewUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pswdPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pswdNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(pswdConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(userNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(newUserNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNewUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(passwordPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pswdPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(newPasswordPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pswdNewPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(confirmPasswordPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pswdConfirmPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addGap(20, 20, 20))
         );
@@ -128,9 +154,9 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/Secound5.png"))); // NOI18N
 
-        changeBut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/page_edit.png"))); // NOI18N
-        changeBut.setText("Change");
-        changeBut.addActionListener(new java.awt.event.ActionListener() {
+        btnChange.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/page_edit.png"))); // NOI18N
+        btnChange.setText("Change");
+        btnChange.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changeButActionPerformed(evt);
             }
@@ -151,7 +177,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(changeBut)
+                                .addComponent(btnChange)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton1)))
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -162,11 +188,11 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(23, 23, 23)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(changeBut)
+                    .addComponent(btnChange)
                     .addComponent(jButton1))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
@@ -193,25 +219,45 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
 
     private void changeButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButActionPerformed
         // TODO add your handling code here:
-        String uName = newUserNameText.getText();
-        String pass = newPasswordPass.getPassword().toString();
-        if(uName.equals("")){
-            uName = userNameText.getText();
+        dataBase = DBOperations.getInstace();
+        Employee employee = null;
+        try {
+            employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pswdPassword.getPassword()));
+        } catch (SQLException ex) {
+            //Logger.getLogger(LoginFace.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(pass.equals("")){
-            pass = passwordPass.getPassword().toString();
-        }
-        if(newPasswordPass.getPassword().equals(confirmPasswordPass.getPassword())){
-            try {
-                changeEmp.setUsername(uName);
-                changeEmp.setPassword(pass);
-                emDB.updateEmployee(changeEmp);
-            } catch (SQLException ex) {
-                Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+        if(employee!=null){
+            String uName = txtNewUserName.getText();
+            String pass = new String(pswdNewPassword.getPassword()); 
+            if(checkPassword(pass)){
+                JOptionPane.showMessageDialog(null,"The Password already exist");
+                pswdNewPassword.setText("");
+                pswdConfirmPassword.setText("");
+            }else if(checkUserName(uName)){
+                JOptionPane.showMessageDialog(null,"The UserName already exist");
+                txtNewUserName.setText("");
+            }else if(Arrays.equals(pswdNewPassword.getPassword(), pswdConfirmPassword.getPassword())){
+                if(!uName.equals(""))                    
+                    employee.setUsername(uName);
+                if(!pass.equals(""))
+                    employee.setPassword(pass);
+                try {
+                    dataBase.updateEmployeeUserNamePassWord(employee);
+                    JOptionPane.showMessageDialog(null,"The UserName and the Password are succesfully changed");
+                    txtUserName.setText("");
+                    txtNewUserName.setText("");
+                    pswdPassword.setText("");
+                    pswdNewPassword.setText("");
+                    pswdConfirmPassword.setText("");
+                } catch (SQLException ex) {
+                    //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Error! Password field and Confirm password field do not match.", "Error!", JOptionPane.ERROR_MESSAGE);
+            else{
+                JOptionPane.showMessageDialog(null, "Error! Password field and Confirm password field do not match.", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
+        }else{
+            JOptionPane.showMessageDialog(null,"Invalid username or password");
         }
     }//GEN-LAST:event_changeButActionPerformed
 
@@ -250,8 +296,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton changeBut;
-    private javax.swing.JPasswordField confirmPasswordPass;
+    private javax.swing.JButton btnChange;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -261,9 +306,10 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPasswordField newPasswordPass;
-    private javax.swing.JTextField newUserNameText;
-    private javax.swing.JPasswordField passwordPass;
-    private javax.swing.JTextField userNameText;
+    private javax.swing.JPasswordField pswdConfirmPassword;
+    private javax.swing.JPasswordField pswdNewPassword;
+    private javax.swing.JPasswordField pswdPassword;
+    private javax.swing.JTextField txtNewUserName;
+    private javax.swing.JTextField txtUserName;
     // End of variables declaration//GEN-END:variables
 }

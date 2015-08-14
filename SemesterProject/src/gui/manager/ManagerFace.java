@@ -513,7 +513,11 @@ public class ManagerFace extends javax.swing.JFrame {
         int eid = Integer.parseInt(changeIdText.getText());
         
         ChangeLogInSetting changeEmpLog = new ChangeLogInSetting();
-        changeEmpLog.getPreviousData(eid);
+        try {
+            changeEmpLog.getPreviousData(eid);
+        } catch (SQLException ex) {
+            Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+        }
         changeEmpLog.setVisible(true);
     }//GEN-LAST:event_changeBtnActionPerformed
 
