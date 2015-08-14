@@ -14,6 +14,6 @@ public class Help {
         return date.getMonth()+1;
     }
     public static int getDay(Date date){
-        return date.getDay();
+        return date.getDate();
     }
 }

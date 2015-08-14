@@ -127,7 +127,7 @@ public class DBOperations {
         }
            return result;
     }
-    public boolean addEmployee(Employee employee){
+    public boolean addEmployee(Employee employee) throws SQLException{
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -145,12 +145,12 @@ public class DBOperations {
             con.close();
 
             result = true;
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
            return result;
     }
-    public boolean addChronicConditionsReport(ChronicConditionsReport chronicConditionsReport){
+    public boolean addChronicConditionsReport(ChronicConditionsReport chronicConditionsReport) throws SQLException{
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -169,15 +169,37 @@ public class DBOperations {
             con.close();
 
             result = true;
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
            return result;
     }
+    public boolean addRoom(Room room) throws SQLException{
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);              
+            //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
+            pst = con.prepareStatement("INSERT INTO room VALUES(?,?,?)");  
+
+            pst.setInt(1,room.getRoomNo());            
+            pst.setBoolean(2, room.isAvailability());
+            pst.setInt(3,room.getPID());
+                
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+        return result;
+    }
+   
     /*
      * Update data............................................................................. 
      */
-    public boolean updatePatient(Patient patient){
+    public boolean updatePatient(Patient patient) throws SQLException{
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();            
@@ -204,13 +226,13 @@ public class DBOperations {
             con.close();
             
             result = true;
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
         return result;
     }
     
-    public boolean updateMedicalReport(MedicalReport medicalReport){
+    public boolean updateMedicalReport(MedicalReport medicalReport) throws SQLException{
         boolean result = false; 
         
         try{               
@@ -230,13 +252,13 @@ public class DBOperations {
             
             result = true;
            
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
            return result;
     }
     
-    public boolean updateLabReport(LabReport labReport){
+    public boolean updateLabReport(LabReport labReport) throws SQLException{
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -252,6 +274,7 @@ public class DBOperations {
             pst.setInt(3,labReport.getTestType());
             pst.setInt(4, labReport.getLabTechID());
             index = 5;
+            System.out.println("ll "+labReport.getDataList().size());
             for(String data:labReport.getDataList()){
                 pst.setString(index++, data);
             }
@@ -262,13 +285,13 @@ public class DBOperations {
             con.close();
 
             result = true;
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
            return result;
     }
     
-    public boolean updateEmployee(Employee employee){
+    public boolean updateEmployee(Employee employee) throws SQLException{
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -283,471 +306,498 @@ public class DBOperations {
             con.close();
 
             result = true;
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
+     public boolean updateEmployeeUserNamePassWord(Employee employee) throws SQLException{
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);              
+            pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = ? WHERE EID = ?");              
+
+            pst.setString(1,employee.getUsername());          
+            pst.setString(2,employee.getPassword());
+            pst.setInt(3,employee.getEID());
+             
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
+     public boolean setDoctorAvailability(int EID,boolean availability) throws SQLException{
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);                   
+            pst = con.prepareStatement("UPDATE Employee SET Availability = ? WHERE EID = ? ");  
+
+            pst.setBoolean(1,availability);            
+            pst.setInt(2,EID);                
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
            return result;
     }
     
-    
     /*
      * Load Data.................................................
      */
     
-    public  ArrayList<Patient> loadPatients(){
+    public  ArrayList<Patient> loadPatients() throws SQLException{
         ArrayList<Patient> patientList = new ArrayList<>();
-        try{
+        
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM PatientFile");              
+        use = pst.executeQuery();                
 
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile");              
-            use = pst.executeQuery();                
-                           
-            while(use.next()){                   
-                Patient patient = new Patient();
-               
-                patient.setPID(use.getInt(1));
-                patient.setFirstName(use.getString(2));
-                patient.setFullName(use.getString(3));
-                patient.setLastName(use.getString(4));
-                patient.setDateOfBirth(use.getDate(5));
-                patient.setGender(use.getString(6));
-                patient.setAddress(use.getString(7));
-                patient.setNIC(use.getString(8));
-                patient.setPatientContactNo(use.getInt(9));
-                patient.setNameOfTheGuardian(use.getString(10));
-                patient.setGuardianContactNo(use.getInt(11));
-                patient.setBloodGroup(use.getString(12));
-                patient.setAllergies(use.getString(13));              
-                patientList.add(patient);
-            }       
-            
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        while(use.next()){                   
+            Patient patient = new Patient();
+
+            patient.setPID(use.getInt(1));
+            patient.setFirstName(use.getString(2));
+            patient.setFullName(use.getString(3));
+            patient.setLastName(use.getString(4));
+            patient.setDateOfBirth(use.getDate(5));
+            patient.setGender(use.getString(6));
+            patient.setAddress(use.getString(7));
+            patient.setNIC(use.getString(8));
+            patient.setPatientContactNo(use.getInt(9));
+            patient.setNameOfTheGuardian(use.getString(10));
+            patient.setGuardianContactNo(use.getInt(11));
+            patient.setBloodGroup(use.getString(12));
+            patient.setAllergies(use.getString(13));              
+            patientList.add(patient);
+        }       
+
+        con.close();
+      
         return patientList;
     }
    
-    public Patient getPatient(int PID){
+    public Patient getPatient(int PID) throws SQLException{
         Patient patient = null;
-        try{
+       
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM PatientFile WHERE PID = ?");
+        pst.setInt(1,PID);
+        use = pst.executeQuery();                
 
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE PID = ?");
-            pst.setInt(1,PID);
-            use = pst.executeQuery();                
-                           
-            if(use.next()){                   
-                patient = new Patient();
-               
-                patient.setPID(use.getInt(1));
-                patient.setFirstName(use.getString(2));
-                patient.setFullName(use.getString(3));
-                patient.setLastName(use.getString(4));
-                patient.setDateOfBirth(use.getDate(5));
-                patient.setGender(use.getString(6));
-                patient.setAddress(use.getString(7));
-                patient.setNIC(use.getString(8));
-                patient.setPatientContactNo(use.getInt(9));
-                patient.setNameOfTheGuardian(use.getString(10));
-                patient.setGuardianContactNo(use.getInt(11));
-                patient.setBloodGroup(use.getString(12));
-                patient.setAllergies(use.getString(13));              
-                
-            }       
-            
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        if(use.next()){                   
+            patient = new Patient();
+
+            patient.setPID(use.getInt(1));
+            patient.setFirstName(use.getString(2));
+            patient.setFullName(use.getString(3));
+            patient.setLastName(use.getString(4));
+            patient.setDateOfBirth(use.getDate(5));
+            patient.setGender(use.getString(6));
+            patient.setAddress(use.getString(7));
+            patient.setNIC(use.getString(8));
+            patient.setPatientContactNo(use.getInt(9));
+            patient.setNameOfTheGuardian(use.getString(10));
+            patient.setGuardianContactNo(use.getInt(11));
+            patient.setBloodGroup(use.getString(12));
+            patient.setAllergies(use.getString(13));              
+
+        }       
+
+        con.close();
+       
         return patient;
     }
     
-    public ArrayList<Doctor> loadDoctors(){
+    public ArrayList<Doctor> loadDoctors() throws SQLException{
         ArrayList<Doctor> doctorList = new ArrayList<>();
-        try{
+        
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE Position='Doctor'");              
+        use = pst.executeQuery();                
 
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM Employee WHERE Position='Doctor'");              
-            use = pst.executeQuery();                
-                          
-            while(use.next()){                   
-                Doctor doctor = new Doctor();
-                
-                doctor.setEID(use.getInt(1));
-                doctor.setName(use.getString(3));
-                doctor.setNIC(use.getString(4));
-                doctor.setUsername(use.getString(5));
-                doctor.setPassword(use.getString(6));   
-                             
-                doctorList.add(doctor);
-            }             
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        while(use.next()){                   
+            Doctor doctor = new Doctor();
+
+            doctor.setEID(use.getInt(1));
+            doctor.setName(use.getString(3));
+            doctor.setNIC(use.getString(4));
+            doctor.setUsername(use.getString(5));
+            doctor.setPassword(use.getString(6));  
+            doctor.setAvailablity(use.getBoolean(7));
+
+            doctorList.add(doctor);
+        }             
+        con.close();
+        
         return doctorList;
     }
     
-    public ArrayList<Employee> loadEmplyee(){
+    public ArrayList<Employee> loadEmplyee() throws SQLException{
         ArrayList<Employee> employeeList = new ArrayList<>();
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM Employee WHERE Position<>'Manager'");              
-            
-            use = pst.executeQuery();
-            
-            while(use.next()){                   
-                Employee employee = emfac.getEmployee(use.getString(2));                
-                employee.setEID(use.getInt(1));
-                employee.setName(use.getString(3));
-                employee.setNIC(use.getString(4));
-                employee.setUsername(use.getString(5));
-                employee.setPassword(use.getString(6));         
-            }             
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE Position<>'Manager'");              
+
+        use = pst.executeQuery();
+
+        while(use.next()){                   
+            Employee employee = emfac.getEmployee(use.getString(2));                
+            employee.setEID(use.getInt(1));
+            employee.setName(use.getString(3));
+            employee.setNIC(use.getString(4));
+            employee.setUsername(use.getString(5));
+            employee.setPassword(use.getString(6));         
+        }             
+        con.close();
+       
         return employeeList;
     }
-    public Employee getEmplyee(int EID){
+    public Employee getEmplyee(int EID) throws SQLException{
         Employee employee=null;
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM Employee WHERE EID=?");              
-            pst.setInt(1, EID);
-            use = pst.executeQuery();
-            
-            while(use.next()){                   
-                employee = emfac.getEmployee(use.getString(2));                
-                employee.setEID(use.getInt(1));
-                employee.setName(use.getString(3));
-                employee.setNIC(use.getString(4));
-                employee.setUsername(use.getString(5));
-                employee.setPassword(use.getString(6));         
-            }             
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE EID=?");              
+        pst.setInt(1, EID);
+        use = pst.executeQuery();
+
+        while(use.next()){                   
+            employee = emfac.getEmployee(use.getString(2));                
+            employee.setEID(use.getInt(1));
+            employee.setName(use.getString(3));
+            employee.setNIC(use.getString(4));
+            employee.setUsername(use.getString(5));
+            employee.setPassword(use.getString(6));         
+        }             
+        con.close();
+        
         return employee;
     }
-    public ArrayList<Date> getLabDates(int PID){
+    public ArrayList<Date> getLabDates(int PID) throws SQLException{
         ArrayList<Date> dateList = new ArrayList<>();
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM LabReport WHERE PID= ?");
-            pst.setInt(1,PID);
-            use = pst.executeQuery();                
-                            
-            while(use.next()){                   
-                dateList.add(use.getDate(2));
-            }         
-            con.close();            
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM LabReport WHERE PID= ?");
+        pst.setInt(1,PID);
+        use = pst.executeQuery();                
+
+        while(use.next()){                   
+            dateList.add(use.getDate(2));
+        }         
+        con.close();            
+       
         return dateList;
     }
-    public ArrayList<Date> getMedicalDates(int PID){
+    public ArrayList<Date> getMedicalDates(int PID) throws SQLException{
         ArrayList<Date> dateList = new ArrayList<>();
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE PID= ?");
-            pst.setInt(1,PID);
-            use = pst.executeQuery();                
-                            
-            while(use.next()){                   
-                dateList.add(use.getDate(2));
-            }         
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+       
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE PID= ?");
+        pst.setInt(1,PID);
+        use = pst.executeQuery();                
+
+        while(use.next()){                   
+            dateList.add(use.getDate(2));
+        }         
+        con.close();
+      
         return dateList;
     }
-    public ArrayList<MedicalReport> getMedicalReports(int PID,Date date){
-        ArrayList<MedicalReport> medicalReportList = new ArrayList<>();
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE PID= ? AND Date =?");
-            pst.setInt(1,PID);
-            pst.setDate(2, date);
-            use = pst.executeQuery();                
-                            
-            while(use.next()){                  
-                MedicalReport medicalReport =  new MedicalReport();
-                medicalReport.setPID(use.getInt(1));
-                medicalReport.setDate(use.getDate(2));
-                medicalReport.setDoctorID(use.getInt(3));
-                medicalReport.setMedicalReportNum(use.getInt(4));
-                medicalReport.setTestTypes(use.getString(5));
-                medicalReport.setTreatementDescription(use.getString(6));     
-                medicalReportList.add(medicalReport);
-            }         
-            con.close();;
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+    public ArrayList<MedicalReport> getMedicalReports(int PID,Date date) throws SQLException{
+        ArrayList<MedicalReport> medicalReportList = new ArrayList<>();      
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE PID= ? AND Date =?");
+        pst.setInt(1,PID);
+        pst.setDate(2, date);
+        use = pst.executeQuery();                
+
+        while(use.next()){                  
+            MedicalReport medicalReport =  new MedicalReport();
+            medicalReport.setPID(use.getInt(1));
+            medicalReport.setDate(use.getDate(2));
+            medicalReport.setDoctorID(use.getInt(3));
+            medicalReport.setMedicalReportNum(use.getInt(4));
+            medicalReport.setTestTypes(use.getString(5));
+            medicalReport.setTreatementDescription(use.getString(6));     
+            medicalReportList.add(medicalReport);
+        }         
+        con.close();
+        
         return medicalReportList;
     }
     
-    public MedicalReport getMedicalReport(int medicalReportNum){
+    public MedicalReport getMedicalReport(int medicalReportNum) throws SQLException{
         MedicalReport medicalReport = null;
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE MedicalReportNum = ?");
-            pst.setInt(1,medicalReportNum);
-           
-            use = pst.executeQuery();                
-                            
-            if(use.next()){                  
-                medicalReport =  new MedicalReport();
-                medicalReport.setPID(use.getInt(1));
-                medicalReport.setDate(use.getDate(2));
-                medicalReport.setDoctorID(use.getInt(3));
-                medicalReport.setMedicalReportNum(use.getInt(4));
-                medicalReport.setTestTypes(use.getString(5));
-                medicalReport.setTreatementDescription(use.getString(6));     
-                
-            }         
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE MedicalReportNum = ?");
+        pst.setInt(1,medicalReportNum);
+
+        use = pst.executeQuery();                
+
+        if(use.next()){                  
+            medicalReport =  new MedicalReport();
+            medicalReport.setPID(use.getInt(1));
+            medicalReport.setDate(use.getDate(2));
+            medicalReport.setDoctorID(use.getInt(3));
+            medicalReport.setMedicalReportNum(use.getInt(4));
+            medicalReport.setTestTypes(use.getString(5));
+            medicalReport.setTreatementDescription(use.getString(6));     
+
+        }         
+        con.close();
+        
         return medicalReport;
     }
     
-    public ArrayList<LabReport> getLabReports(int PID,Date date){
-        ArrayList<LabReport> labReportList = new ArrayList<>();
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM LabReport WHERE PID = ? AND Date = ?");
-            pst.setInt(1,PID);
-            pst.setDate(2, date);
-            use = pst.executeQuery();             
-            
-            while(use.next()){       
-                
-                LabReport labReport =  new LabReport();
-                labReport.setPID(use.getInt(1));
-                labReport.setDate(use.getDate(2));
-                labReport.setLabReportNo(use.getInt(3));
-                labReport.setTestType(use.getInt(4));
-                labReport.setLabTechID(use.getInt(5));          
-                
-                int index = 6;
-                
-                for(int i = 0;(i+index)<22;i++){               
-                    String data = use.getString(index++);
-                    if(data!=null)
-                        labReport.addDataToTheList(data);
-                }                
-                labReportList.add(labReport);
-            }         
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+    public ArrayList<LabReport> getLabReports(int PID,Date date) throws SQLException{
+        ArrayList<LabReport> labReportList = new ArrayList<>();       
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM LabReport WHERE PID = ? AND Date = ?");
+        pst.setInt(1,PID);
+        pst.setDate(2, date);
+        use = pst.executeQuery();             
+
+        while(use.next()){       
+
+            LabReport labReport =  new LabReport();
+            labReport.setPID(use.getInt(1));
+            labReport.setDate(use.getDate(2));
+            labReport.setLabReportNo(use.getInt(3));
+            labReport.setTestType(use.getInt(4));
+            labReport.setLabTechID(use.getInt(5));          
+
+            int index = 6;
+
+            for(int i = 0;i<16;i++){                
+                String data = use.getString(index++);
+                if(data!=null)
+                    labReport.addDataToTheList(data);
+            }               
+            labReportList.add(labReport);
+        }         
+        con.close();
+
         return labReportList;
     }
     
-    public LabReport getLabReport(int labReportNo){
-        LabReport labReport = null;
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM LabReport WHERE LabReportNo = ?");
-            pst.setInt(1,labReportNo);
-            
-            use = pst.executeQuery();             
-            
-            if(use.next()){       
-                
-                labReport =  new LabReport();
-                labReport.setPID(use.getInt(1));
-                labReport.setDate(use.getDate(2));
-                labReport.setLabReportNo(use.getInt(3));
-                labReport.setTestType(use.getInt(4));
-                labReport.setLabTechID(use.getInt(5));          
-                
-                int index = 6;
-                
-                for(int i = 0;(i+index)<22;i++){               
-                    String data = use.getString(index++);
-                    if(data!=null)
-                        labReport.addDataToTheList(data);
-                }                
-               
-            }         
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+    public LabReport getLabReport(int labReportNo) throws SQLException{
+        LabReport labReport = null;        
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM LabReport WHERE LabReportNo = ?");
+        pst.setInt(1,labReportNo);
+
+        use = pst.executeQuery();             
+
+        if(use.next()){       
+
+            labReport =  new LabReport();
+            labReport.setPID(use.getInt(1));
+            labReport.setDate(use.getDate(2));
+            labReport.setLabReportNo(use.getInt(3));
+            labReport.setTestType(use.getInt(4));
+            labReport.setLabTechID(use.getInt(5));          
+
+            int index = 6;
+
+            for(int i = 0;i<16;i++){                
+                String data = use.getString(index++);
+                if(data!=null)
+                    labReport.addDataToTheList(data);
+            }                
+
+        }         
+        con.close();
+       
         return labReport;
     }
-     public LabReport getLastLabReport(){
+    public LabReport getLastLabReport() throws SQLException{
         LabReport labReport = null;
-        int labReportNo = getLastLabReportNo();
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM LabReport WHERE LabReportNo = ?");
-            
-            pst.setInt(1,labReportNo);            
-            use = pst.executeQuery();      
-            if(use.next()){       
-                
-                labReport =  new LabReport();
-                labReport.setPID(use.getInt(1));
-                labReport.setDate(use.getDate(2));
-                labReport.setLabReportNo(use.getInt(3));
-                labReport.setTestType(use.getInt(4));
-                labReport.setLabTechID(use.getInt(5));          
-                
-                int index = 6;
-                
-                for(int i = 0;(i+index)<22;i++){               
-                    String data = use.getString(index++);
-                    if(data!=null)
-                        labReport.addDataToTheList(data);
-                }                
-               
-            }         
-            con.close();
-        }catch(SQLException ex){
-            System.out.println("ee"+ex);
-            
-        }
+        int labReportNo = getLastLabReportNo();        
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM LabReport WHERE LabReportNo = ?");
+
+        pst.setInt(1,labReportNo);            
+        use = pst.executeQuery();      
+        if(use.next()){       
+
+            labReport =  new LabReport();
+            labReport.setPID(use.getInt(1));
+            labReport.setDate(use.getDate(2));
+            labReport.setLabReportNo(use.getInt(3));
+            labReport.setTestType(use.getInt(4));
+            labReport.setLabTechID(use.getInt(5));          
+
+            int index = 6;
+            for(int i = 0;i<16;i++){                
+                String data = use.getString(index++);
+                if(data!=null)
+                    labReport.addDataToTheList(data);
+            }    
+            System.out.println(labReport.getDataList().size());
+        }    
+        con.close();
+        
         return labReport;
     }
-    public int getLastPID(){
+    public ArrayList<Room> getAddmitedRooms() throws SQLException{
+        ArrayList<Room> roomList = null;    
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM room WHERE Availability = 1");
+        
+        use = pst.executeQuery();             
+
+        if(use.next()){ 
+            Room room = new Room();
+            room.setRoomNo(use.getInt(1));
+            room.setAvailability(use.getBoolean(2));
+            room.setPID(use.getInt(3));
+        }         
+        con.close();
+       
+        return roomList;
+    }
+    public int getLastPID() throws SQLException{
         int pid = -1;
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT MAX(PID) FROM PatientFile");
-            use = pst.executeQuery();   
-            if(use.next())
-                pid = use.getInt(1);
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT MAX(PID) FROM PatientFile");
+        use = pst.executeQuery();   
+        if(use.next())
+            pid = use.getInt(1);
+
         return pid;
     }
-    public int getLastLabReportNo(){
-        int labReportNo = -1;
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT MAX(LabReportNo) FROM LabReport");
-            use = pst.executeQuery();  
-            
-            if(use.next())
-                labReportNo = use.getInt(1);
-            
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+    public int getLastLabReportNo() throws SQLException{
+        int labReportNo = -1;        
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT MAX(LabReportNo) FROM LabReport");
+        use = pst.executeQuery();  
+
+        if(use.next())
+            labReportNo = use.getInt(1);
+        
         return labReportNo;
     }
-     
+    public boolean getDoctorAvailability(int EID) throws SQLException{
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);                   
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE EID = ? ");  
+            pst.setInt(1, EID);
+            use = pst.executeQuery();
+            if(use.next()){                
+                return use.getBoolean(7);
+            }
+            con.close();
+
+            result = true;
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
     /*
      * Search Data...........................................................................
      */
-     public ArrayList<Doctor> searchDoctors(String name){
+     public ArrayList<Doctor> searchDoctors(String name) throws SQLException{
         ArrayList<Doctor> doctorList = new ArrayList<>();
-        try{
 
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM Employee WHERE Position='Doctor' AND Name LIKE '%"+name+"%'");              
-            use = pst.executeQuery();                
-            System.out.println(pst);              
-            while(use.next()){                   
-                Doctor doctor = new Doctor();
-                
-                doctor.setEID(use.getInt(1));
-                doctor.setName(use.getString(3));
-                doctor.setNIC(use.getString(4));
-                doctor.setUsername(use.getString(5));
-                doctor.setPassword(use.getString(6));   
-                             
-                doctorList.add(doctor);
-            }             
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE Position='Doctor' AND Name LIKE '%"+name+"%'");              
+        use = pst.executeQuery();                
+        System.out.println(pst);              
+        while(use.next()){                   
+            Doctor doctor = new Doctor();
+
+            doctor.setEID(use.getInt(1));
+            doctor.setName(use.getString(3));
+            doctor.setNIC(use.getString(4));
+            doctor.setUsername(use.getString(5));
+            doctor.setPassword(use.getString(6));   
+            doctor.setAvailablity(use.getBoolean(7));
+
+            doctorList.add(doctor);
+        }             
+        con.close();
+
         return doctorList;
     } 
-    public ArrayList<Patient> searchPatients(String name){
+    public ArrayList<Patient> searchPatients(String name) throws SQLException{
         ArrayList<Patient> patientList = new ArrayList<>();
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FullName LIKE '%"+name+"%'");          
-            use = pst.executeQuery();      
-            
-            while(use.next()){     
-                
-                Patient patient = new Patient();               
-                patient.setPID(use.getInt(1));
-                patient.setFirstName(use.getString(2));
-                patient.setFullName(use.getString(3));
-                patient.setLastName(use.getString(4));
-                patient.setDateOfBirth(use.getDate(5));
-                patient.setGender(use.getString(6));
-                patient.setAddress(use.getString(7));
-                patient.setNIC(use.getString(8));
-                patient.setPatientContactNo(use.getInt(9));
-                patient.setNameOfTheGuardian(use.getString(10));
-                patient.setGuardianContactNo(use.getInt(11));
-                patient.setBloodGroup(use.getString(12));
-                patient.setAllergies(use.getString(13));   
-                
-                patientList.add(patient);
-            }    
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FullName LIKE '%"+name+"%'");          
+        use = pst.executeQuery();      
+
+        while(use.next()){     
+
+            Patient patient = new Patient();               
+            patient.setPID(use.getInt(1));
+            patient.setFirstName(use.getString(2));
+            patient.setFullName(use.getString(3));
+            patient.setLastName(use.getString(4));
+            patient.setDateOfBirth(use.getDate(5));
+            patient.setGender(use.getString(6));
+            patient.setAddress(use.getString(7));
+            patient.setNIC(use.getString(8));
+            patient.setPatientContactNo(use.getInt(9));
+            patient.setNameOfTheGuardian(use.getString(10));
+            patient.setGuardianContactNo(use.getInt(11));
+            patient.setBloodGroup(use.getString(12));
+            patient.setAllergies(use.getString(13));   
+
+            patientList.add(patient);
+        }    
+        con.close();
+        
         return patientList;
     }
-    public ArrayList<Patient> searchPatientsByNIC(String NIC){
+    public ArrayList<Patient> searchPatientsByNIC(String NIC) throws SQLException{
         ArrayList<Patient> patientList = new ArrayList<>();
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
-            
-            pst.setString(1, NIC);
-            use = pst.executeQuery();                
-            System.out.println(pst);
-            while(use.next()){     
-                
-                Patient patient = new Patient();               
-                patient.setPID(use.getInt(1));
-                patient.setFirstName(use.getString(2));
-                patient.setFullName(use.getString(3));
-                patient.setLastName(use.getString(4));
-                patient.setDateOfBirth(use.getDate(5));
-                patient.setGender(use.getString(6));
-                patient.setAddress(use.getString(7));
-                patient.setNIC(use.getString(8));
-                patient.setPatientContactNo(use.getInt(9));
-                patient.setNameOfTheGuardian(use.getString(10));
-                patient.setGuardianContactNo(use.getInt(11));
-                patient.setBloodGroup(use.getString(12));
-                patient.setAllergies(use.getString(13));   
-                
-                patientList.add(patient);
-            }    
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
+
+        pst.setString(1, NIC);
+        use = pst.executeQuery();                
+        System.out.println(pst);
+        while(use.next()){     
+
+            Patient patient = new Patient();               
+            patient.setPID(use.getInt(1));
+            patient.setFirstName(use.getString(2));
+            patient.setFullName(use.getString(3));
+            patient.setLastName(use.getString(4));
+            patient.setDateOfBirth(use.getDate(5));
+            patient.setGender(use.getString(6));
+            patient.setAddress(use.getString(7));
+            patient.setNIC(use.getString(8));
+            patient.setPatientContactNo(use.getInt(9));
+            patient.setNameOfTheGuardian(use.getString(10));
+            patient.setGuardianContactNo(use.getInt(11));
+            patient.setBloodGroup(use.getString(12));
+            patient.setAllergies(use.getString(13));   
+
+            patientList.add(patient);
+        }    
+        con.close();
+       
         return patientList;
     }
     /*
      * Delete Data............................................................................
      */
     
-    public boolean deleteEmployee(int EID){
+    public boolean deleteEmployee(int EID) throws SQLException{
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -759,7 +809,7 @@ public class DBOperations {
             con.close();
              
             result = true;
-        }catch(  SQLException | ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
         }
            return result;
@@ -767,64 +817,95 @@ public class DBOperations {
     /*
      * check Data.....................................................................
      */
-     public Employee checkEmplyee(String uname,String pword){
+     public Employee checkEmplyee(String uname,String pword) throws SQLException{
         Employee employee=null;
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
-            pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");   
-            pst.setString(1,uname);
-            pst.setString(2,pword);
-            use = pst.executeQuery();
-            
-            while(use.next()){                   
-                employee = emfac.getEmployee(use.getString(2));                
-                employee.setEID(use.getInt(1));
-                employee.setName(use.getString(3));
-                employee.setNIC(use.getString(4));
-                employee.setUsername(use.getString(5));
-                employee.setPassword(use.getString(6));         
-            }             
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        
+        con = DriverManager.getConnection(url, user, password);               
+        //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");   
+        pst.setString(1,uname);
+        pst.setString(2,pword);
+        use = pst.executeQuery();
+
+        while(use.next()){                   
+            employee = emfac.getEmployee(use.getString(2));                
+            employee.setEID(use.getInt(1));
+            employee.setName(use.getString(3));
+            employee.setNIC(use.getString(4));
+            employee.setUsername(use.getString(5));
+            employee.setPassword(use.getString(6));         
+        }             
+        con.close();
+       
         return employee;
     }
-    public boolean checkPatientNIC(String NIC){
+    public boolean checkPatientNIC(String NIC) throws SQLException{        
         
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
-            
-            pst.setString(1, NIC);
-            use = pst.executeQuery();                
-            System.out.println(pst);
-            while(use.next()){     
-                return true;
-            }    
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
+        pst.setString(1, NIC);
+        use = pst.executeQuery();                
+        System.out.println(pst);
+        while(use.next()){     
+            return true;
+        }    
+        con.close();
+       
         return false;
     }
-    public boolean checkPID(String pid){
+    public boolean checkPID(String pid) throws SQLException{
+        con = DriverManager.getConnection(url, user, password);               
+        pst = con.prepareStatement("SELECT * FROM PatientFile WHERE PID=?");
+        pst.setString(1, pid);
+        use = pst.executeQuery();                
+        System.out.println(pst);
+        while(use.next()){     
+            return true;
+        }    
+        con.close();
+        return false;
+    }
+    public boolean checkUserName(String uname) throws SQLException{
+       
         
-        try{
-            con = DriverManager.getConnection(url, user, password);               
-            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE PID=?");
-            
-            pst.setString(1, pid);
-            use = pst.executeQuery();                
-            System.out.println(pst);
-            while(use.next()){     
-                return true;
-            }    
-            con.close();
-        }catch(SQLException ex){
-            System.out.println(ex);
-        }
+        con = DriverManager.getConnection(url, user, password);
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ?");   
+        pst.setString(1,uname);
+        use = pst.executeQuery();
+
+        if(use.next()){                   
+            return true;        
+        }             
+        con.close();
+       
+        return false;
+    }
+    public boolean checkPassword(String pword) throws SQLException{       
+        
+        con = DriverManager.getConnection(url, user, password);               
+        //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE Password = ?");   
+        pst.setString(1,pword);        
+        use = pst.executeQuery();
+        if(use.next()){                   
+            return true;        
+        }             
+        con.close();
+       
+        return false;
+    }
+     public boolean checkDoctorID(int eid) throws SQLException{        
+        con = DriverManager.getConnection(url, user, password);
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE EID = ?");   
+        pst.setInt(1,eid);
+        use = pst.executeQuery();
+
+        if(use.next()){  
+            if(use.getString(2).equals("Doctor"))
+                return true;        
+        }             
+        con.close();
+       
         return false;
     }
 }
