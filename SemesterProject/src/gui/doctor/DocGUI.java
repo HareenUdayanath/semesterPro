@@ -343,6 +343,7 @@ public class DocGUI extends javax.swing.JFrame {
         if(mode == 5){
             LabReport reqReport = (LabReport)detailList.getSelectedValue();
             int reportNum = reqReport.getLabReportNo();
+            System.out.println(reportNum);
             ShowLabReportGUI labReport = new ShowLabReportGUI(reqReport);
             labReport.setVisible(true);
            

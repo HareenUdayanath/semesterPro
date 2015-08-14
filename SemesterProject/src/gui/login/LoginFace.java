@@ -18,6 +18,7 @@ public class LoginFace extends javax.swing.JFrame {
      */
     public LoginFace() {
         this.iFactory = new InterFaceFactory();
+        this.setBounds(400,80, WIDTH, WIDTH);
         initComponents();
     }
 
