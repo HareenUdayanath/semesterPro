@@ -330,8 +330,8 @@ public class DBOperations {
             System.out.println(ex);
         }
            return result;
-    }
-     public boolean setDoctorAvailability(int EID,boolean availability) throws SQLException{
+    }   
+    public boolean setDoctorAvailability(int EID,boolean availability) throws SQLException{
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();

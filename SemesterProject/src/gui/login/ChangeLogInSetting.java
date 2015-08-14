@@ -34,7 +34,11 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
     public void getPreviousData(int eid) throws SQLException{   
         dataBase = DBOperations.getInstace();
         empId = eid;
-        changeEmp = dataBase.getEmplyee(eid);
+        try {
+            changeEmp = dataBase.getEmplyee(eid);
+        } catch (SQLException ex) {
+            Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.txtUserName.setText(changeEmp.getUsername());    
     }
     private boolean checkUserName(String userName){
