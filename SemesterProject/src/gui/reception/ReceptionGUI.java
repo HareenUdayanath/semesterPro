@@ -14,12 +14,22 @@ import javax.swing.JOptionPane;
  * @author Irfad Hussain
  */
 public class ReceptionGUI extends javax.swing.JFrame {
+    
+    private RoomTableModel roomModel;
 
     /**
      * Creates new form ReceptionFace
      */
     public ReceptionGUI() {
         initComponents();
+        new Thread(){
+            public void run(){
+                roomModel = new RoomTableModel();
+                tblRooms.setModel(roomModel);
+            }
+        }.start();
+        /*roomModel = new RoomTableModel();
+        tblRooms.setModel(roomModel);*/
     }
 
     /**
@@ -41,9 +51,9 @@ public class ReceptionGUI extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        tblRooms = new javax.swing.JTable();
+        btnAdmitPatient = new javax.swing.JButton();
+        btnDischargePatient = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -135,22 +145,30 @@ public class ReceptionGUI extends javax.swing.JFrame {
 
         jLabel1.setText("Search By : ");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblRooms.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {"", "", null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Room Number", "Patient Name", "Admit Date"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tblRooms.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tblRooms);
 
-        jButton1.setText("Admit Patient");
+        btnAdmitPatient.setText("Admit Patient");
+        btnAdmitPatient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdmitPatientActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Discharge Patient");
+        btnDischargePatient.setText("Discharge Patient");
+        btnDischargePatient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDischargePatientActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -165,9 +183,9 @@ public class ReceptionGUI extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addComponent(btnAdmitPatient)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)))
+                        .addComponent(btnDischargePatient)))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -175,9 +193,9 @@ public class ReceptionGUI extends javax.swing.JFrame {
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnDischargePatient, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAdmitPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
                 .addContainerGap())
@@ -217,27 +235,27 @@ public class ReceptionGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPatientActionPerformed
-        this.setEnabled(false);
         DetailsForm df = new DetailsForm(this,0);
         df.setTableModel(new PatientDetailsModel());
         df.setLocationRelativeTo(null);
         df.setVisible(true);
+        this.setEnabled(false);
     }//GEN-LAST:event_btnSearchPatientActionPerformed
 
     private void btnAddNewPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewPatientActionPerformed
-        this.setEnabled(false);
         AddPatientFrame apf = new AddPatientFrame(this);
         apf.setLocationRelativeTo(null);
         apf.setVisible(true);
+        this.setEnabled(false);
     }//GEN-LAST:event_btnAddNewPatientActionPerformed
 
     private void btnDoctorListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoctorListActionPerformed
         try {
-            this.setEnabled(false);
             DetailsForm df = new DetailsForm(this,1);
             df.setTableModel(new DoctorDetailsModel());
             df.setLocationRelativeTo(null);
             df.setVisible(true);
+            this.setEnabled(false);
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Sorry, an error occured while loading Doctors!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -252,6 +270,21 @@ public class ReceptionGUI extends javax.swing.JFrame {
             l.setVisible(true);
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void btnAdmitPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdmitPatientActionPerformed
+        AdmitDischargeForm adf = new AdmitDischargeForm(this);
+        adf.setVisible(true);
+    }//GEN-LAST:event_btnAdmitPatientActionPerformed
+
+    private void btnDischargePatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDischargePatientActionPerformed
+        int selected = tblRooms.getSelectedColumn();
+        if (selected == -1){
+            JOptionPane.showMessageDialog(this, "No item selected!", null, JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        AdmitDischargeForm adf = new AdmitDischargeForm(this);
+        adf.setVisible(true);
+    }//GEN-LAST:event_btnDischargePatientActionPerformed
 
     /**
      * @param args the command line arguments
@@ -297,10 +330,10 @@ public class ReceptionGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddNewPatient;
+    private javax.swing.JButton btnAdmitPatient;
+    private javax.swing.JButton btnDischargePatient;
     private javax.swing.JButton btnDoctorList;
     private javax.swing.JButton btnSearchPatient;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
@@ -308,6 +341,6 @@ public class ReceptionGUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblRooms;
     // End of variables declaration//GEN-END:variables
 }

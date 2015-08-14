@@ -31,7 +31,11 @@ public class DoctorDetailsModel extends DetailsTableModel{
             case 1:
                 return values.get(rowIndex).getName();
             case 2:
-                return values.get(rowIndex).getNIC();
+                if (values.get(rowIndex).isAvailablity()){
+                    return "Available";
+                }else{
+                    return "Not Available";
+                }
             default:
                 return "";
         }
