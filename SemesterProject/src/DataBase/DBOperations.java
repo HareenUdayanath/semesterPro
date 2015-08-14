@@ -18,7 +18,7 @@ public class DBOperations {
     private static DBOperations instance = null;
     //private String url = "jdbc:odbc://192.168.173.1:3306/test2";    
     //private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
-    private String url = "jdbc:mysql://localhost:3306/semesterproject";
+    private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
     
@@ -330,28 +330,8 @@ public class DBOperations {
             System.out.println(ex);
         }
            return result;
-    }
-     public boolean updateEmployeeUserNamePassWord(Employee employee) throws SQLException{
-        boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = ? WHERE EID = ?");              
-
-            pst.setString(1,employee.getUsername());          
-            pst.setString(2,employee.getPassword());
-            pst.setInt(3,employee.getEID());
-             
-            pst.executeUpdate();
-            con.close();
-
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }
-           return result;
-    }
-     public boolean setDoctorAvailability(int EID,boolean availability) throws SQLException{
+    }   
+    public boolean setDoctorAvailability(int EID,boolean availability) throws SQLException{
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
