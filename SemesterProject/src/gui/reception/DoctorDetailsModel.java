@@ -7,6 +7,7 @@ package gui.reception;
 
 import DataBase.DBOperations;
 import Domain.Doctor;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +18,7 @@ public class DoctorDetailsModel extends DetailsTableModel{
 
     private ArrayList<Doctor> values;
     
-    public DoctorDetailsModel(){
+    public DoctorDetailsModel() throws SQLException{
         super(new String[]{"Employee ID","Name","Availability"});
         values = DBOperations.getInstace().loadDoctors();    // load avilable doctors at begining
     }
@@ -42,7 +43,7 @@ public class DoctorDetailsModel extends DetailsTableModel{
     }
     
     @Override
-    public void search(String name, boolean searchByName) {
+    public void search(String name, boolean searchByName) throws SQLException {
         setValues(DBOperations.getInstace().searchDoctors(name));
     }
 

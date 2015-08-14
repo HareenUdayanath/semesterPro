@@ -8,6 +8,7 @@ package gui.reception;
 import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.Patient;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -28,8 +29,12 @@ public class AddPatientFrame extends javax.swing.JFrame {
     
     public AddPatientFrame(ReceptionGUI parent){
         this();
-        this.parent = parent;
-        txtPID.setText(Integer.toString(DBOperations.getInstace().getLastPID()+1));
+        try {
+            this.parent = parent;
+            txtPID.setText(Integer.toString(DBOperations.getInstace().getLastPID()+1));
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Sorry,an error occured while retrieving Patient ID", "Errror", JOptionPane.WARNING_MESSAGE);
+        }
     }
     
     /**
@@ -195,12 +200,22 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 btnAddPatientActionPerformed(evt);
             }
         });
+        btnAddPatient.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                btnAddPatientKeyReleased(evt);
+            }
+        });
 
         btnCanel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnCanel.setText("Cancel");
         btnCanel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCanelActionPerformed(evt);
+            }
+        });
+        btnCanel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                btnCanelKeyReleased(evt);
             }
         });
 
@@ -443,25 +458,40 @@ public class AddPatientFrame extends javax.swing.JFrame {
         parent.setEnabled(true);
     }//GEN-LAST:event_formWindowClosing
 
+    private void btnCanelKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnCanelKeyReleased
+        if (evt.getKeyCode()==KeyEvent.VK_ENTER)
+            btnCanelActionPerformed(null);
+    }//GEN-LAST:event_btnCanelKeyReleased
+
+    private void btnAddPatientKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAddPatientKeyReleased
+        if (evt.getKeyCode()==KeyEvent.VK_ENTER)
+            btnAddPatientActionPerformed(null);
+    }//GEN-LAST:event_btnAddPatientKeyReleased
+
     private boolean validateDetails(){
-        if (txtFirstName.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "First Name cannot be empty!", "Invalid Detail", JOptionPane.WARNING_MESSAGE);
+        try {
+            if (txtFirstName.getText().equals("")){
+                JOptionPane.showMessageDialog(this, "First Name cannot be empty!", "Invalid Detail", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            if (txtFullName1.getText().equals("") && txtFullName2.getText().equals("")){
+                JOptionPane.showMessageDialog(this, "Full Name cannot be empty!", "Invalid Detail", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            String NIC = txtNIC.getText();
+            if (!NIC.equals("") && !(NIC.length()==10 && (NIC.substring(NIC.length()-1, NIC.length()).equalsIgnoreCase("V") || NIC.substring(NIC.length()-1, NIC.length()).equalsIgnoreCase("V")))){
+                JOptionPane.showMessageDialog(this, "Invalid NIC","Invalid Detail", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            if (DBOperations.getInstace().checkPatientNIC(NIC)){
+                JOptionPane.showMessageDialog(this, "NIC already exsits","Invalid Detail", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            return true;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Sorry, An error occured while checking Patient ID!","Error", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if (txtFullName1.getText().equals("") && txtFullName2.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "Full Name cannot be empty!", "Invalid Detail", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-        String NIC = txtNIC.getText();
-        if (!NIC.equals("") && !(NIC.length()==10 && (NIC.substring(NIC.length()-1, NIC.length()).equalsIgnoreCase("V") || NIC.substring(NIC.length()-1, NIC.length()).equalsIgnoreCase("V")))){
-            JOptionPane.showMessageDialog(this, "Invalid NIC","Invalid Detail", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-        if (DBOperations.getInstace().checkPatientNIC(NIC)){
-            JOptionPane.showMessageDialog(this, "NIC already exsits","Invalid Detail", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-        return true;
     }
     
     /**

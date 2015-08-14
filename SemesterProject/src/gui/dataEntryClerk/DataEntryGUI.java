@@ -11,10 +11,7 @@ import Domain.MedicalReport;
 import Domain.Patient;
 import gui.login.LoginFace;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import sun.org.mozilla.javascript.internal.ScriptRuntime;
 
 /**
  *
@@ -42,6 +39,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
@@ -110,15 +108,18 @@ public class DataEntryGUI extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/Secound1.png"))); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 136, Short.MAX_VALUE)
+            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jTabbedPane1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -230,7 +231,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel24)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAddReport, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -552,7 +553,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -603,33 +604,62 @@ public class DataEntryGUI extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Successfully updated patient.", "Success", JOptionPane.INFORMATION_MESSAGE);
                     btnCanelActionPerformed(null);
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "An error occured while adding.Please try again.", "Error", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "An error occured while updating.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
     }//GEN-LAST:event_btnUpdatePatientActionPerformed
 
     private void btnCanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCanelActionPerformed
-
+        txtPID.setText("");
+        txtFirstName.setText("");
+        txtLastName.setText("");
+        txtFullName1.setText("");
+        txtFullName2.setText("");
+        txtYear.setText("");
+        txtMonth.setText("");
+        txtDay.setText("");
+        cmbxGender.setSelectedIndex(0);
+        txtAddress1.setText("");
+        txtAddress2.setText("");
+        txtAddress3.setText("");
+        txtNIC.setText("");
+        txtPatientContactNo.setText("");
+        txtNameOfGuardian.setText("");
+        txtGuardianContact.setText("");
+        cmbxBloodGroup.setSelectedIndex(0);
+        txtAllergies1.setText("");
+        txtAllergies2.setText("");
     }//GEN-LAST:event_btnCanelActionPerformed
 
     private void btnAddReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddReportActionPerformed
         MedicalReport mReport = null;
-        if (DBOperations.getInstace().checkPID(txtReportPID.getText())){
-            try{
+        try{
+            if (DBOperations.getInstace().checkPID(txtReportPID.getText())){
                 mReport = new MedicalReport();
                 mReport.setPID(Integer.parseInt(txtReportPID.getText()));
                 mReport.setDoctorID(Integer.parseInt(txtReportDID.getText()));
                 mReport.setDate(Help.getDate(Integer.parseInt(txtReportYear.getText()), Integer.parseInt(txtReportMonth.getText()), Integer.parseInt(txtReportDay.getText())));
                 mReport.setTreatementDescription(txtTreatmentDescription.getText());
-            }catch(NumberFormatException ex){
-                mReport = null;
             }
+        }catch(NumberFormatException ex){
+            ex.printStackTrace();
+           mReport = null;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Sorry, an error occured while checking ID", "Error", JOptionPane.ERROR_MESSAGE);
         }
         if (mReport != null){
             try {
                 DBOperations.getInstace().addMedicalReport(mReport);
+                JOptionPane.showMessageDialog(this, "Report added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                txtReportPID.setText("");
+                txtReportDID.setText("");
+                txtReportYear.setText("");
+                txtReportMonth.setText("");
+                txtReportDay.setText("");
+                txtTreatmentDescription.setText("");
             } catch (SQLException ex) {
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Invalid Detail", null, JOptionPane.WARNING_MESSAGE);
             }
         }else{
@@ -652,6 +682,8 @@ public class DataEntryGUI extends javax.swing.JFrame {
             p = DBOperations.getInstace().getPatient(Integer.parseInt(txtPID.getText()));
         }catch(NumberFormatException ex){
             p = null;
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Sorry, an error occured while loading patient", "Error", JOptionPane.ERROR_MESSAGE);
         }
         if (p == null){
             JOptionPane.showMessageDialog(this, "Invalid Patient ID", null, JOptionPane.ERROR_MESSAGE);
@@ -749,6 +781,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
@@ -804,10 +837,6 @@ public class DataEntryGUI extends javax.swing.JFrame {
         String NIC = txtNIC.getText();
         if (!NIC.equals("") && !(NIC.length()==10 && (NIC.substring(NIC.length()-1, NIC.length()).equalsIgnoreCase("V") || NIC.substring(NIC.length()-1, NIC.length()).equalsIgnoreCase("V")))){
             JOptionPane.showMessageDialog(this, "Invalid NIC","Invalid Detail", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-        if (DBOperations.getInstace().checkPatientNIC(NIC)){
-            JOptionPane.showMessageDialog(this, "NIC already exsits","Invalid Detail", JOptionPane.WARNING_MESSAGE);
             return false;
         }
         return true;

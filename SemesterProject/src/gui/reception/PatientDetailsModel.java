@@ -7,6 +7,7 @@ package gui.reception;
 
 import DataBase.DBOperations;
 import Domain.Patient;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -46,7 +47,7 @@ public class PatientDetailsModel extends DetailsTableModel {
     }
 
     @Override
-    public void search(String key,boolean searchByName) {
+    public void search(String key,boolean searchByName) throws SQLException {
         if (searchByName){
             setValues(DBOperations.getInstace().searchPatients(key));
         }else{

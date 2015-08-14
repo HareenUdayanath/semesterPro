@@ -5,6 +5,9 @@
  */
 package gui.reception;
 
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -14,7 +17,6 @@ public class DetailsForm extends javax.swing.JFrame {
     
     private ReceptionGUI parent;
     private DetailsTableModel tableModel; 
-    private int mode;
 
     /**
      * Creates new form SearchPatientForm
@@ -26,7 +28,6 @@ public class DetailsForm extends javax.swing.JFrame {
     DetailsForm(ReceptionGUI parent,int mode) {
         this();
         this.parent = parent;
-        this.mode = mode;
         if (mode==1){
             cmbxSearchMode.setEnabled(false);
         }
@@ -131,14 +132,20 @@ public class DetailsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        switch(cmbxSearchMode.getSelectedIndex()){
-            case 0:
-                tableModel.search(txtSeacrh.getText(), true);
-                break;
-            case 1:
-                tableModel.search(txtSeacrh.getText(), false);
-                break;
+        try{
+            switch(cmbxSearchMode.getSelectedIndex()){
+                case 0:
+                    tableModel.search(txtSeacrh.getText(), true);
+                    break;
+                case 1:
+                    tableModel.search(txtSeacrh.getText(), false);
+                    break;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Sorry, an error occured while seraching!", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        
     }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
