@@ -350,6 +350,24 @@ public class DBOperations {
         }
            return result;
     }
+    public boolean setRoomAvailability(int roomNo,boolean availability) throws SQLException{
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);                   
+            pst = con.prepareStatement("UPDATE room SET Availability = ? WHERE roomNo = ? ");  
+
+            pst.setBoolean(1,availability);            
+            pst.setInt(2,roomNo);                
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
     
     /*
      * Load Data.................................................
