@@ -225,7 +225,11 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
                 return;
             }
         } else {
-            //DBOperations.getInstace().setRoomAvailable(Integer.parseInt(jTextField1.getText()));
+            try {
+                DBOperations.getInstace().setRoomAvailability(Integer.parseInt(jTextField1.getText()),false);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdmitDischargeForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btnAdmitDishargeActionPerformed
 
