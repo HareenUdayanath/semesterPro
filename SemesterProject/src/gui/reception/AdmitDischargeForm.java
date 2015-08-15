@@ -213,6 +213,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
                 r.setAvailability(false);
                 DBOperations.getInstace().addRoom(r);
             } catch (SQLException ex) {
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Sorry an error occured while entering!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }catch (NumberFormatException ex){

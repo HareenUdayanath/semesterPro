@@ -25,6 +25,9 @@ public class RoomTableModel extends AbstractTableModel{
     public RoomTableModel(){
         try {
             this.rooms = DBOperations.getInstace().getAddmitedRooms();
+            if (this.rooms == null){
+                this.rooms = new ArrayList<Room>();
+            }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Sorry, an error occured while loading rooms", "Error", JOptionPane.ERROR_MESSAGE);
             this.rooms = new ArrayList<Room>();
