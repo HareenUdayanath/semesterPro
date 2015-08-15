@@ -134,10 +134,10 @@ public class SemesterProject {
          } catch (SQLException ex) {
              Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
          }*/
-             /*LoginFace login = new LoginFace();
-             login.setVisible(true);*/
+             LoginFace login = new LoginFace();
+             login.setVisible(true);
             
-        try {
+       /* try {
              //ad.setRoomAvailability(2,false);
             ArrayList<Room> rooms = ad.getAddmitedRooms();
             for(Room r:rooms){
@@ -145,7 +145,7 @@ public class SemesterProject {
             }
         } catch (SQLException ex) {
             Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
                     
     }
 }
