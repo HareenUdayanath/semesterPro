@@ -6,6 +6,7 @@
 package gui.reception;
 
 import DataBase.DBOperations;
+import DataBase.Help;
 import Domain.Room;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -211,13 +212,16 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
                 r.setRoomNo(Integer.parseInt(jTextField1.getText()));
                 r.setPID(Integer.parseInt(txtPID.getText()));
                 r.setAvailability(false);
+                r.setDate(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
                 DBOperations.getInstace().addRoom(r);
+                JOptionPane.showMessageDialog(this, "Successfully admitted", "Success", JOptionPane.INFORMATION_MESSAGE);
+                btnCancelActionPerformed(null);
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Sorry an error occured while entering!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }catch (NumberFormatException ex){
-                JOptionPane.showMessageDialog(this, "Invalid Room number or Patient ID.", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Invalid Detail.", "", JOptionPane.WARNING_MESSAGE);
                 return;
             }
         } else {
