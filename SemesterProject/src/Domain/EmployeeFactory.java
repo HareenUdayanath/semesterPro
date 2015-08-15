@@ -4,6 +4,8 @@ public class EmployeeFactory {
 
     public Employee getEmployee(String position){
         switch (position) {
+            case "Manager":
+                return new Manager();
             case "Doctor":
                 return new Doctor();
             case "Reception":

@@ -385,6 +385,7 @@ public class ManagerFace extends javax.swing.JFrame {
 
     private void SearchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchBtnActionPerformed
         // TODO add your handling code here:        
+        empDB = DBOperations.getInstace();
         nameLabel.setEnabled(true);
         posLabel.setEnabled(true);
         nicLabel.setEnabled(true);
@@ -402,6 +403,7 @@ public class ManagerFace extends javax.swing.JFrame {
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         // TODO add your handling code here:
         Employee emp1 = null;
+        empDB = DBOperations.getInstace();
         String name = nameText.getText();
         String position = posComboBox.getSelectedItem().toString();
         String nic = nicText.getText();        
@@ -482,6 +484,7 @@ public class ManagerFace extends javax.swing.JFrame {
     private void eListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eListBtnActionPerformed
         
         EmployeeList elist = new EmployeeList();
+        empDB = DBOperations.getInstace();
         try {
             elist.empList = empDB.loadEmplyee();
         } catch (SQLException ex) {
@@ -497,6 +500,7 @@ public class ManagerFace extends javax.swing.JFrame {
     private void getEmpListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getEmpListBtnActionPerformed
         // TODO add your handling code here:
           EmployeeList elist = new EmployeeList();
+          empDB = DBOperations.getInstace();
         try {
             elist.empList = empDB.loadEmplyee();
         } catch (SQLException ex) {
@@ -510,6 +514,7 @@ public class ManagerFace extends javax.swing.JFrame {
 
     private void changeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeBtnActionPerformed
         // TODO add your handling code here:
+        empDB = DBOperations.getInstace();
         int eid = Integer.parseInt(changeIdText.getText());
         
         ChangeLogInSetting changeEmpLog = new ChangeLogInSetting();
