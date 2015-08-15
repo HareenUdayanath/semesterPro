@@ -264,9 +264,9 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
                 jLabel7AncestorMoved(evt);
             }
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
             }
         });
 
