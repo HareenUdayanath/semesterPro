@@ -668,17 +668,20 @@ public class DBOperations {
         return labReport;
     }
     public ArrayList<Room> getAddmitedRooms() throws SQLException{
-        ArrayList<Room> roomList = null;    
+        ArrayList<Room> roomList = new ArrayList<>();    
         con = DriverManager.getConnection(url, user, password);               
         pst = con.prepareStatement("SELECT * FROM room WHERE Availability = 1");
         
         use = pst.executeQuery();             
 
         if(use.next()){ 
+            
             Room room = new Room();
             room.setRoomNo(use.getInt(1));
-            room.setAvailability(use.getBoolean(2));
+            room.setAvailability(use.getBoolean(2));            
             room.setPID(use.getInt(3));
+            room.setDate(use.getDate(4));
+            roomList.add(room);
         }         
         con.close();
        
