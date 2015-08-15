@@ -1231,7 +1231,7 @@ public class LabReportGUI extends javax.swing.JFrame {
                     System.out.println("after setting tc");
                     break;
             }
-            TestBox.setEnabled(true);
+            //TestBox.setEnabled(true);
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("error in editactionperfomed method");
