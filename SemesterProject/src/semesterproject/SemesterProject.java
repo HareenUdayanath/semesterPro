@@ -19,7 +19,7 @@ public class SemesterProject {
 
    
     public static void main(String[] args) {
-        
+       
             DBOperations ad = DBOperations.getInstace();
             /*LabReport lr = new LabReport();
             lr.setPID(1);
@@ -37,7 +37,7 @@ public class SemesterProject {
             
            /*LabReportGUI l=new LabReportGUI();
             l.setVisible(true);*/
-            
+                
             // Check for add patient
             /*Patient patient = new Patient();
             //patient.setPID(0);
@@ -70,8 +70,8 @@ public class SemesterProject {
                 ad.addMedicalReport(mr);*/
               
                //Check for LabReport
-                
-                /*System.out.println(p.getEID());
+           /*     
+                System.out.println(p.getEID());
                 System.out.println(p.getPosition());
                 System.out.println(p.getName());            
                 System.out.println(p.getNIC());
@@ -129,5 +129,10 @@ public class SemesterProject {
             face.setVisible(true);*/
             /*ChangeLogInSetting c = new ChangeLogInSetting();
             c.setVisible(true);*/
+        try {    
+            System.out.println(ad.getDoctorAvailability(3));
+        } catch (SQLException ex) {
+            Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

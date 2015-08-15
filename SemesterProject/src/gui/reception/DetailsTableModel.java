@@ -5,6 +5,7 @@
  */
 package gui.reception;
 
+import java.sql.SQLException;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -29,6 +30,6 @@ public abstract class DetailsTableModel extends AbstractTableModel{
         return COLUMN_NAMES[columnIndex];
     }
     
-    public abstract void search(String name, String NIC);
+    public abstract void search(String key, boolean searchByName)throws SQLException;
     
 }

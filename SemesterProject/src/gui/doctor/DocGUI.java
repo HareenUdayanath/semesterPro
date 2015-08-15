@@ -9,8 +9,12 @@ import DataBase.DBOperations;
 import Domain.LabReport;
 import Domain.MedicalReport;
 import Domain.Patient;
+import gui.lab.ShowLabReportGUI;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
 /**
@@ -29,6 +33,7 @@ public class DocGUI extends javax.swing.JFrame {
     DBOperations ptDB;
     int pid;
     int mode;
+    ReportViewer report;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,6 +50,7 @@ public class DocGUI extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         detailList = new javax.swing.JList();
+        backBtn = new javax.swing.JButton();
         ptDetailsBtn = new javax.swing.JButton();
         TreatReportsBtn = new javax.swing.JButton();
         labReportsBtn = new javax.swing.JButton();
@@ -80,16 +86,28 @@ public class DocGUI extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(detailList);
 
+        backBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/doctor/previous.png"))); // NOI18N
+        backBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 872, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(backBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -169,16 +187,11 @@ public class DocGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(ptDetailsBtn))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(TreatReportsBtn))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(labReportsBtn)))
+                    .addComponent(ptDetailsBtn)
+                    .addComponent(TreatReportsBtn)
+                    .addComponent(labReportsBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -190,17 +203,18 @@ public class DocGUI extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(40, 40, 40)
+                        .addGap(84, 84, 84)
                         .addComponent(ptDetailsBtn)
                         .addGap(18, 18, 18)
                         .addComponent(TreatReportsBtn)
                         .addGap(18, 18, 18)
                         .addComponent(labReportsBtn)
-                        .addContainerGap(144, Short.MAX_VALUE))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -212,7 +226,11 @@ public class DocGUI extends javax.swing.JFrame {
         mode = 1;
         pid = Integer.parseInt(SearchBox.getText());
         DBOperations dateOpr = DBOperations.getInstace(); 
-        pnt = dateOpr.getPatient(pid);
+        try {
+            pnt = dateOpr.getPatient(pid);
+        } catch (SQLException ex) {
+            Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         int index = SearchCatChooser.getSelectedIndex();
         if(index==1){
             String nic = SearchBox.getText();
@@ -245,8 +263,15 @@ public class DocGUI extends javax.swing.JFrame {
         detailList.setModel(new DefaultListModel());
          
          DefaultListModel model = (DefaultListModel)detailList.getModel(); 
-         model.addElement("Hello");
-         ArrayList<Date> medicalDates = ptDB.getMedicalDates(pid);
+
+         ArrayList<Date> medicalDates = null;
+         ptDB = DBOperations.getInstace();
+        try {
+            medicalDates = ptDB.getMedicalDates(pid);
+        } catch (SQLException ex) {
+            Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
          for(Date dt : medicalDates){
              model.addElement(dt);
          }
@@ -262,38 +287,98 @@ public class DocGUI extends javax.swing.JFrame {
         mode = 3;
         detailList.setModel(new DefaultListModel());
         DefaultListModel model = (DefaultListModel)detailList.getModel(); 
-        ArrayList<Date> labDates = ptDB.getLabDates(pid);
+        ArrayList<Date> labDates = null;
+        try {
+            labDates = ptDB.getLabDates(pid);
+        } catch (SQLException ex) {
+            Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for(Date dt : labDates){
              model.addElement(dt);
          }
+        
     }//GEN-LAST:event_labReportsBtnActionPerformed
 
     private void detailListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detailListMouseClicked
         // TODO add your handling code here:
         if(mode == 2){
-        Date selectedDate = (Date)detailList.getSelectedValue();
-        ArrayList<MedicalReport> mediReports = ptDB.getMedicalReports(pid, selectedDate);
-        detailList.setModel(new DefaultListModel());
-        DefaultListModel model = (DefaultListModel)detailList.getModel(); 
-        for(MedicalReport mdRpt : mediReports){
-             model.addElement((mdRpt.getMedicalReportNum()+" "+ mdRpt.getTestTypes()));
-         }
+            Date selectedDate = (Date)detailList.getSelectedValue();
+            ArrayList<MedicalReport> mediReports = null;
+                try {
+                    mediReports = ptDB.getMedicalReports(pid, selectedDate);
+                } catch (SQLException ex) {
+                    Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            detailList.setModel(new DefaultListModel());
+            DefaultListModel model = (DefaultListModel)detailList.getModel(); 
+            for(MedicalReport mdRpt : mediReports){
+                 model.addElement((mdRpt.getMedicalReportNum()+" Test types : "+ mdRpt.getTestTypes()));
+            }
         mode = 4;
+        
         }
         
         if(mode == 3){
         Date selectedDate = (Date)detailList.getSelectedValue();
-        ArrayList<LabReport> labReports = ptDB.getLabReports(pid, selectedDate);
+        ArrayList<LabReport> labReports = null;
+            try {
+                labReports = ptDB.getLabReports(pid, selectedDate);
+            } catch (SQLException ex) {
+                Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         detailList.setModel(new DefaultListModel());
         DefaultListModel model = (DefaultListModel)detailList.getModel(); 
         for(LabReport lbRpt : labReports){
-             model.addElement((lbRpt.getLabReportNo()+" "+ lbRpt.getTestType()));
+             model.addElement((lbRpt.getLabReportNo()+" Test types : "+ lbRpt.getTestType()));
          }
         mode = 5;
         }
         
+        if(mode == 4){
+            
+            String reqReportStr = detailList.getSelectedValue().toString();
+            String rptNumStr =reqReportStr.substring(0, reqReportStr.indexOf(" ")); 
+            int reportNum = Integer.parseInt(rptNumStr);
+            MedicalReport reqReport = null;
+            try {
+                reqReport = ptDB.getMedicalReport(reportNum);
+            } catch (SQLException ex) {
+                Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            report = new ReportViewer();
+            report.showReport(reportNum,reqReport.getTreatementDescription());
+        }
+        
+        if(mode == 5){
+            String reqlabReportStr = detailList.getSelectedValue().toString();
+            String labrptNumStr =reqlabReportStr.substring(0, reqlabReportStr.indexOf(" ")); 
+            int labreportNum = Integer.parseInt(labrptNumStr);
+            LabReport reqReport = null;            
+            try {
+                reqReport = ptDB.getLabReport(labreportNum);
+            } catch (SQLException ex) {
+                Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            ShowLabReportGUI labReport = new ShowLabReportGUI(reqReport);
+            labReport.setVisible(true);
+           
+        }
         
     }//GEN-LAST:event_detailListMouseClicked
+
+    private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
+        if(mode==5){
+            labReportsBtnActionPerformed(evt);
+        }
+        if(mode==4){
+            TreatReportsBtnActionPerformed(evt);
+        }
+        
+        if(mode==3||mode==2){
+            ptDetailsBtnActionPerformed(evt);
+        }
+                      
+    }//GEN-LAST:event_backBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -335,6 +420,7 @@ public class DocGUI extends javax.swing.JFrame {
     private javax.swing.JButton SearchButton;
     private javax.swing.JComboBox SearchCatChooser;
     private javax.swing.JButton TreatReportsBtn;
+    private javax.swing.JButton backBtn;
     private javax.swing.JList detailList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
