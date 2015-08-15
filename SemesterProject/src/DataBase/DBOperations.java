@@ -17,8 +17,8 @@ public class DBOperations {
     private EmployeeFactory emfac = null;
     private static DBOperations instance = null;
     //private String url = "jdbc:odbc://192.168.173.1:3306/test2";    
-    private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
-    //private String url = "jdbc:mysql://localhost:3306/SemesterProject";
+    //private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
+    private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
     
@@ -180,11 +180,12 @@ public class DBOperations {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
             //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
-            pst = con.prepareStatement("INSERT INTO room VALUES(?,?,?)");  
+            pst = con.prepareStatement("INSERT INTO room VALUES(?,?,?,?)");  
 
             pst.setInt(1,room.getRoomNo());            
             pst.setBoolean(2, room.isAvailability());
             pst.setInt(3,room.getPID());
+            pst.setDate(4, room.getDate());
                 
             pst.executeUpdate();
             con.close();
@@ -340,6 +341,24 @@ public class DBOperations {
 
             pst.setBoolean(1,availability);            
             pst.setInt(2,EID);                
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
+    public boolean setRoomAvailability(int roomNo,boolean availability) throws SQLException{
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);                   
+            pst = con.prepareStatement("UPDATE room SET Availability = ? WHERE roomNo = ? ");  
+
+            pst.setBoolean(1,availability);            
+            pst.setInt(2,roomNo);                
             pst.executeUpdate();
             con.close();
 

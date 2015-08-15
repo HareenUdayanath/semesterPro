@@ -129,10 +129,13 @@ public class SemesterProject {
             face.setVisible(true);*/
             /*ChangeLogInSetting c = new ChangeLogInSetting();
             c.setVisible(true);*/
-        try {    
+        /*try {    
             System.out.println(ad.getDoctorAvailability(3));
         } catch (SQLException ex) {
             Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
+            LoginFace login = new LoginFace();
+            login.setVisible(true);
+                    
     }
 }
