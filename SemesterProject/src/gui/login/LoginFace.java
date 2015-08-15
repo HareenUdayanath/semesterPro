@@ -92,7 +92,7 @@ public class LoginFace extends javax.swing.JFrame {
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/Secound1.png"))); // NOI18N
 
         btnLogIn.setForeground(new java.awt.Color(240, 240, 240));
-        btnLogIn.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asus\\Desktop\\logoCop\\login_icon2.png")); // NOI18N
+        btnLogIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/login_icon2.png"))); // NOI18N
         btnLogIn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         btnLogIn.setContentAreaFilled(false);
         btnLogIn.setOpaque(true);
