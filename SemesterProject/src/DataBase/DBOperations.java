@@ -180,11 +180,12 @@ public class DBOperations {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
             //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
-            pst = con.prepareStatement("INSERT INTO room VALUES(?,?,?)");  
+            pst = con.prepareStatement("INSERT INTO room VALUES(?,?,?,?)");  
 
             pst.setInt(1,room.getRoomNo());            
             pst.setBoolean(2, room.isAvailability());
             pst.setInt(3,room.getPID());
+            pst.setDate(4, room.getDate());
                 
             pst.executeUpdate();
             con.close();
