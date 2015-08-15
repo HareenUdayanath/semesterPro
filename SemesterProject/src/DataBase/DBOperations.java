@@ -17,8 +17,8 @@ public class DBOperations {
     private EmployeeFactory emfac = null;
     private static DBOperations instance = null;
     //private String url = "jdbc:odbc://192.168.173.1:3306/test2";    
-    //private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
-    private String url = "jdbc:mysql://localhost:3306/SemesterProject";
+    private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
+    //private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
     
@@ -668,17 +668,20 @@ public class DBOperations {
         return labReport;
     }
     public ArrayList<Room> getAddmitedRooms() throws SQLException{
-        ArrayList<Room> roomList = null;    
+        ArrayList<Room> roomList = new ArrayList<>();    
         con = DriverManager.getConnection(url, user, password);               
         pst = con.prepareStatement("SELECT * FROM room WHERE Availability = 1");
         
         use = pst.executeQuery();             
 
         if(use.next()){ 
+            
             Room room = new Room();
             room.setRoomNo(use.getInt(1));
-            room.setAvailability(use.getBoolean(2));
+            room.setAvailability(use.getBoolean(2));            
             room.setPID(use.getInt(3));
+            room.setDate(use.getDate(4));
+            roomList.add(room);
         }         
         con.close();
        
