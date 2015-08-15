@@ -137,7 +137,7 @@ public class SemesterProject {
              LoginFace login = new LoginFace();
              login.setVisible(true);
             
-        /*try {
+       /* try {
              //ad.setRoomAvailability(2,false);
             ArrayList<Room> rooms = ad.getAddmitedRooms();
             for(Room r:rooms){
