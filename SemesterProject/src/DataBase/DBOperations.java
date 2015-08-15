@@ -670,7 +670,7 @@ public class DBOperations {
     public ArrayList<Room> getAddmitedRooms() throws SQLException{
         ArrayList<Room> roomList = new ArrayList<>();    
         con = DriverManager.getConnection(url, user, password);               
-        pst = con.prepareStatement("SELECT * FROM room WHERE Availability = 1");
+        pst = con.prepareStatement("SELECT * FROM room WHERE Availability = 0");
         
         use = pst.executeQuery();             
 

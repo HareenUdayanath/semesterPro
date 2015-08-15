@@ -59,7 +59,7 @@ public class RoomTableModel extends AbstractTableModel{
                 }
                 return p.getFullName();
             case 2:
-                return "";
+                return rooms.get(rowIndex).getDate().toString();
             default:
                 return "";
         }
