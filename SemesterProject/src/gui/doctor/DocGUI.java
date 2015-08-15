@@ -263,7 +263,7 @@ public class DocGUI extends javax.swing.JFrame {
         detailList.setModel(new DefaultListModel());
          
          DefaultListModel model = (DefaultListModel)detailList.getModel(); 
-         model.addElement("Hello");
+
          ArrayList<Date> medicalDates = null;
          ptDB = DBOperations.getInstace();
         try {
@@ -350,12 +350,12 @@ public class DocGUI extends javax.swing.JFrame {
         }
         
         if(mode == 5){
-            String reqReportStr = detailList.getSelectedValue().toString();
-            String rptNumStr =reqReportStr.substring(0, reqReportStr.indexOf(" ")); 
-            int reportNum = Integer.parseInt(rptNumStr);
+            String reqlabReportStr = detailList.getSelectedValue().toString();
+            String labrptNumStr =reqlabReportStr.substring(0, reqlabReportStr.indexOf(" ")); 
+            int labreportNum = Integer.parseInt(labrptNumStr);
             LabReport reqReport = null;            
             try {
-                reqReport = ptDB.getLabReport(reportNum);
+                reqReport = ptDB.getLabReport(labreportNum);
             } catch (SQLException ex) {
                 Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
