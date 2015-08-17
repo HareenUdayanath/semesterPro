@@ -34,7 +34,7 @@ public class DocGUI extends javax.swing.JFrame {
         initComponents();
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
-                newDoc.setAvailablity(false);
+                //newDoc.setAvailablity(false);
                 setVisible(false);
             }    
                 });
@@ -350,7 +350,7 @@ public class DocGUI extends javax.swing.JFrame {
             } 
         }
         
-        if(mode == 3){
+        else if(mode == 3){
             if(detailList.getComponentCount()!= 0){
                 Date selectedDate = (Date)detailList.getSelectedValue();
                 ArrayList<LabReport> labReports = null;
@@ -371,7 +371,7 @@ public class DocGUI extends javax.swing.JFrame {
             }
         }
         
-        if(mode == 4){
+        else if(mode == 4){
             if(detailList.getComponentCount()!= 0){
                 String reqReportStr = detailList.getSelectedValue().toString();
                 String rptNumStr =reqReportStr.substring(0, reqReportStr.indexOf(" ")); 
@@ -391,7 +391,7 @@ public class DocGUI extends javax.swing.JFrame {
             }
         }
         
-        if(mode == 5){
+        else if(mode == 5){
             if(detailList.getComponentCount()!= 0){
                 String reqlabReportStr = detailList.getSelectedValue().toString();
                 String labrptNumStr =reqlabReportStr.substring(0, reqlabReportStr.indexOf(" ")); 

@@ -161,7 +161,8 @@ public class EmployeeList extends javax.swing.JFrame {
         if(searchType== 0){   
             System.out.println("dvwr");
             for(Employee em : empList){
-                if(em.getName().equals(search)){                    
+                if(em.getName().equalsIgnoreCase(search)){    
+                    System.out.println("bbbbbb");
                     this.addRow(em.getEID(), em.getName(), em.getPosition(), em.getNIC());
                     k++;
                 }                
