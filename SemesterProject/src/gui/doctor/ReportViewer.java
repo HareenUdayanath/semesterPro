@@ -5,6 +5,9 @@
  */
 package gui.doctor;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 /**
  *
  * @author DJ
@@ -16,6 +19,11 @@ public class ReportViewer extends javax.swing.JFrame {
      */
     public ReportViewer() {
         initComponents();
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+            setVisible(false);
+    }
+    });
     }
 
     /**
@@ -70,9 +78,9 @@ public class ReportViewer extends javax.swing.JFrame {
     public void showReport(int reportNum,String reportData){
         reportTextArea.setText("Reoprt number : "+ reportNum + "\r\n" +"Description : \r\n" +reportData);
     }
-    /**
-     * @param args the command line arguments
-     */
+    
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -103,6 +111,7 @@ public class ReportViewer extends javax.swing.JFrame {
                 new ReportViewer().setVisible(true);
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

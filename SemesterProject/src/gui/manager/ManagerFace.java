@@ -394,12 +394,16 @@ public class ManagerFace extends javax.swing.JFrame {
         searchID = Integer.parseInt(eidText.getText());
         try {
             emp = empDB.getEmplyee(searchID);
+            nameLabel.setText(emp.getName());
+            posLabel.setText(emp.getPosition());
+            nicLabel.setText(emp.getNIC());
         } catch (SQLException ex) {
             Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
         }
-        nameLabel.setText(emp.getName());
-        posLabel.setText(emp.getPosition());
-        nicLabel.setText(emp.getNIC());
+        catch(NullPointerException exN){
+          //  Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, exN);
+        }
+        
     }//GEN-LAST:event_SearchBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed

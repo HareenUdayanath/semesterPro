@@ -6,10 +6,13 @@
 package gui.doctor;
 
 import DataBase.DBOperations;
+import Domain.Doctor;
 import Domain.LabReport;
 import Domain.MedicalReport;
 import Domain.Patient;
 import gui.lab.ShowLabReportGUI;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,14 +29,21 @@ public class DocGUI extends javax.swing.JFrame {
     /**
      * Creates new form DocGUI
      */
-    public DocGUI() {
+    public DocGUI(Doctor loggedDoc) {
+        final Doctor newDoc = loggedDoc;
         initComponents();
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                newDoc.setAvailablity(false);
+                setVisible(false);
+            }    
+                });
     }
     Patient pnt;
     DBOperations ptDB;
     int pid;
     int mode;
-    ReportViewer report;
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -226,7 +236,13 @@ public class DocGUI extends javax.swing.JFrame {
     
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
         mode = 1;
-        pid = Integer.parseInt(SearchBox.getText());
+        if(SearchCatChooser.getSelectedIndex()==0){
+            pid = Integer.parseInt(SearchBox.getText());
+        }
+        if(SearchCatChooser.getSelectedIndex()==1){            
+            String NIC = SearchBox.getText();
+            ptDB.c
+        }
         DBOperations dateOpr = DBOperations.getInstace(); 
         try {
             pnt = dateOpr.getPatient(pid);
@@ -351,7 +367,7 @@ public class DocGUI extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                report = new ReportViewer();
+                ReportViewer report = new ReportViewer();
                 report.showReport(reportNum,reqReport.getTreatementDescription());
                 report.setVisible(true);
             }
@@ -390,6 +406,7 @@ public class DocGUI extends javax.swing.JFrame {
                       
     }//GEN-LAST:event_backBtnActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
