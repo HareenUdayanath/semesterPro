@@ -205,11 +205,11 @@ public class ManagerFace extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Conform Password");
+        jLabel4.setText("Confirm Password");
 
         jLabel5.setText("Position");
 
-        posComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Doctor", "Receptionist", "Lab Techniciant", "Data Entry Clerk" }));
+        posComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Doctor", "Receptionist", "LabTechniciant", "DataEntryClerk" }));
 
         nicText.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -235,7 +235,7 @@ public class ManagerFace extends javax.swing.JFrame {
                 .addGap(89, 89, 89)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(nicText)
-                    .addComponent(nameText, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                    .addComponent(nameText, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE)
                     .addComponent(conPassText)
                     .addComponent(unameText)
                     .addComponent(passText)
@@ -397,9 +397,14 @@ public class ManagerFace extends javax.swing.JFrame {
         searchID = Integer.parseInt(eidText.getText());
         try {
             emp = empDB.getEmplyee(searchID);
-            nameLabel.setText(emp.getName());
-            posLabel.setText(emp.getPosition());
-            nicLabel.setText(emp.getNIC());
+            if(emp==null){
+                JOptionPane.showMessageDialog(null, "Invalid employee ID", "Error! ", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                nameLabel.setText(emp.getName());
+                posLabel.setText(emp.getPosition());
+                nicLabel.setText(emp.getNIC());
+            }
         } catch (SQLException ex) {
             Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -413,8 +418,7 @@ public class ManagerFace extends javax.swing.JFrame {
     }//GEN-LAST:event_SearchBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        // TODO add your handling code here:
-        
+        EmployeeFactory empFac = new EmployeeFactory();        
         empDB = DBOperations.getInstace();
         String name = nameText.getText();
         String position = posComboBox.getSelectedItem().toString();
@@ -423,6 +427,7 @@ public class ManagerFace extends javax.swing.JFrame {
         String userName = unameText.getText();
         char[] password = passText.getPassword();
         char[] conPassword = conPassText.getPassword();
+        
         if((Arrays.equals(password, conPassword))){
             emp1.setName(name);
             emp1.setNIC(nic);
@@ -495,7 +500,7 @@ public class ManagerFace extends javax.swing.JFrame {
             evt.consume();
         }
         if(nic.length()==9){
-            if((Character.isDigit(c)||(c==KeyEvent.VK_BACK_SPACE)||(c==KeyEvent.VK_DELETE)||(c==KeyEvent.VK_V))||(c==KeyEvent.VK_X)){
+            if(((c==KeyEvent.VK_BACK_SPACE)||(c==KeyEvent.VK_DELETE)||(c==KeyEvent.VK_V))||(c==KeyEvent.VK_X)){
         } else {
             evt.consume();
         }
@@ -510,8 +515,9 @@ public class ManagerFace extends javax.swing.JFrame {
         
         EmployeeList elist = new EmployeeList();
         empDB = DBOperations.getInstace();
-        try {
+        try {           
             elist.empList = empDB.loadEmplyee();
+             System.out.println("ggggg");
         } catch (SQLException ex) {
             Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ConnectionTimeOutException ex) {
@@ -526,7 +532,7 @@ public class ManagerFace extends javax.swing.JFrame {
     }//GEN-LAST:event_eListBtnActionPerformed
 
     private void getEmpListBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getEmpListBtnActionPerformed
-        // TODO add your handling code here:
+        
           EmployeeList elist = new EmployeeList();
           empDB = DBOperations.getInstace();
         try {

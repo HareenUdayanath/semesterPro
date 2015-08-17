@@ -10,7 +10,7 @@ public class EmployeeFactory {
                 return new Doctor();
             case "Reception":
                 return new Reception();
-            case "DataEntryClerck":
+            case "DataEntryClerk":
                 return new DataEntryClerk();
             case "LabTechniciant":
                 return new LabTechniciant();

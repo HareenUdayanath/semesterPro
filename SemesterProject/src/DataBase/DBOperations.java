@@ -28,9 +28,8 @@ public class DBOperations {
     /*private String user = "hosdataadmin";
     private String password = "coperativehos7456391";*/
     
-    private String user = "root";
-    private String password = "irfad0101";
-
+    
+    
     private DBOperations(){
         this.emfac = new EmployeeFactory();
     }
@@ -170,7 +169,8 @@ public class DBOperations {
         pst.setString(3,employee.getName());
         pst.setString(4, employee.getNIC());
         pst.setString(5, employee.getUsername());
-        pst.setString(6, employee.getPassword());           
+        pst.setString(6, employee.getPassword());      
+        
         pst.executeUpdate();
         con.close();
 
@@ -919,7 +919,7 @@ public class DBOperations {
             pst.setString(1, pid);
             use = pst.executeQuery();                
             System.out.println(pst);
-            while(use.next()){     
+            if(use.next()){     
                 return true;
             }    
             closeConnection();
@@ -943,6 +943,23 @@ public class DBOperations {
            
         } catch (SQLException ex) {
            
+        }
+        return false;
+    }
+    public boolean checkEmployeeNIC(String NIC) throws ConnectionTimeOutException{        
+        try {
+            setConenction();             
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE NIC=?");
+            pst.setString(1, NIC);
+            use = pst.executeQuery();                
+            System.out.println(pst);
+            if(use.next()){     
+                return true;
+            }    
+            con.close();           
+            
+        } catch (SQLException ex) {
+            
         }
         return false;
     }
