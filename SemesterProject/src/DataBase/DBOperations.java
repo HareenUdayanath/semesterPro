@@ -489,7 +489,8 @@ public class DBOperations {
             employee.setName(use.getString(3));
             employee.setNIC(use.getString(4));
             employee.setUsername(use.getString(5));
-            employee.setPassword(use.getString(6));         
+            employee.setPassword(use.getString(6));  
+            employeeList.add(employee);
         }             
         closeConnection();
         return employeeList;
