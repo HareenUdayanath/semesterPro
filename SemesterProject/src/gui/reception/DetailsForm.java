@@ -29,7 +29,7 @@ public class DetailsForm extends javax.swing.JFrame {
         this();
         this.parent = parent;
         if (mode==1){
-            cmbxSearchMode.setEnabled(false);
+            cmbxSearchMode.removeItemAt(1);
         }
         
     }
@@ -81,7 +81,8 @@ public class DetailsForm extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblDetails);
 
         btnSearch.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnSearch.setText("Search");
+        btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/zoom_in.png"))); // NOI18N
+        btnSearch.setText(" Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchActionPerformed(evt);
@@ -106,7 +107,7 @@ public class DetailsForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txtSeacrh, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
-                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearch)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );

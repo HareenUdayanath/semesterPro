@@ -33,7 +33,7 @@
                   <Component id="jPanel1" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -105,11 +105,11 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   <Component id="btnAddNewPatient" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="btnSearchPatient" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <Component id="btnSearchPatient" min="-2" pref="145" max="-2" attributes="0"/>
+                  <EmptySpace pref="26" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -129,7 +129,10 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnAddNewPatient">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Add New Patient"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/gui/manager/user_add.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value=" Add New Patient"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddNewPatientActionPerformed"/>
@@ -137,7 +140,10 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnSearchPatient">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Search Patient"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/gui/manager/zoom_in.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="  Search Patient"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSearchPatientActionPerformed"/>
@@ -177,7 +183,10 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnDoctorList">
           <Properties>
-            <Property name="text" type="java.lang.String" value="View Doctors"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/gui/manager/users.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="  View Doctors"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDoctorListActionPerformed"/>

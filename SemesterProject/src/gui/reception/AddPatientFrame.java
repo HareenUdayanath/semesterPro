@@ -194,7 +194,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
         txtAllergies2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         btnAddPatient.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnAddPatient.setText("Add Patient");
+        btnAddPatient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/user_add.png"))); // NOI18N
+        btnAddPatient.setText(" Add Patient");
         btnAddPatient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddPatientActionPerformed(evt);
@@ -207,7 +208,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
         });
 
         btnCanel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnCanel.setText("Cancel");
+        btnCanel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/remove.png"))); // NOI18N
+        btnCanel.setText(" Cancel");
         btnCanel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCanelActionPerformed(evt);
@@ -258,7 +260,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnCanel, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCanel)
                         .addGap(18, 18, 18)
                         .addComponent(btnAddPatient))
                     .addGroup(jPanel6Layout.createSequentialGroup()

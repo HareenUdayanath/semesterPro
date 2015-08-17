@@ -21,7 +21,6 @@ public class DBOperations {
     //private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
-    
     private DBOperations(){
         this.emfac = new EmployeeFactory();
     }

@@ -23,6 +23,7 @@ public class ReceptionGUI extends javax.swing.JFrame {
     public ReceptionGUI() {
         initComponents();
         new Thread(){
+            @Override
             public void run(){
                 roomModel = new RoomTableModel();
                 tblRooms.setModel(roomModel);
@@ -80,14 +81,16 @@ public class ReceptionGUI extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Patient"));
 
-        btnAddNewPatient.setText("Add New Patient");
+        btnAddNewPatient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/user_add.png"))); // NOI18N
+        btnAddNewPatient.setText(" Add New Patient");
         btnAddNewPatient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddNewPatientActionPerformed(evt);
             }
         });
 
-        btnSearchPatient.setText("Search Patient");
+        btnSearchPatient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/zoom_in.png"))); // NOI18N
+        btnSearchPatient.setText("  Search Patient");
         btnSearchPatient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchPatientActionPerformed(evt);
@@ -99,11 +102,11 @@ public class ReceptionGUI extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addGap(33, 33, 33)
                 .addComponent(btnAddNewPatient)
                 .addGap(18, 18, 18)
-                .addComponent(btnSearchPatient)
-                .addGap(18, 18, 18))
+                .addComponent(btnSearchPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,7 +120,8 @@ public class ReceptionGUI extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Doctor"));
 
-        btnDoctorList.setText("View Doctors");
+        btnDoctorList.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/users.png"))); // NOI18N
+        btnDoctorList.setText("  View Doctors");
         btnDoctorList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDoctorListActionPerformed(evt);
@@ -212,7 +216,7 @@ public class ReceptionGUI extends javax.swing.JFrame {
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
