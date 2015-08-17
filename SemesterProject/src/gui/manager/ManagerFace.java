@@ -422,6 +422,7 @@ public class ManagerFace extends javax.swing.JFrame {
         empDB = DBOperations.getInstace();
         String name = nameText.getText();
         String position = posComboBox.getSelectedItem().toString();
+        System.out.println(position);
         Employee emp1 = emfac.getEmployee(position);
         String nic = nicText.getText();        
         String userName = unameText.getText();
@@ -431,7 +432,7 @@ public class ManagerFace extends javax.swing.JFrame {
         if((Arrays.equals(password, conPassword))){
             emp1.setName(name);
             emp1.setNIC(nic);
-            emp1.setPassword(String.valueOf(password));
+            emp1.setPassword(Arrays.toString(password));
             emp1.setUsername(userName);
             try {
                 empDB.addEmployee(emp1);
