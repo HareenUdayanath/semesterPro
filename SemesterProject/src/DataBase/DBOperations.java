@@ -481,7 +481,7 @@ public class DBOperations {
         ArrayList<Employee> employeeList = new ArrayList<>();
 
         setConenction();        
-        pst = con.prepareStatement("SELECT * FROM Employee WHERE Position<>'Manager'");   
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE Position <> 'Manager' AND Position <> 'Admin'");   
         use = pst.executeQuery();
 
         while(use.next()){                   

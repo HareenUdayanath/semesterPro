@@ -373,6 +373,8 @@ public class DocGUI extends javax.swing.JFrame {
         
         if(mode == 4){
             if(detailList.getComponentCount()!= 0){
+                if(detailList.getSelectedValue()==null)
+                    System.out.println("ererere");
                 String reqReportStr = detailList.getSelectedValue().toString();
                 String rptNumStr =reqReportStr.substring(0, reqReportStr.indexOf(" ")); 
                 int reportNum = Integer.parseInt(rptNumStr);

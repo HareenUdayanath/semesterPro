@@ -34,7 +34,7 @@ public class SemesterProject {
                 lr.addDataToTheList(""+i);
             }
             new ShowLabReportGUI (lr).setVisible(true);*/
-        try {        
+              
             /*LabReportGUI l=new LabReportGUI();
              l.setVisible(true);*/
                  
@@ -134,8 +134,8 @@ public class SemesterProject {
          } catch (SQLException ex) {
              Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
          }*/
-            /* LoginFace login = new LoginFace();
-             login.setVisible(true);*/
+            LoginFace login = new LoginFace();
+             login.setVisible(true);
             
        /* try {
              //ad.setRoomAvailability(2,false);
@@ -146,11 +146,6 @@ public class SemesterProject {
         } catch (SQLException ex) {
             Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
         }*/
-        System.out.println(ad.getPID("123456489V"));            
-        } catch (SQLException ex) {
-            Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ConnectionTimeOutException ex) {
-            Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 }
