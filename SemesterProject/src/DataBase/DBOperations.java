@@ -32,7 +32,7 @@ public class DBOperations {
     private String password = "";
     
     
-    private DBOperations(){
+    public DBOperations(){
         this.emfac = new EmployeeFactory();
     }
     
