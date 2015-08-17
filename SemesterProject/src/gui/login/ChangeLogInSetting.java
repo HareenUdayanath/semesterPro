@@ -9,8 +9,7 @@ import DataBase.DBOperations;
 import Domain.Employee;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -38,7 +37,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         try {
             changeEmp = dataBase.getEmplyee(eid);
         } catch (SQLException ex) {
-            //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+            
         } catch (ConnectionTimeOutException ex) {
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
@@ -88,7 +87,12 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         btnChange = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -255,7 +259,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
                     pswdNewPassword.setText("");
                     pswdConfirmPassword.setText("");
                 } catch (SQLException ex) {
-                    //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+                    
                 } catch (ConnectionTimeOutException ex) {
                     JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);                  
                 }
@@ -267,6 +271,15 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Invalid username or password");
         }
     }//GEN-LAST:event_changeButActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+       if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?","Confirm Action", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+            this.dispose();
+            LoginFace l = new LoginFace();
+            l.setLocationRelativeTo(null);
+            l.setVisible(true);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -284,14 +297,8 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChangeLogInSetting.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChangeLogInSetting.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChangeLogInSetting.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChangeLogInSetting.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            
         }
         //</editor-fold>
 
