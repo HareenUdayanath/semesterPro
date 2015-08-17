@@ -164,7 +164,7 @@ public class LoginFace extends javax.swing.JFrame {
                     employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pasPassword.getPassword()));
                 
                 } catch (ConnectionTimeOutException ex) {
-                    JOptionPane.showMessageDialog(null,ex.toString());
+                    JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 if(employee!=null){
@@ -174,7 +174,7 @@ public class LoginFace extends javax.swing.JFrame {
                         } catch (SQLException ex) {
                             
                         } catch (ConnectionTimeOutException ex) {
-                            JOptionPane.showMessageDialog(null,ex.toString());
+                            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
                             return;
                         }
                     }
@@ -187,8 +187,8 @@ public class LoginFace extends javax.swing.JFrame {
                 }
             }
         } catch (ConnectionTimeOutException ex) {
-            JOptionPane.showMessageDialog(null,ex.toString());
-            return;
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            
         }
     }//GEN-LAST:event_btnLogInActionPerformed
 
