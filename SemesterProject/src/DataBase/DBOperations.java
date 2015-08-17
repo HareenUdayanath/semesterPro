@@ -945,7 +945,7 @@ public class DBOperations {
         }
         return false;
     }
-     public boolean checkAdmin(String uname,String pass) throws ConnectionTimeOutException{       
+    public boolean checkAdmin(String uname,String pass) throws ConnectionTimeOutException{       
        
          try {
             setConenction();
@@ -997,6 +997,23 @@ public class DBOperations {
         }
         return false;
     }
+    public boolean isRoomAvailable(int roomNo) throws ConnectionTimeOutException{       
+        try {
+            setConenction();               
+            //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+            pst = con.prepareStatement("SELECT * FROM room WHERE RoomNo = ?");   
+            pst.setInt(1,roomNo);        
+            use = pst.executeQuery();
+            if(use.next()){                   
+                return true;        
+            }             
+            closeConnection();            
+        } catch (SQLException ex) {
+            
+        }
+        return false;
+    }
+
     
     /**
      * @param ip the ip to set
