@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import Domain.*;
 import com.mysql.jdbc.CommunicationsException;
 import java.sql.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 public class DBOperations {
@@ -45,7 +44,7 @@ public class DBOperations {
             reachable = con.isValid(30);
             
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+           
         }catch(com.mysql.jdbc.exceptions.jdbc4.CommunicationsException ex){
             throw new ConnectionTimeOutException(ex.getMessage());
         }catch(Exception ex){            
@@ -161,7 +160,7 @@ public class DBOperations {
                       
         setConenction();              
         //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
-        pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?)");  
+        pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?,null)");  
 
         pst.setInt(1,employee.getEID());            
         pst.setString(2, employee.getPosition());
@@ -383,6 +382,26 @@ public class DBOperations {
         closeConnection();
         return result;
     }
+    public boolean updateRoom(Room room) throws SQLException, ConnectionTimeOutException{
+        boolean result = false; 
+                   
+        setConenction();              
+        //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
+        pst = con.prepareStatement("UPDATE room SET PID = ?, Date = ?,Availability = ? WHERE RoomNo = ?");  
+
+        pst.setInt(1,room.getPID());
+        pst.setDate(2, room.getDate());
+        pst.setBoolean(3, room.isAvailability());
+        pst.setInt(4,room.getRoomNo());    
+        
+
+        pst.executeUpdate();
+        
+        result = true;
+        closeConnection();
+        return result;
+    }
+   
     
     /*
      * Load Data.................................................
@@ -488,7 +507,8 @@ public class DBOperations {
             employee.setName(use.getString(3));
             employee.setNIC(use.getString(4));
             employee.setUsername(use.getString(5));
-            employee.setPassword(use.getString(6));         
+            employee.setPassword(use.getString(6));  
+            employeeList.add(employee);
         }             
         closeConnection();
         return employeeList;
@@ -838,7 +858,7 @@ public class DBOperations {
         pst.setInt(1, EID);
 
         pst.executeUpdate();
-        con.close();
+        closeConnection();
 
         result = true;        
         return result;
@@ -868,7 +888,7 @@ public class DBOperations {
 
 
        } catch (SQLException ex) {
-           Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+           
        }
        return employee;
     }
@@ -885,7 +905,7 @@ public class DBOperations {
             con.close();           
             
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return false;
     }
@@ -902,7 +922,7 @@ public class DBOperations {
             closeConnection();
            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
          return false;
     }
@@ -919,11 +939,11 @@ public class DBOperations {
             closeConnection();
            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+           
         }
         return false;
     }
-     public boolean checkAdmin(String uname,String pass) throws ConnectionTimeOutException{       
+    public boolean checkAdmin(String uname,String pass) throws ConnectionTimeOutException{       
        
          try {
             setConenction();
@@ -938,7 +958,7 @@ public class DBOperations {
             closeConnection();
             
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+           
         }
         return false;
     }
@@ -954,7 +974,7 @@ public class DBOperations {
             }             
             closeConnection();            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return false;
     }
@@ -971,10 +991,27 @@ public class DBOperations {
             }             
             closeConnection();            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return false;
     }
+    public boolean isRoomAvailable(int roomNo) throws ConnectionTimeOutException{       
+        try {
+            setConenction();               
+            //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+            pst = con.prepareStatement("SELECT * FROM room WHERE RoomNo = ?");   
+            pst.setInt(1,roomNo);        
+            use = pst.executeQuery();
+            if(use.next()){                   
+                return true;        
+            }             
+            closeConnection();            
+        } catch (SQLException ex) {
+            
+        }
+        return false;
+    }
+
     
     /**
      * @param ip the ip to set
