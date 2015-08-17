@@ -5,8 +5,13 @@
  */
 package gui.manager;
 
+import DataBase.ConnectionTimeOutException;
+import DataBase.DBOperations;
 import Domain.Employee;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,6 +24,7 @@ public class EmployeeList extends javax.swing.JFrame {
     /**
      * Creates new form EmployeeList
      */
+    DBOperations empDB;
     ArrayList<Employee> empList;
     public EmployeeList() {
         initComponents();
@@ -137,12 +143,23 @@ public class EmployeeList extends javax.swing.JFrame {
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         // TODO add your handling code here:
+        empDB = new DBOperations();
+        try {
+            empList = empDB.loadEmplyee();
+            System.out.println("aaaaaaaa");
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeList.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null,ex.toString());
+            return;
+        }
         String search = searchText.getText();
-        String searchType = searchTypeCombo.getSelectedItem().toString();
+        int searchType = searchTypeCombo.getSelectedIndex();
         DefaultTableModel model = (DefaultTableModel) empTable.getModel();
         model.setRowCount(0);
         int k=0;
-        if(searchType.equals("Name")){            
+        if(searchType== 0){   
+            System.out.println("dvwr");
             for(Employee em : empList){
                 if(em.getName().equals(search)){                    
                     this.addRow(em.getEID(), em.getName(), em.getPosition(), em.getNIC());
@@ -154,7 +171,7 @@ public class EmployeeList extends javax.swing.JFrame {
             }            
         }
         
-        if(searchType.equals("Position")){            
+        if(searchType==1){            
             for(Employee em : empList){
                 if(em.getPosition().equals(search)){                    
                     this.addRow(em.getEID(), em.getName(), em.getPosition(), em.getNIC());
@@ -166,7 +183,7 @@ public class EmployeeList extends javax.swing.JFrame {
             }            
         }
         
-        if(searchType.equals("NIC")){            
+        if(searchType==2){            
             for(Employee em : empList){
                 if(em.getNIC().equals(search)){                    
                     this.addRow(em.getEID(), em.getName(), em.getPosition(), em.getNIC());

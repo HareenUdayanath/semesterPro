@@ -4,6 +4,7 @@
  */
 package gui.manager;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import Domain.Employee;
 import gui.login.ChangeLogInSetting;
@@ -394,12 +395,19 @@ public class ManagerFace extends javax.swing.JFrame {
         searchID = Integer.parseInt(eidText.getText());
         try {
             emp = empDB.getEmplyee(searchID);
+            nameLabel.setText(emp.getName());
+            posLabel.setText(emp.getPosition());
+            nicLabel.setText(emp.getNIC());
         } catch (SQLException ex) {
             Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
         }
-        nameLabel.setText(emp.getName());
-        posLabel.setText(emp.getPosition());
-        nicLabel.setText(emp.getNIC());
+        catch(NullPointerException exN){
+          //  Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, exN);
+        } catch (ConnectionTimeOutException ex) {
+             JOptionPane.showMessageDialog(null,ex.toString());
+            return;
+        }
+        
     }//GEN-LAST:event_SearchBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
@@ -422,6 +430,9 @@ public class ManagerFace extends javax.swing.JFrame {
                 System.out.println("nef");
             } catch (SQLException ex) {
                 Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConnectionTimeOutException ex) {
+                 JOptionPane.showMessageDialog(null,ex.toString());
+                return;
             }
         }
         else{
@@ -448,6 +459,9 @@ public class ManagerFace extends javax.swing.JFrame {
                 empDB.deleteEmployee(searchID);
             } catch (SQLException ex) {
                 Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConnectionTimeOutException ex) {
+                 JOptionPane.showMessageDialog(null,ex.toString());
+                return;
             }
         }
     }//GEN-LAST:event_removeBtnActionPerformed
@@ -497,6 +511,9 @@ public class ManagerFace extends javax.swing.JFrame {
             elist.empList = empDB.loadEmplyee();
         } catch (SQLException ex) {
             Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionTimeOutException ex) {
+             JOptionPane.showMessageDialog(null,ex.toString());
+            return;
         }
         for(Employee em : elist.empList){
             elist.addRow(em.getEID(), em.getName(),em.getPosition(), em.getNIC());
@@ -513,6 +530,9 @@ public class ManagerFace extends javax.swing.JFrame {
             elist.empList = empDB.loadEmplyee();
         } catch (SQLException ex) {
             Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionTimeOutException ex) {
+             JOptionPane.showMessageDialog(null,ex.toString());
+            return;
         }
         for(Employee em : elist.empList){
             elist.addRow(em.getEID(), em.getName(),em.getPosition(), em.getNIC());

@@ -5,17 +5,22 @@
  */
 package gui.doctor;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
+import Domain.Doctor;
 import Domain.LabReport;
 import Domain.MedicalReport;
 import Domain.Patient;
 import gui.lab.ShowLabReportGUI;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,17 +28,22 @@ import javax.swing.DefaultListModel;
  */
 public class DocGUI extends javax.swing.JFrame {
 
-    /**
-     * Creates new form DocGUI
-     */
-    public DocGUI() {
+    static Doctor newDoc;
+    public DocGUI(Doctor loggedDoc) {
+        newDoc = loggedDoc;
         initComponents();
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                newDoc.setAvailablity(false);
+                setVisible(false);
+            }    
+                });
     }
     Patient pnt;
     DBOperations ptDB;
     int pid;
     int mode;
-    ReportViewer report;
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -226,12 +236,21 @@ public class DocGUI extends javax.swing.JFrame {
     
     private void SearchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtonActionPerformed
         mode = 1;
-        pid = Integer.parseInt(SearchBox.getText());
+        if(SearchCatChooser.getSelectedIndex()==0){
+            pid = Integer.parseInt(SearchBox.getText());
+        }
+        if(SearchCatChooser.getSelectedIndex()==1){            
+            String NIC = SearchBox.getText();
+       //     ptDB.c
+        }
         DBOperations dateOpr = DBOperations.getInstace(); 
         try {
             pnt = dateOpr.getPatient(pid);
         } catch (SQLException ex) {
             Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null,ex.toString());
+            return;
         }
         int index = SearchCatChooser.getSelectedIndex();
         if(index==1){
@@ -273,6 +292,9 @@ public class DocGUI extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null,ex.toString());
+            return;
         }
          for(Date dt : medicalDates){
              model.addElement(dt);
@@ -295,6 +317,9 @@ public class DocGUI extends javax.swing.JFrame {
             labDates = ptDB.getLabDates(pid);
         } catch (SQLException ex) {
             Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null,ex.toString());
+            return;
         }
         for(Date dt : labDates){
              model.addElement(dt);
@@ -312,7 +337,10 @@ public class DocGUI extends javax.swing.JFrame {
                         mediReports = ptDB.getMedicalReports(pid, selectedDate);
                     } catch (SQLException ex) {
                         Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    } catch (ConnectionTimeOutException ex) {
+                        JOptionPane.showMessageDialog(null,ex.toString());
+                        return;
+                }
                 detailList.setModel(new DefaultListModel());
                 DefaultListModel model = (DefaultListModel)detailList.getModel(); 
                 for(MedicalReport mdRpt : mediReports){
@@ -330,7 +358,10 @@ public class DocGUI extends javax.swing.JFrame {
                         labReports = ptDB.getLabReports(pid, selectedDate);
                     } catch (SQLException ex) {
                         Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(null,ex.toString());
+                     return;
+                }
                 detailList.setModel(new DefaultListModel());
                 DefaultListModel model = (DefaultListModel)detailList.getModel(); 
                 for(LabReport lbRpt : labReports){
@@ -350,8 +381,11 @@ public class DocGUI extends javax.swing.JFrame {
                     reqReport = ptDB.getMedicalReport(reportNum);
                 } catch (SQLException ex) {
                     Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(null,ex.toString());
+                    return;
                 }
-                report = new ReportViewer();
+                ReportViewer report = new ReportViewer();
                 report.showReport(reportNum,reqReport.getTreatementDescription());
                 report.setVisible(true);
             }
@@ -367,6 +401,9 @@ public class DocGUI extends javax.swing.JFrame {
                     reqReport = ptDB.getLabReport(labreportNum);
                 } catch (SQLException ex) {
                     Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(null,ex.toString());
+                    return;
                 }
                 ShowLabReportGUI labReport = new ShowLabReportGUI(reqReport);
                 labReport.setVisible(true);
@@ -390,6 +427,7 @@ public class DocGUI extends javax.swing.JFrame {
                       
     }//GEN-LAST:event_backBtnActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
@@ -420,7 +458,7 @@ public class DocGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DocGUI().setVisible(true);
+                new DocGUI(newDoc).setVisible(true);
             }
         });
     }
