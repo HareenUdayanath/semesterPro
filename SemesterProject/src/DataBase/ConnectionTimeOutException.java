@@ -8,8 +8,5 @@ public class ConnectionTimeOutException extends Exception{
     public ConnectionTimeOutException(String message){
         super(message);
     }
-    @Override
-    public String getMessage(){
-        return this.getMessage();
-    }
+    
 }
