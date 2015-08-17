@@ -26,10 +26,9 @@ public class DBOperations {
     //private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
     private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     
-   // private String user = "hosdataadmin";
-    //rivate String password = "coperativehos7456391";
-    private String user = "root";
-    private String password = "";
+    private String user = "hosdataadmin";
+    private String password = "coperativehos7456391";
+    
     
     
     private DBOperations(){
@@ -45,10 +44,10 @@ public class DBOperations {
         try {            
             Class.forName("com.mysql.jdbc.Driver").newInstance();           
             con = DriverManager.getConnection(url, user, password);            
-            reachable = con.isValid(5);
+            reachable = con.isValid(30);
             
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
         }catch(com.mysql.jdbc.exceptions.jdbc4.CommunicationsException ex){
             throw new ConnectionTimeOutException(ex.getMessage());
         }catch(Exception ex){            
@@ -325,6 +324,7 @@ public class DBOperations {
         boolean result = false; 
             
         setConenction();              
+        //pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = MD5(?) WHERE EID = ?"); 
         pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = ? WHERE EID = ?");              
 
         pst.setString(1,employee.getUsername());          
@@ -342,6 +342,7 @@ public class DBOperations {
         boolean result = false; 
                     
         setConenction();           
+        //pst = con.prepareStatement("UPDATE Employee SET Name = ?, NIC = ?,UserName = ?,Password = MD(?) WHERE EID = 1");
         pst = con.prepareStatement("UPDATE Employee SET Name = ?, NIC = ?,UserName = ?,Password = ? WHERE EID = 1");              
 
         pst.setString(1,manager.getName());
@@ -703,6 +704,17 @@ public class DBOperations {
 
         return pid;
     }
+    public int getPID(String nic) throws SQLException, ConnectionTimeOutException{
+        int pid = -1;
+        setConenction();            
+        pst = con.prepareStatement("SELECT MAX(PID) FROM PatientFile WHERE NIC = ?");
+        pst.setString(1,nic);
+        use = pst.executeQuery();   
+        if(use.next())
+            pid = use.getInt(1);
+
+        return pid;
+    }
     public int getLastLabReportNo() throws SQLException{
         int labReportNo = -1;        
         con = DriverManager.getConnection(url, user, password);               
@@ -965,7 +977,7 @@ public class DBOperations {
         }
         return false;
     }
-
+    
     /**
      * @param ip the ip to set
      */
