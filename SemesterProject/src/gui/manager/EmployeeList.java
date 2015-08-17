@@ -146,7 +146,8 @@ public class EmployeeList extends javax.swing.JFrame {
         empDB = DBOperations.getInstace();
         try {
             empList = empDB.loadEmplyee();
-            System.out.println("aaaaaaaa");
+            System.out.println(empList);
+            
         } catch (SQLException ex) {
             Logger.getLogger(EmployeeList.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ConnectionTimeOutException ex) {
@@ -159,8 +160,12 @@ public class EmployeeList extends javax.swing.JFrame {
         model.setRowCount(0);
         int k=0;
         if(searchType== 0){   
+       
             System.out.println("dvwr");
+            System.out.println(empList);
             for(Employee em : empList){
+                System.out.println(em.getName());
+                
                 if(em.getName().equalsIgnoreCase(search)){    
                     System.out.println("bbbbbb");
                     this.addRow(em.getEID(), em.getName(), em.getPosition(), em.getNIC());
