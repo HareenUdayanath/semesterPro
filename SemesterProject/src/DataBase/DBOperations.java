@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import Domain.*;
 import com.mysql.jdbc.CommunicationsException;
 import java.sql.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 public class DBOperations {
@@ -47,7 +46,7 @@ public class DBOperations {
             reachable = con.isValid(30);
             
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+           
         }catch(com.mysql.jdbc.exceptions.jdbc4.CommunicationsException ex){
             throw new ConnectionTimeOutException(ex.getMessage());
         }catch(Exception ex){            
@@ -870,7 +869,7 @@ public class DBOperations {
 
 
        } catch (SQLException ex) {
-           Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+           
        }
        return employee;
     }
@@ -887,7 +886,7 @@ public class DBOperations {
             con.close();           
             
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return false;
     }
@@ -904,7 +903,7 @@ public class DBOperations {
             closeConnection();
            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
          return false;
     }
@@ -921,7 +920,7 @@ public class DBOperations {
             closeConnection();
            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+           
         }
         return false;
     }
@@ -940,7 +939,7 @@ public class DBOperations {
             closeConnection();
             
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+           
         }
         return false;
     }
@@ -956,7 +955,7 @@ public class DBOperations {
             }             
             closeConnection();            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return false;
     }
@@ -973,7 +972,7 @@ public class DBOperations {
             }             
             closeConnection();            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         return false;
     }

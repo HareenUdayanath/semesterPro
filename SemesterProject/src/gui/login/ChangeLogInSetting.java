@@ -9,8 +9,7 @@ import DataBase.DBOperations;
 import Domain.Employee;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -38,7 +37,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         try {
             changeEmp = dataBase.getEmplyee(eid);
         } catch (SQLException ex) {
-            //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+            
         } catch (ConnectionTimeOutException ex) {
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
@@ -260,7 +259,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
                     pswdNewPassword.setText("");
                     pswdConfirmPassword.setText("");
                 } catch (SQLException ex) {
-                    //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+                    
                 } catch (ConnectionTimeOutException ex) {
                     JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);                  
                 }
