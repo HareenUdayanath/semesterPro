@@ -7,6 +7,7 @@ package gui.manager;
 import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import Domain.Employee;
+import Domain.EmployeeFactory;
 import gui.login.ChangeLogInSetting;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
@@ -207,7 +208,7 @@ public class ManagerFace extends javax.swing.JFrame {
 
         jLabel5.setText("Position");
 
-        posComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Doctor", "Receptionist", "Lab Techniciant", "Data Entry Clerk" }));
+        posComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Doctor", "Receptionist", "LabTechniciant", "DataEntryClerk" }));
 
         nicText.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -411,8 +412,7 @@ public class ManagerFace extends javax.swing.JFrame {
     }//GEN-LAST:event_SearchBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        // TODO add your handling code here:
-        Employee emp1 = null;
+        EmployeeFactory empFac = new EmployeeFactory();        
         empDB = DBOperations.getInstace();
         String name = nameText.getText();
         String position = posComboBox.getSelectedItem().toString();
@@ -420,6 +420,7 @@ public class ManagerFace extends javax.swing.JFrame {
         String userName = unameText.getText();
         char[] password = passText.getPassword();
         char[] conPassword = conPassText.getPassword();
+        Employee emp1 = empFac.getEmployee(position);
         if((Arrays.equals(password, conPassword))){
             emp1.setName(name);
             emp1.setNIC(nic);
