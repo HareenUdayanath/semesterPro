@@ -25,7 +25,11 @@ public class RoomTableModel extends AbstractTableModel{
     public RoomTableModel(){
         try {
             this.rooms = DBOperations.getInstace().getAddmitedRooms();
+            if (this.rooms == null){
+                this.rooms = new ArrayList<Room>();
+            }
         } catch (SQLException ex) {
+            ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Sorry, an error occured while loading rooms", "Error", JOptionPane.ERROR_MESSAGE);
             this.rooms = new ArrayList<Room>();
         }
@@ -55,7 +59,7 @@ public class RoomTableModel extends AbstractTableModel{
                 }
                 return p.getFullName();
             case 2:
-                return "";
+                return rooms.get(rowIndex).getDate().toString();
             default:
                 return "";
         }

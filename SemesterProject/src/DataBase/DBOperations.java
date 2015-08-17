@@ -350,6 +350,24 @@ public class DBOperations {
         }
            return result;
     }
+    public boolean setRoomAvailability(int roomNo,boolean availability) throws SQLException{
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);                   
+            pst = con.prepareStatement("UPDATE room SET Availability = ? WHERE roomNo = ? ");  
+
+            pst.setBoolean(1,availability);            
+            pst.setInt(2,roomNo);                
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }
+           return result;
+    }
     
     /*
      * Load Data.................................................
@@ -650,17 +668,20 @@ public class DBOperations {
         return labReport;
     }
     public ArrayList<Room> getAddmitedRooms() throws SQLException{
-        ArrayList<Room> roomList = null;    
+        ArrayList<Room> roomList = new ArrayList<>();    
         con = DriverManager.getConnection(url, user, password);               
-        pst = con.prepareStatement("SELECT * FROM room WHERE Availability = 1");
+        pst = con.prepareStatement("SELECT * FROM room WHERE Availability = 0");
         
         use = pst.executeQuery();             
 
         if(use.next()){ 
+            
             Room room = new Room();
             room.setRoomNo(use.getInt(1));
-            room.setAvailability(use.getBoolean(2));
+            room.setAvailability(use.getBoolean(2));            
             room.setPID(use.getInt(3));
+            room.setDate(use.getDate(4));
+            roomList.add(room);
         }         
         con.close();
        
