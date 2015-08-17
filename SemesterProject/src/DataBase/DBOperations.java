@@ -385,6 +385,26 @@ public class DBOperations {
         closeConnection();
         return result;
     }
+    public boolean updateRoom(Room room) throws SQLException, ConnectionTimeOutException{
+        boolean result = false; 
+                   
+        setConenction();              
+        //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
+        pst = con.prepareStatement("UPDATE room SET PID = ?, Date = ?,Availability = ? WHERE RoomNo = ?");  
+
+        pst.setInt(1,room.getPID());
+        pst.setDate(2, room.getDate());
+        pst.setBoolean(3, room.isAvailability());
+        pst.setInt(4,room.getRoomNo());    
+        
+
+        pst.executeUpdate();
+        
+        result = true;
+        closeConnection();
+        return result;
+    }
+   
     
     /*
      * Load Data.................................................
@@ -841,7 +861,7 @@ public class DBOperations {
         pst.setInt(1, EID);
 
         pst.executeUpdate();
-        con.close();
+        closeConnection();
 
         result = true;        
         return result;
@@ -926,7 +946,7 @@ public class DBOperations {
         }
         return false;
     }
-     public boolean checkAdmin(String uname,String pass) throws ConnectionTimeOutException{       
+    public boolean checkAdmin(String uname,String pass) throws ConnectionTimeOutException{       
        
          try {
             setConenction();
@@ -978,6 +998,23 @@ public class DBOperations {
         }
         return false;
     }
+    public boolean isRoomAvailable(int roomNo) throws ConnectionTimeOutException{       
+        try {
+            setConenction();               
+            //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+            pst = con.prepareStatement("SELECT * FROM room WHERE RoomNo = ?");   
+            pst.setInt(1,roomNo);        
+            use = pst.executeQuery();
+            if(use.next()){                   
+                return true;        
+            }             
+            closeConnection();            
+        } catch (SQLException ex) {
+            
+        }
+        return false;
+    }
+
     
     /**
      * @param ip the ip to set
