@@ -4,6 +4,7 @@
  */
 package gui.lab;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.LabReport;
@@ -716,6 +717,10 @@ public class LabReportGUI extends javax.swing.JFrame {
                 l=ad.getLastLabReport();
             } catch (SQLException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConnectionTimeOutException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                return;
             }
         }else{
                 l=new LabReport();
@@ -736,6 +741,10 @@ public class LabReportGUI extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Patient ID is not registered");
+        } catch (ConnectionTimeOutException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -772,6 +781,8 @@ public class LabReportGUI extends javax.swing.JFrame {
             new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error in patient id or tecnician id");
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnConfirmUFRActionPerformed
 
@@ -782,6 +793,10 @@ public class LabReportGUI extends javax.swing.JFrame {
                 l=ad.getLastLabReport();
             } catch (SQLException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConnectionTimeOutException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                return;
             }
         }else{
               l=new LabReport();
@@ -802,6 +817,10 @@ public class LabReportGUI extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Patient ID is not registered");
+        } catch (ConnectionTimeOutException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -842,6 +861,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error in patient id or tecnician id");
+        } catch (ConnectionTimeOutException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnConfirmTCActionPerformed
 
@@ -852,6 +874,10 @@ public class LabReportGUI extends javax.swing.JFrame {
                     l=ad.getLastLabReport();
                 } catch (SQLException ex) {
                     Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ConnectionTimeOutException ex) {
+                    Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
             }else{
                 l=new LabReport();
@@ -872,6 +898,10 @@ public class LabReportGUI extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Patient ID is not registered");
+        } catch (ConnectionTimeOutException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -912,6 +942,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error in patient id or tecnician id");
+        } catch (ConnectionTimeOutException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
         
        
@@ -924,6 +957,10 @@ public class LabReportGUI extends javax.swing.JFrame {
                 l=ad.getLastLabReport();
             } catch (SQLException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConnectionTimeOutException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             }else{
                 l=new LabReport();
@@ -944,6 +981,10 @@ public class LabReportGUI extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Patient ID is not registered");
+        } catch (ConnectionTimeOutException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -980,6 +1021,9 @@ public class LabReportGUI extends javax.swing.JFrame {
         new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error in patient id or tecnician id");
+        } catch (ConnectionTimeOutException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnConfirmLPActionPerformed
 
@@ -1000,6 +1044,10 @@ public class LabReportGUI extends javax.swing.JFrame {
                 l=ad.getLastLabReport();
             } catch (SQLException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConnectionTimeOutException ex) {
+                Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             }else{
                 l=new LabReport();
@@ -1020,6 +1068,10 @@ public class LabReportGUI extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Patient ID is not registered");
+        } catch (ConnectionTimeOutException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -1056,6 +1108,9 @@ public class LabReportGUI extends javax.swing.JFrame {
             new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
             JOptionPane.showMessageDialog(null, "Error in patient id or tecnician id");
+        } catch (ConnectionTimeOutException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnConfirmFBCActionPerformed
 
@@ -1133,6 +1188,9 @@ public class LabReportGUI extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             
+        } catch (ConnectionTimeOutException ex) {
+            Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
          
         
