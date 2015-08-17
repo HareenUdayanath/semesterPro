@@ -7,6 +7,7 @@ package gui.admin;
 import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import Domain.Manager;
+import gui.login.LoginFace;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -57,6 +58,11 @@ public class AdminFace extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Admin");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Manager deails"));
 
@@ -260,10 +266,23 @@ public class AdminFace extends javax.swing.JFrame {
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
-        this.dispose();
+        if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?","Confirm Action", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+            this.dispose();
+            LoginFace l = new LoginFace();
+            l.setLocationRelativeTo(null);
+            l.setVisible(true);
+        }
 
     }//GEN-LAST:event_cancelBtnActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+       if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?","Confirm Action", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+            this.dispose();
+            LoginFace l = new LoginFace();
+            l.setLocationRelativeTo(null);
+            l.setVisible(true);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
