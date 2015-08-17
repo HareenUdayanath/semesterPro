@@ -5,6 +5,9 @@
  */
 package gui.reception;
 
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 
 /**
  *
@@ -14,7 +17,6 @@ public class DetailsForm extends javax.swing.JFrame {
     
     private ReceptionGUI parent;
     private DetailsTableModel tableModel; 
-    private int mode;
 
     /**
      * Creates new form SearchPatientForm
@@ -26,10 +28,8 @@ public class DetailsForm extends javax.swing.JFrame {
     DetailsForm(ReceptionGUI parent,int mode) {
         this();
         this.parent = parent;
-        this.mode = mode;
         if (mode==1){
-            jLabel2.setVisible(false);
-            txtSearchNIC.setVisible(false);
+            cmbxSearchMode.setEnabled(false);
         }
         
     }
@@ -51,10 +51,9 @@ public class DetailsForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDetails = new javax.swing.JTable();
-        txtSeacrhName = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        txtSearchNIC = new javax.swing.JTextField();
+        txtSeacrh = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
+        cmbxSearchMode = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search Patient");
@@ -66,7 +65,7 @@ public class DetailsForm extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText("Search By :      Name");
+        jLabel1.setText("Search By :");
 
         tblDetails.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -81,10 +80,6 @@ public class DetailsForm extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblDetails);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText("or  NIC");
-
         btnSearch.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -93,6 +88,9 @@ public class DetailsForm extends javax.swing.JFrame {
             }
         });
 
+        cmbxSearchMode.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cmbxSearchMode.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Name", "NIC" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -100,17 +98,16 @@ public class DetailsForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtSeacrhName, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtSearchNIC, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cmbxSearchMode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtSeacrh, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
+                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -119,10 +116,9 @@ public class DetailsForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtSeacrhName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtSearchNIC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSeacrh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbxSearchMode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -136,7 +132,20 @@ public class DetailsForm extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        tableModel.search(txtSeacrhName.getText(), txtSearchNIC.getText());
+        try{
+            switch(cmbxSearchMode.getSelectedIndex()){
+                case 0:
+                    tableModel.search(txtSeacrh.getText(), true);
+                    break;
+                case 1:
+                    tableModel.search(txtSeacrh.getText(), false);
+                    break;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Sorry, an error occured while seraching!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btnSearchActionPerformed
 
     /**
@@ -177,11 +186,10 @@ public class DetailsForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
+    private javax.swing.JComboBox cmbxSearchMode;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDetails;
-    private javax.swing.JTextField txtSeacrhName;
-    private javax.swing.JTextField txtSearchNIC;
+    private javax.swing.JTextField txtSeacrh;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,6 +7,7 @@ package gui.reception;
 
 import DataBase.DBOperations;
 import Domain.Doctor;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +18,7 @@ public class DoctorDetailsModel extends DetailsTableModel{
 
     private ArrayList<Doctor> values;
     
-    public DoctorDetailsModel(){
+    public DoctorDetailsModel() throws SQLException{
         super(new String[]{"Employee ID","Name","Availability"});
         values = DBOperations.getInstace().loadDoctors();    // load avilable doctors at begining
     }
@@ -30,15 +31,24 @@ public class DoctorDetailsModel extends DetailsTableModel{
             case 1:
                 return values.get(rowIndex).getName();
             case 2:
-                return values.get(rowIndex).getNIC();
+                if (values.get(rowIndex).isAvailablity()){
+                    return "Available";
+                }else{
+                    return "Not Available";
+                }
             default:
                 return "";
         }
     }
 
+    public void setValues(ArrayList<Doctor> values){
+        this.values = values;
+        fireTableStructureChanged();
+    }
+    
     @Override
-    public void search(String name, String NIC) {
-        System.out.println(name+" "+NIC+"1");
+    public void search(String name, boolean searchByName) throws SQLException {
+        setValues(DBOperations.getInstace().searchDoctors(name));
     }
 
     @Override

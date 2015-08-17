@@ -1,9 +1,12 @@
 package Domain;
 
+import java.sql.Date;
+
 public class Room {
     private boolean availability;
     private int roomNo;
     private int PID;
+    private Date date;
 
     /**
      * @return the availability
@@ -45,5 +48,19 @@ public class Room {
      */
     public void setPID(int PID) {
         this.PID = PID;
+    }
+
+    /**
+     * @return the date
+     */
+    public Date getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

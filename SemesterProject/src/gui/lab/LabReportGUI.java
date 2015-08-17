@@ -7,15 +7,12 @@ package gui.lab;
 import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.LabReport;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
@@ -34,7 +31,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         
         this.str = "";
         ad=DBOperations.getInstace();
-        //l=new LabReport();
         initComponents();
         updateState=false;
         FBCpanel.setVisible(false);
@@ -157,12 +153,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setText("Total Cholesterol");
 
-        CholesterolAmount.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CholesterolAmountActionPerformed(evt);
-            }
-        });
-
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel9.setText("mg/dl");
 
@@ -229,15 +219,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Reference values : 70 - 110 mg/dl");
-        jLabel7.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-                jLabel7AncestorMoved(evt);
-            }
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -256,11 +237,11 @@ public class LabReportGUI extends javax.swing.JFrame {
             FBSpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FBSpanelLayout.createSequentialGroup()
                 .addGap(240, 240, 240)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(fbsAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
                 .addGap(295, 295, 295))
             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -445,9 +426,6 @@ public class LabReportGUI extends javax.swing.JFrame {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 LPtableKeyReleased(evt);
             }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                LPtableKeyTyped(evt);
-            }
         });
         jScrollPane1.setViewportView(LPtable);
         LPtable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -553,20 +531,9 @@ public class LabReportGUI extends javax.swing.JFrame {
         });
 
         testName.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        testName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         testName.setText("Test Name:");
 
         textTestName.setEditable(false);
-        textTestName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textTestNameActionPerformed(evt);
-            }
-        });
-        textTestName.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                textTestNameFocusGained(evt);
-            }
-        });
 
         date.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         date.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -598,22 +565,20 @@ public class LabReportGUI extends javax.swing.JFrame {
                         .addComponent(labTechnicianID)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(textLabTecID, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(248, 248, 248)
+                .addComponent(testID, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(TestBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, generalDetailPanelLayout.createSequentialGroup()
-                        .addGap(186, 186, 186)
-                        .addComponent(testID, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(TestBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(171, 171, 171)
-                        .addComponent(testName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(textTestName))
                     .addGroup(generalDetailPanelLayout.createSequentialGroup()
+                        .addComponent(date)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(date, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel2))
+                    .addComponent(testName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(generalDetailPanelLayout.createSequentialGroup()
                         .addComponent(textYear, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel3)
@@ -622,7 +587,8 @@ public class LabReportGUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(2, 2, 2)
-                        .addComponent(textDate, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(textDate, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textTestName)))
         );
         generalDetailPanelLayout.setVerticalGroup(
             generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -630,12 +596,12 @@ public class LabReportGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(generalDetailPanelLayout.createSequentialGroup()
-                        .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(testName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(textTestName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(testName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(testID)
-                                .addComponent(TestBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(textTestName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(TestBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(date)
@@ -738,26 +704,9 @@ public class LabReportGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textTestNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textTestNameActionPerformed
-        
-        
-    }//GEN-LAST:event_textTestNameActionPerformed
-
-    private void textTestNameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textTestNameFocusGained
-        
-    }//GEN-LAST:event_textTestNameFocusGained
-
     private void TestBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TestBoxActionPerformed
          chooseTest();
     }//GEN-LAST:event_TestBoxActionPerformed
-
-    private void jLabel7AncestorMoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jLabel7AncestorMoved
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel7AncestorMoved
-
-    private void CholesterolAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CholesterolAmountActionPerformed
-        
-    }//GEN-LAST:event_CholesterolAmountActionPerformed
 
     private void btnConfirmUFRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmUFRActionPerformed
         if(updateState){
@@ -770,8 +719,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         }else{
                 l=new LabReport();
         }
-        //LabReport l=new LabReport();
-        //DBOperations ad = DBOperations.getInstace();
+        
         String item=(String)TestBox.getSelectedItem();
         l.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
@@ -780,7 +728,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
-                System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
@@ -792,7 +739,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
                 l.setLabTechID(Integer.valueOf(tecId));
-                System.out.println("setter of tec id in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
@@ -801,9 +747,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         l.getDataList().clear();
         for(int i=0;i<UFRtable.getRowCount();i++){
             data=(String)UFRtable.getValueAt(i,1);
-           // System.out.println(Double.valueOf(data));
             l.addDataToTheList(data);
-            System.out.println(data+" result "+i);
         }  
         try{
             if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
@@ -818,7 +762,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         
         try{
             if(updateState){
-                System.out.println("updated report");
                 ad.updateLabReport(l);
             }else{
                 ad.addLabReport(l);
@@ -842,8 +785,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         }else{
               l=new LabReport();
         }
-        //LabReport l=new LabReport();
-        //DBOperations ad = DBOperations.getInstace();
+       
         String item=(String)TestBox.getSelectedItem();
         l.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
@@ -852,7 +794,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
-                System.out.println("setter of pid in TC confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
@@ -864,7 +805,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
                 l.setLabTechID(Integer.valueOf(tecId));
-                System.out.println("setter of tec id in TC confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
@@ -915,8 +855,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             }else{
                 l=new LabReport();
             }
-        //LabReport l=new LabReport();
-        //DBOperations ad = DBOperations.getInstace();
+        
         String item=(String)TestBox.getSelectedItem();
         l.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
@@ -925,7 +864,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
-                System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
@@ -937,7 +875,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
                 l.setLabTechID(Integer.valueOf(tecId));
-                System.out.println("setter of tec id in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
@@ -947,7 +884,6 @@ public class LabReportGUI extends javax.swing.JFrame {
             l.getDataList().clear();
             if(Double.valueOf(data) instanceof Double){
                  l.addDataToTheList(data);
-                 System.out.println("setting data in FBS");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Data is incorrect");
@@ -967,9 +903,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(updateState){
                 ad.updateLabReport(l);
-                System.out.println(l.getLabTechID()+" lab tec id");
-                System.out.println(l.getPID()+" pid");
-                System.out.println(l.getDataList()+" datalist");
             }else{
                 ad.addLabReport(l);
             }
@@ -994,8 +927,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             }else{
                 l=new LabReport();
             }
-        //LabReport l=new LabReport();
-        //DBOperations ad = DBOperations.getInstace();
+        
         String item=(String)TestBox.getSelectedItem();
         l.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
@@ -1004,7 +936,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
-                System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
@@ -1016,7 +947,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
                 l.setLabTechID(Integer.valueOf(tecId));
-                System.out.println("setter of tec id in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
@@ -1025,9 +955,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         l.getDataList().clear();
         for(int i=0;i<LPtable.getRowCount();i++){
             data=(String)LPtable.getValueAt(i,1);
-           // System.out.println(Double.valueOf(data));
             l.addDataToTheList(data);
-            System.out.println(data+" result "+i);
         }  
         try{
             if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
@@ -1056,7 +984,6 @@ public class LabReportGUI extends javax.swing.JFrame {
 
     private void LPtableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LPtableKeyReleased
         int num=evt.getKeyCode();
-        //System.out.println(evt.getKeyCode()+"  keycode");
         if((96<=num && 105>=num)||num==110 || evt.isActionKey()|| num==10){
             
         }else{
@@ -1064,10 +991,6 @@ public class LabReportGUI extends javax.swing.JFrame {
             ((JTextField)cellEditor.getComponent()).setText(str);
         }
     }//GEN-LAST:event_LPtableKeyReleased
-
-    private void LPtableKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LPtableKeyTyped
-        
-    }//GEN-LAST:event_LPtableKeyTyped
 
     private void btnConfirmFBCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmFBCActionPerformed
         if(updateState){
@@ -1080,8 +1003,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             }else{
                 l=new LabReport();
             }
-        //LabReport l=new LabReport();
-        //DBOperations ad = DBOperations.getInstace();
+        
         String item=(String)TestBox.getSelectedItem();
         l.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
@@ -1090,7 +1012,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
                 l.setPID(Integer.valueOf(pid));
-                System.out.println("setter of pid in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
@@ -1102,7 +1023,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
                 l.setLabTechID(Integer.valueOf(tecId));
-                System.out.println("setter of tec id in FBS confirm btn");
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
@@ -1111,9 +1031,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         l.getDataList().clear();
         for(int i=0;i<FBCtable.getRowCount();i++){
             data=(String)FBCtable.getValueAt(i,1);
-           // System.out.println(Double.valueOf(data));
             l.addDataToTheList(data);
-            System.out.println(data+" result "+i);
         }  
         try{
             if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
@@ -1142,7 +1060,6 @@ public class LabReportGUI extends javax.swing.JFrame {
 
     private void FBCtableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FBCtableKeyReleased
         int num=evt.getKeyCode();
-        //System.out.println(evt.getKeyCode()+"  keycode");
         if((96<=num && 105>=num)||num==110 || evt.isActionKey()|| num==10){
             
         }else{
@@ -1176,7 +1093,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             
             String s=String.valueOf(lr.getTestType());
             TestBox.setSelectedIndex(Integer.valueOf(lr.getTestType())-1);
-            //chooseTest();
+            
             
             TestBox.setEnabled(false);
             textPatientID.setText(String.valueOf(lr.getPID()));
@@ -1186,45 +1103,35 @@ public class LabReportGUI extends javax.swing.JFrame {
             textYear.setText(String.valueOf(Help.getYear(lr.getDate())));
             
             ArrayList<String> datalist=lr.getDataList();
-            System.out.println(datalist.get(0));
             String test=chooseTest();
-            System.out.println("sahan");
             switch (test) {
                 case "01":
-                    System.out.println("test 01");
                     fbsAmount.setText(datalist.get(0));
                     fbsAmount.setEditable(updateState);
-                    System.out.println(fbsAmount.getText());
-                    System.out.println("after setting fbsamount");
                     break;
                 case "02":
                     for(int i=0;i<datalist.size();i++){
                         UFRtable.setValueAt(datalist.get(i), i, 1);
                     }
-                    System.out.println("after setting ufr");
                     break;
                 case "03":
                     for(int i=0;i<datalist.size();i++){
                         FBCtable.setValueAt(datalist.get(i), i, 1);
                     }
-                    System.out.println("after setting fbc");
                     break;
                 case "04":
-                    System.out.println("in editing lp");
                     for(int i=0;i<datalist.size();i++){
                         LPtable.setValueAt(datalist.get(i), i, 1);
                     }
-                    System.out.println("after setting lp");
                     break;
                 case "05":
                     CholesterolAmount.setText(datalist.get(0));
-                    System.out.println("after setting tc");
                     break;
             }
-            TestBox.setEnabled(true);
+            
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("error in editactionperfomed method");
+            
         }
          
         
