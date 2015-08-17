@@ -10,8 +10,6 @@ import DataBase.DBOperations;
 import Domain.Doctor;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**

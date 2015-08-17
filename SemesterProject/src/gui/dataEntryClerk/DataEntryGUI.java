@@ -11,6 +11,7 @@ import DataBase.Help;
 import Domain.MedicalReport;
 import Domain.Patient;
 import gui.login.LoginFace;
+import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;

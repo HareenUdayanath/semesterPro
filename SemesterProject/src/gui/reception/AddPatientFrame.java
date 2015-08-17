@@ -9,7 +9,6 @@ import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.Patient;
-import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -206,11 +205,6 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 btnAddPatientActionPerformed(evt);
             }
         });
-        btnAddPatient.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnAddPatientKeyReleased(evt);
-            }
-        });
 
         btnCanel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btnCanel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/remove.png"))); // NOI18N
@@ -218,11 +212,6 @@ public class AddPatientFrame extends javax.swing.JFrame {
         btnCanel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCanelActionPerformed(evt);
-            }
-        });
-        btnCanel.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnCanelKeyReleased(evt);
             }
         });
 
@@ -466,16 +455,6 @@ public class AddPatientFrame extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         parent.setEnabled(true);
     }//GEN-LAST:event_formWindowClosing
-
-    private void btnCanelKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnCanelKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER)
-            btnCanelActionPerformed(null);
-    }//GEN-LAST:event_btnCanelKeyReleased
-
-    private void btnAddPatientKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAddPatientKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER)
-            btnAddPatientActionPerformed(null);
-    }//GEN-LAST:event_btnAddPatientKeyReleased
 
     private boolean validateDetails(){
         try {

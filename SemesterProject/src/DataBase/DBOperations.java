@@ -25,8 +25,11 @@ public class DBOperations {
     //private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
     private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     
-    private String user = "hosdataadmin";
-    private String password = "coperativehos7456391";
+    /*private String user = "hosdataadmin";
+    private String password = "coperativehos7456391";*/
+    
+    private String user = "root";
+    private String password = "irfad0101";
 
     private DBOperations(){
         this.emfac = new EmployeeFactory();
@@ -700,7 +703,7 @@ public class DBOperations {
         
         use = pst.executeQuery();             
 
-        if(use.next()){ 
+        while(use.next()){ 
             
             Room room = new Room();
             room.setRoomNo(use.getInt(1));
@@ -1002,7 +1005,7 @@ public class DBOperations {
             pst = con.prepareStatement("SELECT * FROM room WHERE RoomNo = ?");   
             pst.setInt(1,roomNo);        
             use = pst.executeQuery();
-            if(use.next()){                   
+            if(use.next() && use.getBoolean(2)){                   
                 return true;        
             }             
             closeConnection();            

@@ -10,10 +10,9 @@ import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.Patient;
 import Domain.Room;
+import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -44,16 +43,24 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
         txtDay.setText(Integer.toString(d.getDate()));
     }
     
-    public AdmitDischargeForm(ReceptionGUI parent,Room room){
+    public AdmitDischargeForm(ReceptionGUI parent,Room room,String name){
         this();
         this.parent = parent;
         this.admit = false;
         this.setTitle("Discharge Patient");
         btnAdmitDisharge.setText("Discharge Patient");
         disableFields();
+        txtRoomNumber.setText(Integer.toString(room.getRoomNo()));
+        txtPID.setText(Integer.toString(room.getPID()));
+        txtPatientName.setText(name);
+        txtYear.setText(Integer.toString(Help.getYear(room.getDate())));
+        txtMonth.setText(Integer.toString(Help.getMonth(room.getDate())));
+        txtDay.setText(Integer.toString(Help.getDay(room.getDate())));
+        btnAdmitDisharge.requestFocus();
     }
     
     private void disableFields(){
+        txtRoomNumber.setEditable(false);
         txtPID.setEditable(false);
         txtYear.setEditable(false);
         txtMonth.setEditable(false);
@@ -104,8 +111,9 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
 
         txtPID.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
+        txtPatientName.setEditable(false);
+        txtPatientName.setBackground(new java.awt.Color(204, 204, 204));
         txtPatientName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        txtPatientName.setEnabled(false);
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel14.setText("YYYY");
@@ -222,44 +230,45 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
         if (admit) {
             if (btnAdmitDisharge.getText().equals("Confirm")){
                 try{
-                    if (/*DBOperations.getInstace().isRoomAvailable(Integer.parseInt(txtRoomNumber.getText())) &&*/true ){
+                    if (DBOperations.getInstace().isRoomAvailable(Integer.parseInt(txtRoomNumber.getText()))){
                         Patient p = DBOperations.getInstace().getPatient(Integer.parseInt(txtPID.getText()));
                         txtPatientName.setText(p.getFullName());
                         disableFields();
                         btnAdmitDisharge.setText("Admit Patient");
                         return;
+                    }else{
+                        throw new NumberFormatException();
                     }
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(this, "Sorry an error occured while checking room or patient ID", "Error", JOptionPane.ERROR_MESSAGE);
                 } catch (ConnectionTimeOutException ex) {
                     JOptionPane.showMessageDialog(this, "Cannot check room or patient ID. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+                } catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(this, "Invalid Room number or Patient ID", "", JOptionPane.WARNING_MESSAGE);
+                } catch (NullPointerException ex){
+                    JOptionPane.showMessageDialog(this, "Invalid Patient ID", "", JOptionPane.WARNING_MESSAGE);
                 }
             }
             if (btnAdmitDisharge.getText().equals("Admit Patient")){
-                
+                try {
+                    Room r = new Room();
+                    r.setRoomNo(Integer.parseInt(txtRoomNumber.getText()));
+                    r.setPID(Integer.parseInt(txtPID.getText()));
+                    r.setDate(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
+                    DBOperations.getInstace().updateRoom(r);
+                    JOptionPane.showMessageDialog(this, "Successfully admitted", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    btnCancelActionPerformed(null);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Sorry an error occured while updating", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(this, "Cannot update room. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+                }
             }
+        } else if (JOptionPane.showConfirmDialog(this, "Are you sure you want to discharge?","Confirm Action",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
             try {
-                Room r = new Room();
-                r.setRoomNo(Integer.parseInt(txtRoomNumber.getText()));
-                r.setPID(Integer.parseInt(txtPID.getText()));
-                r.setAvailability(false);
-                r.setDate(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
-                DBOperations.getInstace().addRoom(r);
-                JOptionPane.showMessageDialog(this, "Successfully admitted", "Success", JOptionPane.INFORMATION_MESSAGE);
+                DBOperations.getInstace().setRoomAvailability(Integer.parseInt(txtRoomNumber.getText()),true);
+                JOptionPane.showMessageDialog(this, "Successfully discharged", "Success", JOptionPane.INFORMATION_MESSAGE);
                 btnCancelActionPerformed(null);
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Sorry an error occured while entering!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }catch (NumberFormatException ex){
-                JOptionPane.showMessageDialog(this, "Invalid Detail.", "", JOptionPane.WARNING_MESSAGE);
-                return;
-            } catch (ConnectionTimeOutException ex) {
-                JOptionPane.showMessageDialog(this, "Sorry, Cannot process admit. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
-            }
-        } else {
-            try {
-                DBOperations.getInstace().setRoomAvailability(Integer.parseInt(txtRoomNumber.getText()),false);
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(this, "Sorry an error occured while discharging", "Error", JOptionPane.ERROR_MESSAGE);
             } catch (ConnectionTimeOutException ex) {
@@ -270,6 +279,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         parent.setEnabled(true);
+        parent.refreshTable();
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 

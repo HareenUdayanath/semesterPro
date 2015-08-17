@@ -5,8 +5,11 @@
  */
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
+import DataBase.DBOperations;
 import gui.login.LoginFace;
 import java.awt.event.KeyEvent;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,6 +25,7 @@ public class ReceptionGUI extends javax.swing.JFrame {
      */
     public ReceptionGUI() {
         initComponents();
+        jLabel1.setVisible(false);
         new Thread(){
             @Override
             public void run(){
@@ -88,22 +92,12 @@ public class ReceptionGUI extends javax.swing.JFrame {
                 btnAddNewPatientActionPerformed(evt);
             }
         });
-        btnAddNewPatient.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnAddNewPatientKeyReleased(evt);
-            }
-        });
 
         btnSearchPatient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/zoom_in.png"))); // NOI18N
         btnSearchPatient.setText("  Search Patient");
         btnSearchPatient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchPatientActionPerformed(evt);
-            }
-        });
-        btnSearchPatient.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnSearchPatientKeyReleased(evt);
             }
         });
 
@@ -135,11 +129,6 @@ public class ReceptionGUI extends javax.swing.JFrame {
         btnDoctorList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDoctorListActionPerformed(evt);
-            }
-        });
-        btnDoctorList.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnDoctorListKeyReleased(evt);
             }
         });
 
@@ -181,21 +170,11 @@ public class ReceptionGUI extends javax.swing.JFrame {
                 btnAdmitPatientActionPerformed(evt);
             }
         });
-        btnAdmitPatient.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnAdmitPatientKeyReleased(evt);
-            }
-        });
 
         btnDischargePatient.setText("Discharge Patient");
         btnDischargePatient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDischargePatientActionPerformed(evt);
-            }
-        });
-        btnDischargePatient.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnDischargePatientKeyReleased(evt);
             }
         });
 
@@ -302,46 +281,31 @@ public class ReceptionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAdmitPatientActionPerformed
 
     private void btnDischargePatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDischargePatientActionPerformed
-        int selected = tblRooms.getSelectedColumn();
+        int selected = tblRooms.getSelectedRow();
         if (selected == -1){
             JOptionPane.showMessageDialog(this, "No item selected!", null, JOptionPane.WARNING_MESSAGE);
-            //return;
+            return;
         }
-        AdmitDischargeForm adf = new AdmitDischargeForm(this);
+        AdmitDischargeForm adf = new AdmitDischargeForm(this,roomModel.getRoomAt(selected), (String) roomModel.getValueAt(selected, 1));
         adf.setVisible(true);
         this.setEnabled(false);
     }//GEN-LAST:event_btnDischargePatientActionPerformed
 
-    private void btnAddNewPatientKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAddNewPatientKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER){
-            btnAddNewPatientActionPerformed(null);
-        }
-    }//GEN-LAST:event_btnAddNewPatientKeyReleased
-
-    private void btnSearchPatientKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnSearchPatientKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER){
-            btnSearchPatientActionPerformed(null);
-        }
-    }//GEN-LAST:event_btnSearchPatientKeyReleased
-
-    private void btnDoctorListKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDoctorListKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER){
-            btnDoctorListActionPerformed(null);
-        }
-    }//GEN-LAST:event_btnDoctorListKeyReleased
-
-    private void btnAdmitPatientKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAdmitPatientKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER){
-            btnAdmitPatientActionPerformed(null);
-        }
-    }//GEN-LAST:event_btnAdmitPatientKeyReleased
-
-    private void btnDischargePatientKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnDischargePatientKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER){
-            btnDischargePatientActionPerformed(null);
-        }
-    }//GEN-LAST:event_btnDischargePatientKeyReleased
-
+    protected void refreshTable(){
+        new Thread(){
+            @Override
+            public void run(){
+                try {
+                    roomModel.setRooms(DBOperations.getInstace().getAddmitedRooms());
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Sorry, an error occured while refreshing", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(null, "Cannot update rooms. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        }.start();
+    }
+    
     /**
      * @param args the command line arguments
      */

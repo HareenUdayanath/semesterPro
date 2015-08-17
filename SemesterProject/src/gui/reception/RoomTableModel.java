@@ -86,4 +86,13 @@ public class RoomTableModel extends AbstractTableModel{
         fireTableStructureChanged();
     }
     
+    public Room getRoomAt(int rowIndex){
+        return rooms.get(rowIndex);
+    }
+    
+    public void setRooms (ArrayList<Room> rooms){
+        this.rooms = rooms;
+        fireTableStructureChanged();
+    }
+    
 }
