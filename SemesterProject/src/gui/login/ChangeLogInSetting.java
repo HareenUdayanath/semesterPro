@@ -40,7 +40,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         } catch (SQLException ex) {
             //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ConnectionTimeOutException ex) {
-            JOptionPane.showMessageDialog(null,ex.toString());
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
         }
         this.txtUserName.setText(changeEmp.getUsername());    
@@ -50,7 +50,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         try {
             return dataBase.checkUserName(userName);
         } catch (ConnectionTimeOutException ex) {
-            JOptionPane.showMessageDialog(null,ex.toString());                        
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);                       
         }
         return false;
     }
@@ -59,7 +59,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         try {
             return dataBase.checkPassword(pass);
         } catch (ConnectionTimeOutException ex) {
-            Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
         return false;
     }
@@ -228,7 +228,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         try {
             employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pswdPassword.getPassword()));
         } catch (ConnectionTimeOutException ex) {
-            JOptionPane.showMessageDialog(null,ex.toString());
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if(employee!=null){
@@ -257,7 +257,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
                 } catch (SQLException ex) {
                     //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ConnectionTimeOutException ex) {
-                    JOptionPane.showMessageDialog(null,ex.toString());                    
+                    JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);                  
                 }
             }
             else{

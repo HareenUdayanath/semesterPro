@@ -4,6 +4,7 @@
  */
 package gui.admin;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import Domain.Manager;
 import java.awt.event.KeyEvent;
@@ -247,6 +248,8 @@ public class AdminFace extends javax.swing.JFrame {
                 empDB.updateManager(newManager);
             } catch (SQLException ex) {
                 Logger.getLogger(AdminFace.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             }
         }else{
             JOptionPane.showMessageDialog(null, "Error! Password field and Confirm password field do not match.", "Error!", JOptionPane.ERROR_MESSAGE);
