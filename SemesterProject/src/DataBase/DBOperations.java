@@ -162,7 +162,7 @@ public class DBOperations {
                       
         setConenction();              
         //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
-        pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?)");  
+        pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?,null)");  
 
         pst.setInt(1,employee.getEID());            
         pst.setString(2, employee.getPosition());

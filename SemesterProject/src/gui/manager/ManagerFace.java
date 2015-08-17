@@ -31,12 +31,13 @@ public class ManagerFace extends javax.swing.JFrame {
     DBOperations empDB ;
     int searchID;
     Employee emp;
+    EmployeeFactory emfac;
     public ManagerFace() {
         initComponents();
         nameLabel.setEnabled(false);
         posLabel.setEnabled(false);
         nicLabel.setEnabled(false);
-        
+        emfac = new EmployeeFactory();
     }
 
 
@@ -416,6 +417,7 @@ public class ManagerFace extends javax.swing.JFrame {
         empDB = DBOperations.getInstace();
         String name = nameText.getText();
         String position = posComboBox.getSelectedItem().toString();
+        Employee emp1 = emfac.getEmployee(position);
         String nic = nicText.getText();        
         String userName = unameText.getText();
         char[] password = passText.getPassword();
@@ -424,7 +426,7 @@ public class ManagerFace extends javax.swing.JFrame {
         if((Arrays.equals(password, conPassword))){
             emp1.setName(name);
             emp1.setNIC(nic);
-            emp1.setPassword(password.toString());
+            emp1.setPassword(String.valueOf(password));
             emp1.setUsername(userName);
             try {
                 empDB.addEmployee(emp1);

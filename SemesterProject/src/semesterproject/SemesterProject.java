@@ -13,6 +13,7 @@ import gui.manager.*;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.UIManager;
 
 
 public class SemesterProject {
@@ -34,7 +35,7 @@ public class SemesterProject {
                 lr.addDataToTheList(""+i);
             }
             new ShowLabReportGUI (lr).setVisible(true);*/
-        try {              
+                  
             /*LabReportGUI l=new LabReportGUI();
              l.setVisible(true);*/
                  
@@ -134,8 +135,14 @@ public class SemesterProject {
          } catch (SQLException ex) {
              Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
          }*/
-           /* LoginFace login = new LoginFace();
-             login.setVisible(true);*/
+            
+          
+       /*try {
+            UIManager.setLookAndFeel(new AcrylLookAndFeel());
+        } catch (Exception e) {            
+        */
+           LoginFace login = new LoginFace();
+             login.setVisible(true);
             
        /* try {
              //ad.setRoomAvailability(2,false);
@@ -146,12 +153,6 @@ public class SemesterProject {
         } catch (SQLException ex) {
             Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
         }*/
-        ArrayList<Employee> l =  ad.loadEmplyee();
-            System.out.println(l.get(0).getName());
-        } catch (SQLException ex) {
-            Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ConnectionTimeOutException ex) {
-            Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 }
