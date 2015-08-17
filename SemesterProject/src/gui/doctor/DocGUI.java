@@ -78,6 +78,7 @@ public class DocGUI extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2), "Details"));
 
+        detailList.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         detailList.setModel(new DefaultListModel());
         detailList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -258,7 +259,7 @@ public class DocGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ptDetailsBtnActionPerformed
 
     private void TreatReportsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TreatReportsBtnActionPerformed
-        // TODO add your handling code here:
+        
         mode = 2;
         detailList.setModel(new DefaultListModel());
          
@@ -285,6 +286,7 @@ public class DocGUI extends javax.swing.JFrame {
     private void labReportsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_labReportsBtnActionPerformed
         // TODO add your handling code here:
         mode = 3;
+        ptDB = DBOperations.getInstace();
         detailList.setModel(new DefaultListModel());
         DefaultListModel model = (DefaultListModel)detailList.getModel(); 
         ArrayList<Date> labDates = null;
@@ -302,65 +304,72 @@ public class DocGUI extends javax.swing.JFrame {
     private void detailListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_detailListMouseClicked
         // TODO add your handling code here:
         if(mode == 2){
-            Date selectedDate = (Date)detailList.getSelectedValue();
-            ArrayList<MedicalReport> mediReports = null;
-                try {
-                    mediReports = ptDB.getMedicalReports(pid, selectedDate);
-                } catch (SQLException ex) {
-                    Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+            if(detailList.getComponentCount()!= 0){
+                Date selectedDate = (Date)detailList.getSelectedValue();
+                ArrayList<MedicalReport> mediReports = null;
+                    try {
+                        mediReports = ptDB.getMedicalReports(pid, selectedDate);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                detailList.setModel(new DefaultListModel());
+                DefaultListModel model = (DefaultListModel)detailList.getModel(); 
+                for(MedicalReport mdRpt : mediReports){
+                     model.addElement((mdRpt.getMedicalReportNum()+" Test types : "+ mdRpt.getTestTypes()));
                 }
-            detailList.setModel(new DefaultListModel());
-            DefaultListModel model = (DefaultListModel)detailList.getModel(); 
-            for(MedicalReport mdRpt : mediReports){
-                 model.addElement((mdRpt.getMedicalReportNum()+" Test types : "+ mdRpt.getTestTypes()));
-            }
-        mode = 4;
-        
+                 mode = 4;
+            } 
         }
         
         if(mode == 3){
-        Date selectedDate = (Date)detailList.getSelectedValue();
-        ArrayList<LabReport> labReports = null;
-            try {
-                labReports = ptDB.getLabReports(pid, selectedDate);
-            } catch (SQLException ex) {
-                Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+            if(detailList.getComponentCount()!= 0){
+                Date selectedDate = (Date)detailList.getSelectedValue();
+                ArrayList<LabReport> labReports = null;
+                    try {
+                        labReports = ptDB.getLabReports(pid, selectedDate);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                detailList.setModel(new DefaultListModel());
+                DefaultListModel model = (DefaultListModel)detailList.getModel(); 
+                for(LabReport lbRpt : labReports){
+                     model.addElement((lbRpt.getLabReportNo()+" Test types : "+ lbRpt.getTestType()));
+                 }
+                mode = 5;
             }
-        detailList.setModel(new DefaultListModel());
-        DefaultListModel model = (DefaultListModel)detailList.getModel(); 
-        for(LabReport lbRpt : labReports){
-             model.addElement((lbRpt.getLabReportNo()+" Test types : "+ lbRpt.getTestType()));
-         }
-        mode = 5;
         }
         
         if(mode == 4){
-            
-            String reqReportStr = detailList.getSelectedValue().toString();
-            String rptNumStr =reqReportStr.substring(0, reqReportStr.indexOf(" ")); 
-            int reportNum = Integer.parseInt(rptNumStr);
-            MedicalReport reqReport = null;
-            try {
-                reqReport = ptDB.getMedicalReport(reportNum);
-            } catch (SQLException ex) {
-                Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+            if(detailList.getComponentCount()!= 0){
+                String reqReportStr = detailList.getSelectedValue().toString();
+                String rptNumStr =reqReportStr.substring(0, reqReportStr.indexOf(" ")); 
+                int reportNum = Integer.parseInt(rptNumStr);
+                MedicalReport reqReport = null;
+                try {
+                    reqReport = ptDB.getMedicalReport(reportNum);
+                } catch (SQLException ex) {
+                    Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                report = new ReportViewer();
+                report.showReport(reportNum,reqReport.getTreatementDescription());
+                report.setVisible(true);
             }
-            report = new ReportViewer();
-            report.showReport(reportNum,reqReport.getTreatementDescription());
         }
         
         if(mode == 5){
-            String reqlabReportStr = detailList.getSelectedValue().toString();
-            String labrptNumStr =reqlabReportStr.substring(0, reqlabReportStr.indexOf(" ")); 
-            int labreportNum = Integer.parseInt(labrptNumStr);
-            LabReport reqReport = null;            
-            try {
-                reqReport = ptDB.getLabReport(labreportNum);
-            } catch (SQLException ex) {
-                Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+            if(detailList.getComponentCount()!= 0){
+                String reqlabReportStr = detailList.getSelectedValue().toString();
+                String labrptNumStr =reqlabReportStr.substring(0, reqlabReportStr.indexOf(" ")); 
+                int labreportNum = Integer.parseInt(labrptNumStr);
+                LabReport reqReport = null;            
+                try {
+                    reqReport = ptDB.getLabReport(labreportNum);
+                } catch (SQLException ex) {
+                    Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                ShowLabReportGUI labReport = new ShowLabReportGUI(reqReport);
+                labReport.setVisible(true);
             }
-            ShowLabReportGUI labReport = new ShowLabReportGUI(reqReport);
-            labReport.setVisible(true);
            
         }
         
