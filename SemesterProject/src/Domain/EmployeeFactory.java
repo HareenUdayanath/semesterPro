@@ -8,9 +8,9 @@ public class EmployeeFactory {
                 return new Manager();
             case "Doctor":
                 return new Doctor();
-            case "Reception":
+            case "Receptionist":
                 return new Reception();
-            case "DataEntryClerck":
+            case "DataEntryClerk":
                 return new DataEntryClerk();
             case "LabTechniciant":
                 return new LabTechniciant();

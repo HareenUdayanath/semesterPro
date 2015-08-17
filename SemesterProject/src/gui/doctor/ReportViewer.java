@@ -19,6 +19,7 @@ public class ReportViewer extends javax.swing.JFrame {
      */
     public ReportViewer() {
         initComponents();
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
             setVisible(false);
@@ -109,6 +110,7 @@ public class ReportViewer extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ReportViewer().setVisible(true);
+                
             }
         });
         

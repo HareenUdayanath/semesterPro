@@ -25,12 +25,12 @@ public class DBOperations {
     //private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
     private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     
-    private String user = "hosdataadmin";
-    private String password = "coperativehos7456391";
+    private String user = "root";
+    private String password = "";
     
     
     
-    public DBOperations(){
+    DBOperations(){
         this.emfac = new EmployeeFactory();
     }
     
@@ -169,7 +169,8 @@ public class DBOperations {
         pst.setString(3,employee.getName());
         pst.setString(4, employee.getNIC());
         pst.setString(5, employee.getUsername());
-        pst.setString(6, employee.getPassword());           
+        pst.setString(6, employee.getPassword());      
+        
         pst.executeUpdate();
         con.close();
 
