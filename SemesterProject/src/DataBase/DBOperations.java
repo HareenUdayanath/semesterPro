@@ -170,7 +170,7 @@ public class DBOperations {
         pst.setString(4, employee.getNIC());
         pst.setString(5, employee.getUsername());
         pst.setString(6, employee.getPassword());      
-        pst.setString(7, employee.);
+        
         pst.executeUpdate();
         con.close();
 

@@ -29,6 +29,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
     
     public ChangeLogInSetting() {
         initComponents();
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     
     public void getPreviousData(int eid) throws SQLException{   
@@ -85,7 +86,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         txtNewUserName = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btnChange = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        exitBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -170,8 +171,13 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/remove.png"))); // NOI18N
-        jButton1.setText("Exit");
+        exitBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/remove.png"))); // NOI18N
+        exitBtn.setText("Exit");
+        exitBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -187,7 +193,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnChange)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)))
+                                .addComponent(exitBtn)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -201,7 +207,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnChange)
-                    .addComponent(jButton1))
+                    .addComponent(exitBtn))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -228,9 +234,13 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
     private void changeButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButActionPerformed
         // TODO add your handling code here:
         dataBase = DBOperations.getInstace();
+        System.out.println("cccccc");
         Employee employee = null;
+        System.out.println("cccccc");
         try {
+            System.out.println("cccccc");
             employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pswdPassword.getPassword()));
+            System.out.println("cccccc");
         } catch (ConnectionTimeOutException ex) {
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
@@ -273,13 +283,13 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
     }//GEN-LAST:event_changeButActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-       if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?","Confirm Action", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
-            this.dispose();
-            LoginFace l = new LoginFace();
-            l.setLocationRelativeTo(null);
-            l.setVisible(true);
-        }
+       
+       this.dispose();
     }//GEN-LAST:event_formWindowClosing
+
+    private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
+       this.dispose();
+    }//GEN-LAST:event_exitBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -311,7 +321,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChange;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton exitBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

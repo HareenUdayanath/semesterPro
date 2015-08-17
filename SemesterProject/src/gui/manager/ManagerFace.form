@@ -278,7 +278,7 @@
                           <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="nicText" max="32767" attributes="0"/>
-                              <Component id="nameText" pref="506" max="32767" attributes="0"/>
+                              <Component id="nameText" pref="510" max="32767" attributes="0"/>
                               <Component id="conPassText" max="32767" attributes="0"/>
                               <Component id="unameText" max="32767" attributes="0"/>
                               <Component id="passText" max="32767" attributes="0"/>
@@ -356,7 +356,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Conform Password"/>
+                    <Property name="text" type="java.lang.String" value="Confirm Password"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JPasswordField" name="conPassText">
