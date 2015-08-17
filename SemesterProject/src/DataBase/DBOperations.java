@@ -31,7 +31,7 @@ public class DBOperations {
     
     
     
-    public DBOperations(){
+    DBOperations(){
         this.emfac = new EmployeeFactory();
     }
     
