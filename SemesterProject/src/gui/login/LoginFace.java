@@ -3,7 +3,9 @@ package gui.login;
 import DataBase.*;
 import Domain.Doctor;
 import Domain.Employee;
+import gui.admin.AdminFace;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -150,27 +152,33 @@ public class LoginFace extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
-        dataBase = DBOperations.getInstace();
-        Employee employee = null;
-        try {
-            employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pasPassword.getPassword()));
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginFace.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(employee!=null){
-            if(employee.getPosition().equals("Doctor")){
-                try {
-                    dataBase.setDoctorAvailability(employee.getEID(),true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(LoginFace.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            iFactory.getInterFace(employee).setVisible(true);
+        dataBase = DBOperations.getInstace();  
+        if(dataBase.checkAdmin(txtUserName.getText(), String.valueOf(pasPassword.getPassword()))){
+            new AdminFace().setVisible(true);
             this.dispose();
         }else{
-            JOptionPane.showMessageDialog(null,"Invalid username or password");
-            txtUserName.setText(null);
-            pasPassword.setText(null);
+            
+            Employee employee = null;
+            try {
+                employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pasPassword.getPassword()));
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginFace.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(employee!=null){
+                if(employee.getPosition().equals("Doctor")){
+                    try {
+                        dataBase.setDoctorAvailability(employee.getEID(),true);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(LoginFace.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                iFactory.getInterFace(employee).setVisible(true);
+                this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(null,"Invalid username or password");
+                txtUserName.setText(null);
+                pasPassword.setText(null);
+            }
         }
     }//GEN-LAST:event_btnLogInActionPerformed
 

@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import Domain.*;
 import java.sql.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class DBOperations {
@@ -17,13 +19,34 @@ public class DBOperations {
     private EmployeeFactory emfac = null;
     private static DBOperations instance = null;
     //private String url = "jdbc:odbc://192.168.173.1:3306/test2";    
-    private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
-    //private String url = "jdbc:mysql://localhost:3306/SemesterProject";
+    //private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
+    private String ip = "192.168.173.1";
+    private String port = "3306";
+    //private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
+    private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
     
     private DBOperations(){
         this.emfac = new EmployeeFactory();
+    }
+    
+    /*
+     * Connection Establishment
+     */
+    
+    public boolean setConenction() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
+        Class.forName("com.mysql.jdbc.Driver").newInstance();            
+        con = DriverManager.getConnection(url, user, password);
+        boolean reachable = con.isValid(10);
+        return reachable;
+    }
+    public void closeConnection() throws SQLException{
+        try{
+            con.close();
+            pst.close();
+            use.close();
+        }catch(NullPointerException ex){}
     }
     
     /*
@@ -46,8 +69,7 @@ public class DBOperations {
     public boolean addPatient(Patient patient) throws SQLException{
         boolean result = false; 
         try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();            
-            con = DriverManager.getConnection(url, user, password);             
+            setConenction();
             pst = con.prepareStatement("INSERT INTO PatientFile VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");               
 
             pst.setInt(1,patient.getPID());
@@ -70,6 +92,8 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
         return result;
     }
@@ -95,6 +119,8 @@ public class DBOperations {
            
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
            return result;
     }
@@ -124,6 +150,8 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
            return result;
     }
@@ -147,6 +175,8 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
            return result;
     }
@@ -171,6 +201,8 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
            return result;
     }
@@ -193,6 +225,8 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
         return result;
     }
@@ -229,6 +263,8 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
         return result;
     }
@@ -255,6 +291,8 @@ public class DBOperations {
            
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
            return result;
     }
@@ -288,6 +326,8 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
            return result;
     }
@@ -309,10 +349,12 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
            return result;
     }
-     public boolean updateEmployeeUserNamePassWord(Employee employee) throws SQLException{
+    public boolean updateEmployeeUserNamePassWord(Employee employee) throws SQLException{
         boolean result = false; 
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -329,6 +371,30 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
+        }
+           return result;
+    }   
+    public boolean updateManager(Manager manager) throws SQLException{
+        boolean result = false; 
+        try{               
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            con = DriverManager.getConnection(url, user, password);              
+            pst = con.prepareStatement("UPDATE Employee SET Name = ?, NIC = ?,UserName = ?,Password = ? WHERE EID = 1");              
+            
+            pst.setString(1,manager.getName());
+            pst.setString(2,manager.getNIC());
+            pst.setString(3,manager.getUsername());          
+            pst.setString(4,manager.getPassword());            
+            pst.executeUpdate();
+            con.close();
+
+            result = true;
+        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
+            System.out.println(ex);
+        }finally{
+            closeConnection();
         }
            return result;
     }   
@@ -347,6 +413,8 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
            return result;
     }
@@ -365,6 +433,8 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
            return result;
     }
@@ -399,8 +469,8 @@ public class DBOperations {
             patientList.add(patient);
         }       
 
-        con.close();
-      
+        closeConnection();
+    
         return patientList;
     }
    
@@ -431,7 +501,7 @@ public class DBOperations {
 
         }       
 
-        con.close();
+        closeConnection();
        
         return patient;
     }
@@ -455,7 +525,7 @@ public class DBOperations {
 
             doctorList.add(doctor);
         }             
-        con.close();
+        closeConnection();
         
         return doctorList;
     }
@@ -476,8 +546,7 @@ public class DBOperations {
             employee.setUsername(use.getString(5));
             employee.setPassword(use.getString(6));         
         }             
-        con.close();
-       
+        closeConnection();
         return employeeList;
     }
     public Employee getEmplyee(int EID) throws SQLException{
@@ -496,8 +565,7 @@ public class DBOperations {
             employee.setUsername(use.getString(5));
             employee.setPassword(use.getString(6));         
         }             
-        con.close();
-        
+        closeConnection();
         return employee;
     }
     public ArrayList<Date> getLabDates(int PID) throws SQLException{
@@ -511,8 +579,7 @@ public class DBOperations {
         while(use.next()){                   
             dateList.add(use.getDate(2));
         }         
-        con.close();            
-       
+        closeConnection();
         return dateList;
     }
     public ArrayList<Date> getMedicalDates(int PID) throws SQLException{
@@ -526,8 +593,7 @@ public class DBOperations {
         while(use.next()){                   
             dateList.add(use.getDate(2));
         }         
-        con.close();
-      
+        closeConnection();
         return dateList;
     }
     public ArrayList<MedicalReport> getMedicalReports(int PID,Date date) throws SQLException{
@@ -548,7 +614,7 @@ public class DBOperations {
             medicalReport.setTreatementDescription(use.getString(6));     
             medicalReportList.add(medicalReport);
         }         
-        con.close();
+        closeConnection();
         
         return medicalReportList;
     }
@@ -572,8 +638,7 @@ public class DBOperations {
             medicalReport.setTreatementDescription(use.getString(6));     
 
         }         
-        con.close();
-        
+        closeConnection();
         return medicalReport;
     }
     
@@ -603,8 +668,7 @@ public class DBOperations {
             }               
             labReportList.add(labReport);
         }         
-        con.close();
-
+        closeConnection();
         return labReportList;
     }
     
@@ -634,8 +698,7 @@ public class DBOperations {
             }                
 
         }         
-        con.close();
-       
+        closeConnection();
         return labReport;
     }
     public LabReport getLastLabReport() throws SQLException{
@@ -663,8 +726,7 @@ public class DBOperations {
             }    
             System.out.println(labReport.getDataList().size());
         }    
-        con.close();
-        
+        closeConnection();
         return labReport;
     }
     public ArrayList<Room> getAddmitedRooms() throws SQLException{
@@ -683,8 +745,7 @@ public class DBOperations {
             room.setDate(use.getDate(4));
             roomList.add(room);
         }         
-        con.close();
-       
+        closeConnection();
         return roomList;
     }
     public int getLastPID() throws SQLException{
@@ -705,7 +766,7 @@ public class DBOperations {
 
         if(use.next())
             labReportNo = use.getInt(1);
-        
+        closeConnection();
         return labReportNo;
     }
     public boolean getDoctorAvailability(int EID) throws SQLException{
@@ -719,11 +780,12 @@ public class DBOperations {
             if(use.next()){                
                 return use.getBoolean(7);
             }
-            con.close();
-
+            
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+             closeConnection();
         }
            return result;
     }
@@ -749,7 +811,7 @@ public class DBOperations {
 
             doctorList.add(doctor);
         }             
-        con.close();
+        closeConnection();
 
         return doctorList;
     } 
@@ -779,7 +841,7 @@ public class DBOperations {
 
             patientList.add(patient);
         }    
-        con.close();
+        closeConnection();
         
         return patientList;
     }
@@ -811,8 +873,7 @@ public class DBOperations {
 
             patientList.add(patient);
         }    
-        con.close();
-       
+        closeConnection();
         return patientList;
     }
     /*
@@ -821,6 +882,8 @@ public class DBOperations {
     
     public boolean deleteEmployee(int EID) throws SQLException{
         boolean result = false; 
+        if(EID==1||EID==2)
+            return false;
         try{               
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);              
@@ -833,101 +896,168 @@ public class DBOperations {
             result = true;
         }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
             System.out.println(ex);
+        }finally{
+            closeConnection();
         }
            return result;
     }
     /*
      * check Data.....................................................................
      */
-     public Employee checkEmplyee(String uname,String pword) throws SQLException{
+     public Employee checkEmplyee(String uname,String pword){
         Employee employee=null;
-        
-        con = DriverManager.getConnection(url, user, password);               
-        //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
-        pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");   
-        pst.setString(1,uname);
-        pst.setString(2,pword);
-        use = pst.executeQuery();
+        try {        
+           con = DriverManager.getConnection(url, user, password);               
+           //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+           pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");   
+           pst.setString(1,uname);
+           pst.setString(2,pword);
+           use = pst.executeQuery();
 
-        while(use.next()){                   
-            employee = emfac.getEmployee(use.getString(2));                
-            employee.setEID(use.getInt(1));
-            employee.setName(use.getString(3));
-            employee.setNIC(use.getString(4));
-            employee.setUsername(use.getString(5));
-            employee.setPassword(use.getString(6));         
-        }             
-        con.close();
-       
-        return employee;
-    }
-    public boolean checkPatientNIC(String NIC) throws SQLException{        
-        
-        con = DriverManager.getConnection(url, user, password);               
-        pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
-        pst.setString(1, NIC);
-        use = pst.executeQuery();                
-        System.out.println(pst);
-        while(use.next()){     
-            return true;
-        }    
-        con.close();
-       
-        return false;
-    }
-    public boolean checkPID(String pid) throws SQLException{
-        con = DriverManager.getConnection(url, user, password);               
-        pst = con.prepareStatement("SELECT * FROM PatientFile WHERE PID=?");
-        pst.setString(1, pid);
-        use = pst.executeQuery();                
-        System.out.println(pst);
-        while(use.next()){     
-            return true;
-        }    
-        con.close();
-        return false;
-    }
-    public boolean checkUserName(String uname) throws SQLException{
-       
-        
-        con = DriverManager.getConnection(url, user, password);
-        pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ?");   
-        pst.setString(1,uname);
-        use = pst.executeQuery();
+           while(use.next()){                   
+               employee = emfac.getEmployee(use.getString(2));                
+               employee.setEID(use.getInt(1));
+               employee.setName(use.getString(3));
+               employee.setNIC(use.getString(4));
+               employee.setUsername(use.getString(5));
+               employee.setPassword(use.getString(6));         
+           }             
+           closeConnection();
 
-        if(use.next()){                   
-            return true;        
-        }             
-        con.close();
-       
-        return false;
-    }
-    public boolean checkPassword(String pword) throws SQLException{       
-        
-        con = DriverManager.getConnection(url, user, password);               
-        //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
-        pst = con.prepareStatement("SELECT * FROM Employee WHERE Password = ?");   
-        pst.setString(1,pword);        
-        use = pst.executeQuery();
-        if(use.next()){                   
-            return true;        
-        }             
-        con.close();
-       
-        return false;
-    }
-     public boolean checkDoctorID(int eid) throws SQLException{        
-        con = DriverManager.getConnection(url, user, password);
-        pst = con.prepareStatement("SELECT * FROM Employee WHERE EID = ?");   
-        pst.setInt(1,eid);
-        use = pst.executeQuery();
 
-        if(use.next()){  
-            if(use.getString(2).equals("Doctor"))
+       } catch (SQLException ex) {
+           Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+       }
+       return employee;
+    }
+    public boolean checkPatientNIC(String NIC){        
+        try {
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
+            pst.setString(1, NIC);
+            use = pst.executeQuery();                
+            System.out.println(pst);
+            while(use.next()){     
+                return true;
+            }    
+            con.close();           
+            
+        } catch (SQLException ex) {
+            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    public boolean checkPID(String pid){
+        try {
+            con = DriverManager.getConnection(url, user, password);               
+            pst = con.prepareStatement("SELECT * FROM PatientFile WHERE PID=?");
+            pst.setString(1, pid);
+            use = pst.executeQuery();                
+            System.out.println(pst);
+            while(use.next()){     
+                return true;
+            }    
+            closeConnection();
+           
+        } catch (SQLException ex) {
+            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         return false;
+    }
+    public boolean checkUserName(String uname){       
+        try {
+            con = DriverManager.getConnection(url, user, password);
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ?");   
+            pst.setString(1,uname);
+            use = pst.executeQuery();
+
+            if(use.next()){                   
                 return true;        
-        }             
-        con.close();
-       
+            }             
+            closeConnection();
+           
+        } catch (SQLException ex) {
+            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return false;
+    }
+     public boolean checkAdmin(String uname,String pass){       
+        try {
+            con = DriverManager.getConnection(url, user, password);
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE EID = 1 AND UserName = ? AND Password = MD5(?)");   
+            pst.setString(1,uname);
+            pst.setString(2,pass);
+            use = pst.executeQuery();
+
+            if(use.next()){                   
+                return true;        
+            }             
+            closeConnection();
+            
+        } catch (SQLException ex) {
+            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    public boolean checkPassword(String pword){       
+        try {
+            con = DriverManager.getConnection(url, user, password);               
+            //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE Password = ?");   
+            pst.setString(1,pword);        
+            use = pst.executeQuery();
+            if(use.next()){                   
+                return true;        
+            }             
+            closeConnection();            
+        } catch (SQLException ex) {
+            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+    public boolean checkDoctorID(int eid){        
+        try {
+            con = DriverManager.getConnection(url, user, password);
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE EID = ?");   
+            pst.setInt(1,eid);
+            use = pst.executeQuery();
+
+            if(use.next()){  
+                if(use.getString(2).equals("Doctor"))
+                    return true;        
+            }             
+            closeConnection();            
+        } catch (SQLException ex) {
+            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    /**
+     * @param ip the ip to set
+     */
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    /**
+     * @param port the port to set
+     */
+    public void setPort(String port) {
+        this.port = port;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
