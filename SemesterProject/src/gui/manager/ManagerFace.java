@@ -4,16 +4,19 @@
  */
 package gui.manager;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import Domain.Employee;
 import gui.login.ChangeLogInSetting;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
+import sun.security.util.Password;
 
 /**
  *
@@ -392,12 +395,19 @@ public class ManagerFace extends javax.swing.JFrame {
         searchID = Integer.parseInt(eidText.getText());
         try {
             emp = empDB.getEmplyee(searchID);
+            nameLabel.setText(emp.getName());
+            posLabel.setText(emp.getPosition());
+            nicLabel.setText(emp.getNIC());
         } catch (SQLException ex) {
             Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
         }
-        nameLabel.setText(emp.getName());
-        posLabel.setText(emp.getPosition());
-        nicLabel.setText(emp.getNIC());
+        catch(NullPointerException exN){
+          //  Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, exN);
+        } catch (ConnectionTimeOutException ex) {
+             JOptionPane.showMessageDialog(null,ex.toString());
+            return;
+        }
+        
     }//GEN-LAST:event_SearchBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
@@ -408,23 +418,28 @@ public class ManagerFace extends javax.swing.JFrame {
         String position = posComboBox.getSelectedItem().toString();
         String nic = nicText.getText();        
         String userName = unameText.getText();
-        String password = passText.getPassword().toString();
-        String conPassword = conPassText.getPassword().toString();
-        if(password.equals(conPassword)){
+        char[] password = passText.getPassword();
+        char[] conPassword = conPassText.getPassword();
+        if((Arrays.equals(password, conPassword))){
             emp1.setName(name);
             emp1.setNIC(nic);
-            emp1.setPassword(password);
+            emp1.setPassword(password.toString());
             emp1.setUsername(userName);
             try {
                 empDB.addEmployee(emp1);
+                System.out.println("nef");
             } catch (SQLException ex) {
                 Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConnectionTimeOutException ex) {
+                 JOptionPane.showMessageDialog(null,ex.toString());
+                return;
             }
         }
-        
-        if(password.equals(conPassword)){
-           
+        else{
+            JOptionPane.showMessageDialog(null, "Sorry! Your password and confirm password fields doesn't match.", "Password mismatch ", JOptionPane.INFORMATION_MESSAGE);
         }
+        
+        
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
@@ -436,11 +451,18 @@ public class ManagerFace extends javax.swing.JFrame {
 
     private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
         // TODO add your handling code here:
-        empDB = DBOperations.getInstace();
+        empDB = DBOperations.getInstace();        
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to remove this employee?","Remove Employee",dialogButton);
         if(dialogResult == JOptionPane.YES_OPTION){
-          //  removeEmpDB.
+            try {
+                empDB.deleteEmployee(searchID);
+            } catch (SQLException ex) {
+                Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConnectionTimeOutException ex) {
+                 JOptionPane.showMessageDialog(null,ex.toString());
+                return;
+            }
         }
     }//GEN-LAST:event_removeBtnActionPerformed
 
@@ -489,6 +511,9 @@ public class ManagerFace extends javax.swing.JFrame {
             elist.empList = empDB.loadEmplyee();
         } catch (SQLException ex) {
             Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionTimeOutException ex) {
+             JOptionPane.showMessageDialog(null,ex.toString());
+            return;
         }
         for(Employee em : elist.empList){
             elist.addRow(em.getEID(), em.getName(),em.getPosition(), em.getNIC());
@@ -505,6 +530,9 @@ public class ManagerFace extends javax.swing.JFrame {
             elist.empList = empDB.loadEmplyee();
         } catch (SQLException ex) {
             Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionTimeOutException ex) {
+             JOptionPane.showMessageDialog(null,ex.toString());
+            return;
         }
         for(Employee em : elist.empList){
             elist.addRow(em.getEID(), em.getName(),em.getPosition(), em.getNIC());

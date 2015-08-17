@@ -5,6 +5,9 @@
  */
 package gui.doctor;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 /**
  *
  * @author DJ
@@ -16,6 +19,11 @@ public class ReportViewer extends javax.swing.JFrame {
      */
     public ReportViewer() {
         initComponents();
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+            setVisible(false);
+    }
+    });
     }
 
     /**
@@ -38,7 +46,7 @@ public class ReportViewer extends javax.swing.JFrame {
         reportTextArea.setRows(5);
         jScrollPane1.setViewportView(reportTextArea);
 
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Treatment Report");
 
@@ -59,7 +67,7 @@ public class ReportViewer extends javax.swing.JFrame {
                 .addGap(84, 84, 84)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -68,11 +76,11 @@ public class ReportViewer extends javax.swing.JFrame {
 
     
     public void showReport(int reportNum,String reportData){
-        reportTextArea.setText("Reoprt number : "+ reportNum + "\r\n" +"Description : \r\n" +reportData);
+        reportTextArea.setText("Report number : "+ reportNum + "\r\n"+"\r\n" +"Description : \r\n" +reportData);
     }
-    /**
-     * @param args the command line arguments
-     */
+    
+    
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -103,6 +111,7 @@ public class ReportViewer extends javax.swing.JFrame {
                 new ReportViewer().setVisible(true);
             }
         });
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

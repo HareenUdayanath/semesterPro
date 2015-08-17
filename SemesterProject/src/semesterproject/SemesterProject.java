@@ -34,7 +34,7 @@ public class SemesterProject {
                 lr.addDataToTheList(""+i);
             }
             new ShowLabReportGUI (lr).setVisible(true);*/
-        
+              
             /*LabReportGUI l=new LabReportGUI();
              l.setVisible(true);*/
                  
@@ -134,7 +134,7 @@ public class SemesterProject {
          } catch (SQLException ex) {
              Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
          }*/
-             LoginFace login = new LoginFace();
+            LoginFace login = new LoginFace();
              login.setVisible(true);
             
        /* try {
@@ -146,6 +146,6 @@ public class SemesterProject {
         } catch (SQLException ex) {
             Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
         }*/
-                    
+        
     }
 }

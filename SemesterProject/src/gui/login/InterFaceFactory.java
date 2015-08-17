@@ -1,6 +1,7 @@
 package gui.login;
 
 
+import Domain.Doctor;
 import Domain.Employee;
 import gui.dataEntryClerk.DataEntryGUI;
 import gui.doctor.DocGUI;
@@ -18,7 +19,7 @@ public class InterFaceFactory {
             case "Manager":
                 return new ManagerFace();
             case "Doctor":
-                return new DocGUI();
+                return new DocGUI((Doctor)employee);
             case "Reception":
                 return new ReceptionGUI();
             case "DataEntryClerck":

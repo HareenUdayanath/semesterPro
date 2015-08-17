@@ -4,6 +4,7 @@
  */
 package gui.login;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import Domain.Employee;
 import java.sql.SQLException;
@@ -37,7 +38,10 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         try {
             changeEmp = dataBase.getEmplyee(eid);
         } catch (SQLException ex) {
-            Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         this.txtUserName.setText(changeEmp.getUsername());    
     }
@@ -45,8 +49,8 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         dataBase = DBOperations.getInstace();
         try {
             return dataBase.checkUserName(userName);
-        } catch (SQLException ex) {
-            //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);                       
         }
         return false;
     }
@@ -54,8 +58,8 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         dataBase = DBOperations.getInstace();
         try {
             return dataBase.checkPassword(pass);
-        } catch (SQLException ex) {
-            //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
         }
         return false;
     }
@@ -223,8 +227,9 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         Employee employee = null;
         try {
             employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pswdPassword.getPassword()));
-        } catch (SQLException ex) {
-            //Logger.getLogger(LoginFace.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         if(employee!=null){
             String uName = txtNewUserName.getText();
@@ -251,6 +256,8 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
                     pswdConfirmPassword.setText("");
                 } catch (SQLException ex) {
                     //Logger.getLogger(ChangeLogInSetting.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);                  
                 }
             }
             else{
