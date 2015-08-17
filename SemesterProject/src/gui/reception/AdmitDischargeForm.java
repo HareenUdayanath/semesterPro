@@ -5,9 +5,12 @@
  */
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import DataBase.Help;
+import Domain.Patient;
 import Domain.Room;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,16 +36,25 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
         this();
         this.parent = parent;
         this.admit = true;
-        btnAdmitDisharge.setText("Admit Patient");
+        this.setTitle("Admit Patient");
+        btnAdmitDisharge.setText("Confirm");
+        Date d = new Date(System.currentTimeMillis());
+        txtYear.setText(Integer.toString(1900+d.getYear()));
+        txtMonth.setText(Integer.toString(1+d.getMonth()));
+        txtDay.setText(Integer.toString(d.getDate()));
     }
     
     public AdmitDischargeForm(ReceptionGUI parent,Room room){
         this();
         this.parent = parent;
         this.admit = false;
+        this.setTitle("Discharge Patient");
         btnAdmitDisharge.setText("Discharge Patient");
+        disableFields();
+    }
+    
+    private void disableFields(){
         txtPID.setEditable(false);
-        txtPatientName.setEditable(false);
         txtYear.setEditable(false);
         txtMonth.setEditable(false);
         txtDay.setEditable(false);
@@ -71,7 +83,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
         btnAdmitDisharge = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtRoomNumber = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -93,6 +105,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
         txtPID.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         txtPatientName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtPatientName.setEnabled(false);
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel14.setText("YYYY");
@@ -128,7 +141,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Room Number :");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtRoomNumber.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -167,7 +180,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtDay, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtRoomNumber, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtPID, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)))))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
@@ -177,7 +190,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtRoomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -207,9 +220,27 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
 
     private void btnAdmitDishargeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdmitDishargeActionPerformed
         if (admit) {
+            if (btnAdmitDisharge.getText().equals("Confirm")){
+                try{
+                    if (/*DBOperations.getInstace().isRoomAvailable(Integer.parseInt(txtRoomNumber.getText())) &&*/true ){
+                        Patient p = DBOperations.getInstace().getPatient(Integer.parseInt(txtPID.getText()));
+                        txtPatientName.setText(p.getFullName());
+                        disableFields();
+                        btnAdmitDisharge.setText("Admit Patient");
+                        return;
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Sorry an error occured while checking room or patient ID", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(this, "Cannot check room or patient ID. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+            if (btnAdmitDisharge.getText().equals("Admit Patient")){
+                
+            }
             try {
                 Room r = new Room();
-                r.setRoomNo(Integer.parseInt(jTextField1.getText()));
+                r.setRoomNo(Integer.parseInt(txtRoomNumber.getText()));
                 r.setPID(Integer.parseInt(txtPID.getText()));
                 r.setAvailability(false);
                 r.setDate(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
@@ -223,12 +254,16 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
             }catch (NumberFormatException ex){
                 JOptionPane.showMessageDialog(this, "Invalid Detail.", "", JOptionPane.WARNING_MESSAGE);
                 return;
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(this, "Sorry, Cannot process admit. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
             }
         } else {
             try {
-                DBOperations.getInstace().setRoomAvailability(Integer.parseInt(jTextField1.getText()),false);
+                DBOperations.getInstace().setRoomAvailability(Integer.parseInt(txtRoomNumber.getText()),false);
             } catch (SQLException ex) {
-                Logger.getLogger(AdmitDischargeForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Sorry an error occured while discharging", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(this, "Sorry, Cannot process discharge. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnAdmitDishargeActionPerformed
@@ -285,13 +320,13 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblPatientName;
     private javax.swing.JTextField txtDay;
     private javax.swing.JTextField txtMonth;
     private javax.swing.JTextField txtPID;
     private javax.swing.JTextField txtPatientName;
+    private javax.swing.JTextField txtRoomNumber;
     private javax.swing.JTextField txtYear;
     // End of variables declaration//GEN-END:variables
 }

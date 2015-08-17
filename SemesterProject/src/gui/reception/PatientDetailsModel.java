@@ -5,6 +5,7 @@
  */
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import Domain.Patient;
 import java.sql.SQLException;
@@ -47,7 +48,7 @@ public class PatientDetailsModel extends DetailsTableModel {
     }
 
     @Override
-    public void search(String key,boolean searchByName) throws SQLException {
+    public void search(String key,boolean searchByName) throws SQLException,ConnectionTimeOutException {
         if (searchByName){
             setValues(DBOperations.getInstace().searchPatients(key));
         }else{

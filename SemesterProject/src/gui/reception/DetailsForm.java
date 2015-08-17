@@ -5,6 +5,7 @@
  */
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -145,6 +146,8 @@ public class DetailsForm extends javax.swing.JFrame {
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Sorry, an error occured while seraching!", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot search. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
         }
         
     }//GEN-LAST:event_btnSearchActionPerformed

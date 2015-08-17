@@ -5,11 +5,14 @@
  */
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.Patient;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -34,6 +37,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
             txtPID.setText(Integer.toString(DBOperations.getInstace().getLastPID()+1));
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Sorry,an error occured while retrieving Patient ID", "Errror", JOptionPane.WARNING_MESSAGE);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot load patient ID. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -401,7 +406,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPatientActionPerformed
-        if (validateDetails()){
+        if (!txtPID.getText().equals("") && validateDetails()){
             try {
                 Patient p = new Patient();
                 p.setFirstName(txtFirstName.getText());
@@ -411,7 +416,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
                     try{
                         p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
                     }catch(NumberFormatException ex){
-                        JOptionPane.showMessageDialog(this, "Invalid Date of Birth!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(this, ex.toString(), "Invalid detail", JOptionPane.WARNING_MESSAGE);
                         return;
                     }
                 }
@@ -447,6 +452,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "An error occured while adding.Please try again.", "Error", JOptionPane.WARNING_MESSAGE);
+            } catch (ConnectionTimeOutException ex) {
+                Logger.getLogger(AddPatientFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnAddPatientActionPerformed
@@ -490,8 +497,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 return false;
             }
             return true;
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Sorry, An error occured while checking Patient ID!","Error", JOptionPane.WARNING_MESSAGE);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot check NIC. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
             return false;
         }
     }

@@ -143,7 +143,7 @@ public class EmployeeList extends javax.swing.JFrame {
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
         // TODO add your handling code here:
-        empDB = new DBOperations();
+        empDB = DBOperations.getInstace();
         try {
             empList = empDB.loadEmplyee();
             System.out.println("aaaaaaaa");
