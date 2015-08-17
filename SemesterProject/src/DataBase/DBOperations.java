@@ -384,6 +384,26 @@ public class DBOperations {
         closeConnection();
         return result;
     }
+    public boolean updateRoom(Room room) throws SQLException, ConnectionTimeOutException{
+        boolean result = false; 
+                   
+        setConenction();              
+        //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
+        pst = con.prepareStatement("UPDATE room SET PID = ?, Date = ?,Availability = ? WHERE RoomNo = ?");  
+
+        pst.setInt(1,room.getPID());
+        pst.setDate(2, room.getDate());
+        pst.setBoolean(3, room.isAvailability());
+        pst.setInt(4,room.getRoomNo());    
+        
+
+        pst.executeUpdate();
+        
+        result = true;
+        closeConnection();
+        return result;
+    }
+   
     
     /*
      * Load Data.................................................
@@ -840,7 +860,7 @@ public class DBOperations {
         pst.setInt(1, EID);
 
         pst.executeUpdate();
-        con.close();
+        closeConnection();
 
         result = true;        
         return result;
