@@ -5,11 +5,13 @@
  */
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.Patient;
-import java.awt.event.KeyEvent;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -34,6 +36,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
             txtPID.setText(Integer.toString(DBOperations.getInstace().getLastPID()+1));
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Sorry,an error occured while retrieving Patient ID", "Errror", JOptionPane.WARNING_MESSAGE);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot load patient ID. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
         }
     }
     
@@ -194,28 +198,20 @@ public class AddPatientFrame extends javax.swing.JFrame {
         txtAllergies2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         btnAddPatient.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnAddPatient.setText("Add Patient");
+        btnAddPatient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/user_add.png"))); // NOI18N
+        btnAddPatient.setText(" Add Patient");
         btnAddPatient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddPatientActionPerformed(evt);
             }
         });
-        btnAddPatient.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnAddPatientKeyReleased(evt);
-            }
-        });
 
         btnCanel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnCanel.setText("Cancel");
+        btnCanel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/remove.png"))); // NOI18N
+        btnCanel.setText(" Cancel");
         btnCanel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCanelActionPerformed(evt);
-            }
-        });
-        btnCanel.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnCanelKeyReleased(evt);
             }
         });
 
@@ -258,7 +254,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnCanel, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCanel)
                         .addGap(18, 18, 18)
                         .addComponent(btnAddPatient))
                     .addGroup(jPanel6Layout.createSequentialGroup()
@@ -399,7 +395,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPatientActionPerformed
-        if (validateDetails()){
+        if (!txtPID.getText().equals("") && validateDetails()){
             try {
                 Patient p = new Patient();
                 p.setFirstName(txtFirstName.getText());
@@ -409,7 +405,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
                     try{
                         p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
                     }catch(NumberFormatException ex){
-                        JOptionPane.showMessageDialog(this, "Invalid Date of Birth!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(this, ex.toString(), "Invalid detail", JOptionPane.WARNING_MESSAGE);
                         return;
                     }
                 }
@@ -445,6 +441,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "An error occured while adding.Please try again.", "Error", JOptionPane.WARNING_MESSAGE);
+            } catch (ConnectionTimeOutException ex) {
+                Logger.getLogger(AddPatientFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnAddPatientActionPerformed
@@ -457,16 +455,6 @@ public class AddPatientFrame extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         parent.setEnabled(true);
     }//GEN-LAST:event_formWindowClosing
-
-    private void btnCanelKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnCanelKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER)
-            btnCanelActionPerformed(null);
-    }//GEN-LAST:event_btnCanelKeyReleased
-
-    private void btnAddPatientKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAddPatientKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER)
-            btnAddPatientActionPerformed(null);
-    }//GEN-LAST:event_btnAddPatientKeyReleased
 
     private boolean validateDetails(){
         try {
@@ -488,8 +476,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 return false;
             }
             return true;
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Sorry, An error occured while checking Patient ID!","Error", JOptionPane.WARNING_MESSAGE);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot check NIC. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
             return false;
         }
     }

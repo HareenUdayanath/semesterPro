@@ -5,11 +5,14 @@
  */
 package gui.dataEntryClerk;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.MedicalReport;
 import Domain.Patient;
 import gui.login.LoginFace;
+import java.awt.event.KeyEvent;
+import java.sql.Date;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
@@ -26,7 +29,10 @@ public class DataEntryGUI extends javax.swing.JFrame {
      */
     public DataEntryGUI() {
         initComponents();
-        
+        Date d = new Date(System.currentTimeMillis());
+        txtReportYear.setText(Integer.toString(1900+d.getYear()));
+        txtReportMonth.setText(Integer.toString(1+d.getMonth()));
+        txtReportDay.setText(Integer.toString(d.getDate()));
     }
 
     /**
@@ -605,6 +611,8 @@ public class DataEntryGUI extends javax.swing.JFrame {
                     btnCanelActionPerformed(null);
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(this, "An error occured while updating.", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(this, "Cannot update. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
                 }
             }
     }//GEN-LAST:event_btnUpdatePatientActionPerformed
@@ -643,10 +651,10 @@ public class DataEntryGUI extends javax.swing.JFrame {
             }
         }catch(NumberFormatException ex){
             ex.printStackTrace();
-           mReport = null;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Sorry, an error occured while checking ID", "Error", JOptionPane.ERROR_MESSAGE);
+            mReport = null;
+        } catch (ConnectionTimeOutException ex) {
+            mReport = null;
+            JOptionPane.showMessageDialog(this, "Cannot check patient ID. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
         }
         if (mReport != null){
             try {
@@ -661,6 +669,8 @@ public class DataEntryGUI extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Invalid Detail", null, JOptionPane.WARNING_MESSAGE);
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(this, "Cannot add patient. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
             }
         }else{
             JOptionPane.showMessageDialog(this, "Invalid Detail", null, JOptionPane.WARNING_MESSAGE);
@@ -684,6 +694,8 @@ public class DataEntryGUI extends javax.swing.JFrame {
             p = null;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Sorry, an error occured while loading patient", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot load patient. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
         }
         if (p == null){
             JOptionPane.showMessageDialog(this, "Invalid Patient ID", null, JOptionPane.ERROR_MESSAGE);

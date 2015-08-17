@@ -5,6 +5,7 @@
  */
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import Domain.Patient;
 import Domain.Room;
@@ -32,6 +33,9 @@ public class RoomTableModel extends AbstractTableModel{
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Sorry, an error occured while loading rooms", "Error", JOptionPane.ERROR_MESSAGE);
             this.rooms = new ArrayList<Room>();
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null, "Cannot load rooms. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+            this.rooms = new ArrayList<Room>();
         }
     }
     
@@ -56,6 +60,8 @@ public class RoomTableModel extends AbstractTableModel{
                     p = DBOperations.getInstace().getPatient(rooms.get(rowIndex).getPID());
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(null, "Sorry, an error occured while fetching information", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(null, "Cannot fetch information. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
                 }
                 return p.getFullName();
             case 2:
@@ -76,6 +82,15 @@ public class RoomTableModel extends AbstractTableModel{
     }
     
     public void setValues(ArrayList<Room> rooms){
+        this.rooms = rooms;
+        fireTableStructureChanged();
+    }
+    
+    public Room getRoomAt(int rowIndex){
+        return rooms.get(rowIndex);
+    }
+    
+    public void setRooms (ArrayList<Room> rooms){
         this.rooms = rooms;
         fireTableStructureChanged();
     }

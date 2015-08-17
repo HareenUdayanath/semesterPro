@@ -5,10 +5,12 @@
  */
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import Domain.Doctor;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,9 +20,18 @@ public class DoctorDetailsModel extends DetailsTableModel{
 
     private ArrayList<Doctor> values;
     
-    public DoctorDetailsModel() throws SQLException{
+    public DoctorDetailsModel(){
         super(new String[]{"Employee ID","Name","Availability"});
-        values = DBOperations.getInstace().loadDoctors();    // load avilable doctors at begining
+        try {
+            values = DBOperations.getInstace().loadDoctors();    // load avilable doctors at begining
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Sorry, an error occured while loading Doctors!", "Error", JOptionPane.ERROR_MESSAGE);
+            values = new ArrayList<Doctor>();
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null, "Cannot load doctor list. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+            values = new ArrayList<Doctor>();
+        }
     }
     
     @Override
@@ -47,7 +58,7 @@ public class DoctorDetailsModel extends DetailsTableModel{
     }
     
     @Override
-    public void search(String name, boolean searchByName) throws SQLException {
+    public void search(String name, boolean searchByName) throws SQLException,ConnectionTimeOutException {
         setValues(DBOperations.getInstace().searchDoctors(name));
     }
 

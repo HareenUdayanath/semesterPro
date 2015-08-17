@@ -5,6 +5,7 @@
  */
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import java.sql.SQLException;
 import javax.swing.table.AbstractTableModel;
 
@@ -30,6 +31,6 @@ public abstract class DetailsTableModel extends AbstractTableModel{
         return COLUMN_NAMES[columnIndex];
     }
     
-    public abstract void search(String key, boolean searchByName)throws SQLException;
+    public abstract void search(String key, boolean searchByName)throws SQLException,ConnectionTimeOutException;
     
 }
