@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import Domain.*;
+import com.mysql.jdbc.CommunicationsException;
 import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,10 +36,25 @@ public class DBOperations {
      * Connection Establishment
      */
     
-    public boolean setConenction() throws SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException{
-        Class.forName("com.mysql.jdbc.Driver").newInstance();            
-        con = DriverManager.getConnection(url, user, password);
-        boolean reachable = con.isValid(10);
+    public boolean setConenction() throws SQLException,ConnectionTimeOutException{
+        boolean reachable = false;
+        try {            
+            Class.forName("com.mysql.jdbc.Driver").newInstance();           
+            con = DriverManager.getConnection(url, user, password);            
+            reachable = con.isValid(5);
+            
+        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
+            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(com.mysql.jdbc.exceptions.jdbc4.CommunicationsException ex){
+            throw new ConnectionTimeOutException(ex.getMessage());
+        }catch(Exception ex){            
+            throw new ConnectionTimeOutException(ex.getClass().getCanonicalName());
+        }
+        
+       
+        
+        if(!reachable)
+            throw new ConnectionTimeOutException();
         return reachable;
     }
     public void closeConnection() throws SQLException{
@@ -66,387 +82,313 @@ public class DBOperations {
     /*
      * Add Data......................................................................
      */
-    public boolean addPatient(Patient patient) throws SQLException{
+    public boolean addPatient(Patient patient) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        try{               
-            setConenction();
-            pst = con.prepareStatement("INSERT INTO PatientFile VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");               
+                  
+        setConenction();
+        pst = con.prepareStatement("INSERT INTO PatientFile VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");               
 
-            pst.setInt(1,patient.getPID());
-            pst.setString(2,patient.getFirstName());
-            pst.setString(3,patient.getFullName());
-            pst.setString(4,patient.getLastName());            
-            pst.setDate(5,patient.getDateOfBirth());
-            pst.setString(6, patient.getGender());
-            pst.setString(7, patient.getAddress());
-            pst.setString(8, patient.getNIC());
-            pst.setInt(9, patient.getPatientContactNo());
-            pst.setString(10, patient.getNameOfTheGuardian());
-            pst.setInt(11, patient.getGuardianContactNo());
-            pst.setString(12, patient.getBloodGroup());
-            pst.setString(13, patient.getAllergies());
-            
-            pst.executeUpdate();
-            con.close();
-            
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
+        pst.setInt(1,patient.getPID());
+        pst.setString(2,patient.getFirstName());
+        pst.setString(3,patient.getFullName());
+        pst.setString(4,patient.getLastName());            
+        pst.setDate(5,patient.getDateOfBirth());
+        pst.setString(6, patient.getGender());
+        pst.setString(7, patient.getAddress());
+        pst.setString(8, patient.getNIC());
+        pst.setInt(9, patient.getPatientContactNo());
+        pst.setString(10, patient.getNameOfTheGuardian());
+        pst.setInt(11, patient.getGuardianContactNo());
+        pst.setString(12, patient.getBloodGroup());
+        pst.setString(13, patient.getAllergies());
+
+        pst.executeUpdate();
+        con.close();
+
+        result = true;       
+        closeConnection();        
         return result;
     }
-    public boolean addMedicalReport(MedicalReport medicalReport) throws SQLException{
+    public boolean addMedicalReport(MedicalReport medicalReport) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
         // For insert to medical report there should be a PID which has same PID in medical report
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("INSERT INTO MedicalReport VALUES(?,?,?,?,?,?)");               
-             
-            pst.setInt(1,medicalReport.getPID());
-            pst.setDate(2, medicalReport.getDate());
-            pst.setInt(3, medicalReport.getDoctorID());
-            pst.setInt(4,medicalReport.getMedicalReportNum());
-            pst.setString(5, medicalReport.getTestTypes());
-            pst.setString(6, medicalReport.getTreatementDescription());            
-           
-            pst.executeUpdate();
-            con.close();
-            
-            result = true;
-           
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
-           return result;
+        setConenction();             
+        pst = con.prepareStatement("INSERT INTO MedicalReport VALUES(?,?,?,?,?,?)");               
+
+        pst.setInt(1,medicalReport.getPID());
+        pst.setDate(2, medicalReport.getDate());
+        pst.setInt(3, medicalReport.getDoctorID());
+        pst.setInt(4,medicalReport.getMedicalReportNum());
+        pst.setString(5, medicalReport.getTestTypes());
+        pst.setString(6, medicalReport.getTreatementDescription());            
+
+        pst.executeUpdate();
+        con.close();
+
+        result = true;
+        closeConnection();        
+        return result;
     }
-    public boolean addLabReport(LabReport labReport) throws SQLException {
+    public boolean addLabReport(LabReport labReport) throws SQLException, ConnectionTimeOutException {
         boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("INSERT INTO LabReport VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");  
-            int index;
+                    
+        setConenction();              
+        pst = con.prepareStatement("INSERT INTO LabReport VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");  
+        int index;
 
-            pst.setInt(1,labReport.getPID());
-            pst.setDate(2, labReport.getDate());
-            pst.setInt(3, labReport.getLabReportNo());
-            pst.setInt(4,labReport.getTestType());
-            pst.setInt(5, labReport.getLabTechID());
-            index = 6;
-            for(String data:labReport.getDataList()){
-                pst.setString(index++, data);
-            }
-            for(int i = 0;(i+index)<22;i++){               
-                pst.setString(index+i, null);
-            }           
-            pst.executeUpdate();
-            con.close();
-
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
+        pst.setInt(1,labReport.getPID());
+        pst.setDate(2, labReport.getDate());
+        pst.setInt(3, labReport.getLabReportNo());
+        pst.setInt(4,labReport.getTestType());
+        pst.setInt(5, labReport.getLabTechID());
+        index = 6;
+        for(String data:labReport.getDataList()){
+            pst.setString(index++, data);
         }
-           return result;
+        for(int i = 0;(i+index)<22;i++){               
+            pst.setString(index+i, null);
+        }           
+        pst.executeUpdate();
+        con.close();
+
+        result = true;
+        closeConnection();
+        return result;
     }
-    public boolean addEmployee(Employee employee) throws SQLException{
+    public boolean addEmployee(Employee employee) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
-            pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?)");  
+                      
+        setConenction();              
+        //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
+        pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?)");  
 
-            pst.setInt(1,employee.getEID());            
-            pst.setString(2, employee.getPosition());
-            pst.setString(3,employee.getName());
-            pst.setString(4, employee.getNIC());
-            pst.setString(5, employee.getUsername());
-            pst.setString(6, employee.getPassword());           
-            pst.executeUpdate();
-            con.close();
+        pst.setInt(1,employee.getEID());            
+        pst.setString(2, employee.getPosition());
+        pst.setString(3,employee.getName());
+        pst.setString(4, employee.getNIC());
+        pst.setString(5, employee.getUsername());
+        pst.setString(6, employee.getPassword());           
+        pst.executeUpdate();
+        con.close();
 
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
-           return result;
+        result = true;
+        closeConnection();
+        return result;
     }
-    public boolean addChronicConditionsReport(ChronicConditionsReport chronicConditionsReport) throws SQLException{
+    public boolean addChronicConditionsReport(ChronicConditionsReport chronicConditionsReport) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("INSERT INTO ChronicConditions VALUES(?,?,?,?,?,?,?,?)");     
+                      
+        setConenction();              
+        pst = con.prepareStatement("INSERT INTO ChronicConditions VALUES(?,?,?,?,?,?,?,?)");     
 
-            pst.setInt(1,chronicConditionsReport.getPID());            
-            pst.setString(2, chronicConditionsReport.getChronicConditionsCol());
-            pst.setBoolean(3,chronicConditionsReport.isHeartDisease());
-            pst.setBoolean(4, chronicConditionsReport.isStroke());
-            pst.setBoolean(5, chronicConditionsReport.isCancer());
-            pst.setBoolean(6, chronicConditionsReport.isDiabetes()); 
-            pst.setBoolean(7, chronicConditionsReport.isObesity()); 
-            pst.setBoolean(8, chronicConditionsReport.isArthritis()); 
-            pst.executeUpdate();
-            con.close();
+        pst.setInt(1,chronicConditionsReport.getPID());            
+        pst.setString(2, chronicConditionsReport.getChronicConditionsCol());
+        pst.setBoolean(3,chronicConditionsReport.isHeartDisease());
+        pst.setBoolean(4, chronicConditionsReport.isStroke());
+        pst.setBoolean(5, chronicConditionsReport.isCancer());
+        pst.setBoolean(6, chronicConditionsReport.isDiabetes()); 
+        pst.setBoolean(7, chronicConditionsReport.isObesity()); 
+        pst.setBoolean(8, chronicConditionsReport.isArthritis()); 
+        pst.executeUpdate();
+        con.close();
 
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
-           return result;
+        result = true;
+        closeConnection();
+        return result;
     }
-    public boolean addRoom(Room room) throws SQLException{
+    public boolean addRoom(Room room) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
-            pst = con.prepareStatement("INSERT INTO room VALUES(?,?,?,?)");  
+                   
+        setConenction();              
+        //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
+        pst = con.prepareStatement("INSERT INTO room VALUES(?,?,?,?)");  
 
-            pst.setInt(1,room.getRoomNo());            
-            pst.setBoolean(2, room.isAvailability());
-            pst.setInt(3,room.getPID());
-            pst.setDate(4, room.getDate());
-                
-            pst.executeUpdate();
-            con.close();
+        pst.setInt(1,room.getRoomNo());            
+        pst.setBoolean(2, room.isAvailability());
+        pst.setInt(3,room.getPID());
+        pst.setDate(4, room.getDate());
 
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
+        pst.executeUpdate();
+        con.close();
+
+        result = true;
+        closeConnection();
         return result;
     }
    
     /*
      * Update data............................................................................. 
      */
-    public boolean updatePatient(Patient patient) throws SQLException{
+    public boolean updatePatient(Patient patient) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();            
-            con = DriverManager.getConnection(url, user, password);             
-            pst = con.prepareStatement("UPDATE PatientFile SET FirstName = ?,FullName = ?,LastName = ?,DateOfBirth = ?,Gender = ?,"
-                    + "Address = ?,NIC = ?,PatientContactNo = ?,NameOfTheGuardian = ?,GuardianContactNo = ?,BloodGroup = ?,Allergies = ?"
-                    + " WHERE PID = ?");               
 
-            pst.setInt(13,patient.getPID());
-            pst.setString(1,patient.getFirstName());
-            pst.setString(2,patient.getFullName());
-            pst.setString(3,patient.getLastName());            
-            pst.setDate(4,patient.getDateOfBirth());
-            pst.setString(5, patient.getGender());
-            pst.setString(6, patient.getAddress());
-            pst.setString(7, patient.getNIC());
-            pst.setInt(8, patient.getPatientContactNo());
-            pst.setString(9, patient.getNameOfTheGuardian());
-            pst.setInt(10, patient.getGuardianContactNo());
-            pst.setString(11, patient.getBloodGroup());
-            pst.setString(12, patient.getAllergies());
-            
-            pst.executeUpdate();
-            con.close();
-            
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
+        setConenction();             
+        pst = con.prepareStatement("UPDATE PatientFile SET FirstName = ?,FullName = ?,LastName = ?,DateOfBirth = ?,Gender = ?,"
+                + "Address = ?,NIC = ?,PatientContactNo = ?,NameOfTheGuardian = ?,GuardianContactNo = ?,BloodGroup = ?,Allergies = ?"
+                + " WHERE PID = ?");               
+
+        pst.setInt(13,patient.getPID());
+        pst.setString(1,patient.getFirstName());
+        pst.setString(2,patient.getFullName());
+        pst.setString(3,patient.getLastName());            
+        pst.setDate(4,patient.getDateOfBirth());
+        pst.setString(5, patient.getGender());
+        pst.setString(6, patient.getAddress());
+        pst.setString(7, patient.getNIC());
+        pst.setInt(8, patient.getPatientContactNo());
+        pst.setString(9, patient.getNameOfTheGuardian());
+        pst.setInt(10, patient.getGuardianContactNo());
+        pst.setString(11, patient.getBloodGroup());
+        pst.setString(12, patient.getAllergies());
+
+        pst.executeUpdate();
+        con.close();
+
+        result = true;
+        closeConnection();
         return result;
     }
     
-    public boolean updateMedicalReport(MedicalReport medicalReport) throws SQLException{
+    public boolean updateMedicalReport(MedicalReport medicalReport) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("Update MedicalReport SET PID = ?,Date = ?,DoctorID = ?,TestTypes = ?, TreatementDescription = ? WHERE MedicalReportNum = ?");               
-             
-            pst.setInt(1,medicalReport.getPID());
-            pst.setDate(2, medicalReport.getDate());
-            pst.setInt(3, medicalReport.getDoctorID());
-            pst.setInt(6,medicalReport.getMedicalReportNum());
-            pst.setString(4, medicalReport.getTestTypes());
-            pst.setString(5, medicalReport.getTreatementDescription());            
+        setConenction();              
+        pst = con.prepareStatement("Update MedicalReport SET PID = ?,Date = ?,DoctorID = ?,TestTypes = ?, TreatementDescription = ? WHERE MedicalReportNum = ?");               
+
+        pst.setInt(1,medicalReport.getPID());
+        pst.setDate(2, medicalReport.getDate());
+        pst.setInt(3, medicalReport.getDoctorID());
+        pst.setInt(6,medicalReport.getMedicalReportNum());
+        pst.setString(4, medicalReport.getTestTypes());
+        pst.setString(5, medicalReport.getTreatementDescription());            
+
+        pst.executeUpdate();
+        con.close();
+
+        result = true;
            
-            pst.executeUpdate();
-            con.close();
-            
-            result = true;
-           
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
-           return result;
+        closeConnection();
+        return result;
     }
     
-    public boolean updateLabReport(LabReport labReport) throws SQLException{
+    public boolean updateLabReport(LabReport labReport) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("UPDATE LabReport SET PID = ?,Date = ?,TestType = ?,LabTechID = ?,"
-                    + "Data1 = ?,Data2 = ?,Data3 = ?,Data4 = ?,Data5 = ?,Data6 = ?,Data7 = ?,Data8 = ?,Data9 = ?,Data10 = ?,"
-                    + "Data11 = ?,Data12 = ?,Data13 = ?,Data14 = ?,Data15 = ?,Data16 = ? WHERE LabReportNo = ?");  
-            int index;
 
-            pst.setInt(1,labReport.getPID());
-            pst.setDate(2, labReport.getDate());
-            pst.setInt(21, labReport.getLabReportNo());
-            pst.setInt(3,labReport.getTestType());
-            pst.setInt(4, labReport.getLabTechID());
-            index = 5;
-            System.out.println("ll "+labReport.getDataList().size());
-            for(String data:labReport.getDataList()){
-                pst.setString(index++, data);
-            }
-            for(int i = 0;(i+index)<21;i++){               
-                pst.setString(index+i, null);
-            }           
-            pst.executeUpdate();
-            con.close();
+        setConenction();              
+        pst = con.prepareStatement("UPDATE LabReport SET PID = ?,Date = ?,TestType = ?,LabTechID = ?,"
+                + "Data1 = ?,Data2 = ?,Data3 = ?,Data4 = ?,Data5 = ?,Data6 = ?,Data7 = ?,Data8 = ?,Data9 = ?,Data10 = ?,"
+                + "Data11 = ?,Data12 = ?,Data13 = ?,Data14 = ?,Data15 = ?,Data16 = ? WHERE LabReportNo = ?");  
+        int index;
 
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
+        pst.setInt(1,labReport.getPID());
+        pst.setDate(2, labReport.getDate());
+        pst.setInt(21, labReport.getLabReportNo());
+        pst.setInt(3,labReport.getTestType());
+        pst.setInt(4, labReport.getLabTechID());
+        index = 5;
+        System.out.println("ll "+labReport.getDataList().size());
+        for(String data:labReport.getDataList()){
+            pst.setString(index++, data);
         }
-           return result;
+        for(int i = 0;(i+index)<21;i++){               
+            pst.setString(index+i, null);
+        }           
+        pst.executeUpdate();
+        con.close();
+
+        result = true;
+        closeConnection();
+        return result;
     }
     
-    public boolean updateEmployee(Employee employee) throws SQLException{
+    public boolean updateEmployee(Employee employee) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("UPDATE Employee SET EID = ?,Name = ?,NIC = ?");              
 
-            pst.setInt(1,employee.getEID());          
-            pst.setString(3,employee.getName());
-            pst.setString(4, employee.getNIC());
-             
-            pst.executeUpdate();
-            con.close();
+        setConenction();             
+        pst = con.prepareStatement("UPDATE Employee SET EID = ?,Name = ?,NIC = ?");              
 
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
-           return result;
+        pst.setInt(1,employee.getEID());          
+        pst.setString(3,employee.getName());
+        pst.setString(4, employee.getNIC());
+
+        pst.executeUpdate();
+        con.close();
+
+        result = true;
+        closeConnection();
+        return result;
     }
-    public boolean updateEmployeeUserNamePassWord(Employee employee) throws SQLException{
+    public boolean updateEmployeeUserNamePassWord(Employee employee) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = ? WHERE EID = ?");              
-
-            pst.setString(1,employee.getUsername());          
-            pst.setString(2,employee.getPassword());
-            pst.setInt(3,employee.getEID());
-             
-            pst.executeUpdate();
-            con.close();
-
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
-           return result;
-    }   
-    public boolean updateManager(Manager manager) throws SQLException{
-        boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("UPDATE Employee SET Name = ?, NIC = ?,UserName = ?,Password = ? WHERE EID = 1");              
             
-            pst.setString(1,manager.getName());
-            pst.setString(2,manager.getNIC());
-            pst.setString(3,manager.getUsername());          
-            pst.setString(4,manager.getPassword());            
-            pst.executeUpdate();
-            con.close();
+        setConenction();              
+        pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = ? WHERE EID = ?");              
 
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
-           return result;
+        pst.setString(1,employee.getUsername());          
+        pst.setString(2,employee.getPassword());
+        pst.setInt(3,employee.getEID());
+
+        pst.executeUpdate();
+        con.close();
+
+        result = true;
+        closeConnection();
+        return result;
     }   
-    public boolean setDoctorAvailability(int EID,boolean availability) throws SQLException{
+    public boolean updateManager(Manager manager) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);                   
-            pst = con.prepareStatement("UPDATE Employee SET Availability = ? WHERE EID = ? ");  
+                    
+        setConenction();           
+        pst = con.prepareStatement("UPDATE Employee SET Name = ?, NIC = ?,UserName = ?,Password = ? WHERE EID = 1");              
 
-            pst.setBoolean(1,availability);            
-            pst.setInt(2,EID);                
-            pst.executeUpdate();
-            con.close();
+        pst.setString(1,manager.getName());
+        pst.setString(2,manager.getNIC());
+        pst.setString(3,manager.getUsername());          
+        pst.setString(4,manager.getPassword());            
+        pst.executeUpdate();
+        con.close();
 
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
-           return result;
+        result = true;
+        closeConnection();
+        return result;
+    }   
+    public boolean setDoctorAvailability(int EID,boolean availability) throws SQLException, ConnectionTimeOutException{
+        boolean result = false;                    
+        setConenction();               
+        pst = con.prepareStatement("UPDATE Employee SET Availability = ? WHERE EID = ? ");  
+
+        pst.setBoolean(1,availability);            
+        pst.setInt(2,EID);                
+        pst.executeUpdate();
+        con.close();
+
+        result = true;
+        closeConnection();
+        return result;
     }
-    public boolean setRoomAvailability(int roomNo,boolean availability) throws SQLException{
+    public boolean setRoomAvailability(int roomNo,boolean availability) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);                   
-            pst = con.prepareStatement("UPDATE room SET Availability = ? WHERE roomNo = ? ");  
+                      
+        setConenction();                  
+        pst = con.prepareStatement("UPDATE room SET Availability = ? WHERE roomNo = ? ");  
 
-            pst.setBoolean(1,availability);            
-            pst.setInt(2,roomNo);                
-            pst.executeUpdate();
-            con.close();
+        pst.setBoolean(1,availability);            
+        pst.setInt(2,roomNo);                
+        pst.executeUpdate();
+        con.close();
 
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
-           return result;
+        result = true;
+        closeConnection();
+        return result;
     }
     
     /*
      * Load Data.................................................
      */
     
-    public  ArrayList<Patient> loadPatients() throws SQLException{
+    public  ArrayList<Patient> loadPatients() throws SQLException, ConnectionTimeOutException{
         ArrayList<Patient> patientList = new ArrayList<>();
         
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();             
         pst = con.prepareStatement("SELECT * FROM PatientFile");              
         use = pst.executeQuery();                
 
@@ -474,10 +416,10 @@ public class DBOperations {
         return patientList;
     }
    
-    public Patient getPatient(int PID) throws SQLException{
+    public Patient getPatient(int PID) throws SQLException, ConnectionTimeOutException{
         Patient patient = null;
        
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();          
         pst = con.prepareStatement("SELECT * FROM PatientFile WHERE PID = ?");
         pst.setInt(1,PID);
         use = pst.executeQuery();                
@@ -506,10 +448,10 @@ public class DBOperations {
         return patient;
     }
     
-    public ArrayList<Doctor> loadDoctors() throws SQLException{
+    public ArrayList<Doctor> loadDoctors() throws SQLException, ConnectionTimeOutException{
         ArrayList<Doctor> doctorList = new ArrayList<>();
         
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();               
         pst = con.prepareStatement("SELECT * FROM Employee WHERE Position='Doctor'");              
         use = pst.executeQuery();                
 
@@ -530,12 +472,11 @@ public class DBOperations {
         return doctorList;
     }
     
-    public ArrayList<Employee> loadEmplyee() throws SQLException{
+    public ArrayList<Employee> loadEmplyee() throws SQLException, ConnectionTimeOutException{
         ArrayList<Employee> employeeList = new ArrayList<>();
 
-        con = DriverManager.getConnection(url, user, password);               
-        pst = con.prepareStatement("SELECT * FROM Employee WHERE Position<>'Manager'");              
-
+        setConenction();        
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE Position<>'Manager'");   
         use = pst.executeQuery();
 
         while(use.next()){                   
@@ -549,10 +490,10 @@ public class DBOperations {
         closeConnection();
         return employeeList;
     }
-    public Employee getEmplyee(int EID) throws SQLException{
+    public Employee getEmplyee(int EID) throws SQLException, ConnectionTimeOutException{
         Employee employee=null;
         
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();            
         pst = con.prepareStatement("SELECT * FROM Employee WHERE EID=?");              
         pst.setInt(1, EID);
         use = pst.executeQuery();
@@ -568,10 +509,10 @@ public class DBOperations {
         closeConnection();
         return employee;
     }
-    public ArrayList<Date> getLabDates(int PID) throws SQLException{
+    public ArrayList<Date> getLabDates(int PID) throws SQLException, ConnectionTimeOutException{
         ArrayList<Date> dateList = new ArrayList<>();
         
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();              
         pst = con.prepareStatement("SELECT * FROM LabReport WHERE PID= ?");
         pst.setInt(1,PID);
         use = pst.executeQuery();                
@@ -582,10 +523,10 @@ public class DBOperations {
         closeConnection();
         return dateList;
     }
-    public ArrayList<Date> getMedicalDates(int PID) throws SQLException{
+    public ArrayList<Date> getMedicalDates(int PID) throws SQLException, ConnectionTimeOutException{
         ArrayList<Date> dateList = new ArrayList<>();
        
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();           
         pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE PID= ?");
         pst.setInt(1,PID);
         use = pst.executeQuery();                
@@ -596,9 +537,9 @@ public class DBOperations {
         closeConnection();
         return dateList;
     }
-    public ArrayList<MedicalReport> getMedicalReports(int PID,Date date) throws SQLException{
+    public ArrayList<MedicalReport> getMedicalReports(int PID,Date date) throws SQLException, ConnectionTimeOutException{
         ArrayList<MedicalReport> medicalReportList = new ArrayList<>();      
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();             
         pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE PID= ? AND Date =?");
         pst.setInt(1,PID);
         pst.setDate(2, date);
@@ -619,10 +560,10 @@ public class DBOperations {
         return medicalReportList;
     }
     
-    public MedicalReport getMedicalReport(int medicalReportNum) throws SQLException{
+    public MedicalReport getMedicalReport(int medicalReportNum) throws SQLException, ConnectionTimeOutException{
         MedicalReport medicalReport = null;
 
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();
         pst = con.prepareStatement("SELECT * FROM MedicalReport WHERE MedicalReportNum = ?");
         pst.setInt(1,medicalReportNum);
 
@@ -642,9 +583,9 @@ public class DBOperations {
         return medicalReport;
     }
     
-    public ArrayList<LabReport> getLabReports(int PID,Date date) throws SQLException{
+    public ArrayList<LabReport> getLabReports(int PID,Date date) throws SQLException, ConnectionTimeOutException{
         ArrayList<LabReport> labReportList = new ArrayList<>();       
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();             
         pst = con.prepareStatement("SELECT * FROM LabReport WHERE PID = ? AND Date = ?");
         pst.setInt(1,PID);
         pst.setDate(2, date);
@@ -672,9 +613,9 @@ public class DBOperations {
         return labReportList;
     }
     
-    public LabReport getLabReport(int labReportNo) throws SQLException{
+    public LabReport getLabReport(int labReportNo) throws SQLException, ConnectionTimeOutException{
         LabReport labReport = null;        
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();             
         pst = con.prepareStatement("SELECT * FROM LabReport WHERE LabReportNo = ?");
         pst.setInt(1,labReportNo);
 
@@ -701,10 +642,10 @@ public class DBOperations {
         closeConnection();
         return labReport;
     }
-    public LabReport getLastLabReport() throws SQLException{
+    public LabReport getLastLabReport() throws SQLException, ConnectionTimeOutException{
         LabReport labReport = null;
         int labReportNo = getLastLabReportNo();        
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();              
         pst = con.prepareStatement("SELECT * FROM LabReport WHERE LabReportNo = ?");
 
         pst.setInt(1,labReportNo);            
@@ -729,9 +670,9 @@ public class DBOperations {
         closeConnection();
         return labReport;
     }
-    public ArrayList<Room> getAddmitedRooms() throws SQLException{
+    public ArrayList<Room> getAddmitedRooms() throws SQLException, ConnectionTimeOutException{
         ArrayList<Room> roomList = new ArrayList<>();    
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();             
         pst = con.prepareStatement("SELECT * FROM room WHERE Availability = 0");
         
         use = pst.executeQuery();             
@@ -748,9 +689,9 @@ public class DBOperations {
         closeConnection();
         return roomList;
     }
-    public int getLastPID() throws SQLException{
+    public int getLastPID() throws SQLException, ConnectionTimeOutException{
         int pid = -1;
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();            
         pst = con.prepareStatement("SELECT MAX(PID) FROM PatientFile");
         use = pst.executeQuery();   
         if(use.next())
@@ -769,33 +710,28 @@ public class DBOperations {
         closeConnection();
         return labReportNo;
     }
-    public boolean getDoctorAvailability(int EID) throws SQLException{
+    public boolean getDoctorAvailability(int EID) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);                   
-            pst = con.prepareStatement("SELECT * FROM Employee WHERE EID = ? ");  
-            pst.setInt(1, EID);
-            use = pst.executeQuery();
-            if(use.next()){                
-                return use.getBoolean(7);
-            }
-            
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-             closeConnection();
+                 
+        setConenction();                   
+        pst = con.prepareStatement("SELECT * FROM Employee WHERE EID = ? ");  
+        pst.setInt(1, EID);
+        use = pst.executeQuery();
+        if(use.next()){                
+            return use.getBoolean(7);
         }
-           return result;
+
+        result = true;
+        closeConnection();
+        return result;
     }
     /*
      * Search Data...........................................................................
      */
-     public ArrayList<Doctor> searchDoctors(String name) throws SQLException{
+     public ArrayList<Doctor> searchDoctors(String name) throws SQLException, ConnectionTimeOutException{
         ArrayList<Doctor> doctorList = new ArrayList<>();
 
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();             
         pst = con.prepareStatement("SELECT * FROM Employee WHERE Position='Doctor' AND Name LIKE '%"+name+"%'");              
         use = pst.executeQuery();                
         System.out.println(pst);              
@@ -812,13 +748,12 @@ public class DBOperations {
             doctorList.add(doctor);
         }             
         closeConnection();
-
         return doctorList;
     } 
-    public ArrayList<Patient> searchPatients(String name) throws SQLException{
+    public ArrayList<Patient> searchPatients(String name) throws SQLException, ConnectionTimeOutException{
         ArrayList<Patient> patientList = new ArrayList<>();
         
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();              
         pst = con.prepareStatement("SELECT * FROM PatientFile WHERE FullName LIKE '%"+name+"%'");          
         use = pst.executeQuery();      
 
@@ -845,10 +780,9 @@ public class DBOperations {
         
         return patientList;
     }
-    public ArrayList<Patient> searchPatientsByNIC(String NIC) throws SQLException{
+    public ArrayList<Patient> searchPatientsByNIC(String NIC) throws SQLException, ConnectionTimeOutException{
         ArrayList<Patient> patientList = new ArrayList<>();
-        
-        con = DriverManager.getConnection(url, user, password);               
+        setConenction();            
         pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
 
         pst.setString(1, NIC);
@@ -880,34 +814,28 @@ public class DBOperations {
      * Delete Data............................................................................
      */
     
-    public boolean deleteEmployee(int EID) throws SQLException{
+    public boolean deleteEmployee(int EID) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
         if(EID==1||EID==2)
-            return false;
-        try{               
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);              
-            pst = con.prepareStatement("DELETE FROM Employee WHERE EID=?");
-            pst.setInt(1, EID);
+        return false;
 
-            pst.executeUpdate();
-            con.close();
-             
-            result = true;
-        }catch(ClassNotFoundException | InstantiationException | IllegalAccessException ex){
-            System.out.println(ex);
-        }finally{
-            closeConnection();
-        }
-           return result;
+        setConenction();          
+        pst = con.prepareStatement("DELETE FROM Employee WHERE EID=?");
+        pst.setInt(1, EID);
+
+        pst.executeUpdate();
+        con.close();
+
+        result = true;        
+        return result;
     }
     /*
      * check Data.....................................................................
      */
-     public Employee checkEmplyee(String uname,String pword){
+     public Employee checkEmplyee(String uname,String pword) throws ConnectionTimeOutException{
         Employee employee=null;
         try {        
-           con = DriverManager.getConnection(url, user, password);               
+           setConenction();         
            //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
            pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");   
            pst.setString(1,uname);
@@ -930,9 +858,9 @@ public class DBOperations {
        }
        return employee;
     }
-    public boolean checkPatientNIC(String NIC){        
+    public boolean checkPatientNIC(String NIC) throws ConnectionTimeOutException{        
         try {
-            con = DriverManager.getConnection(url, user, password);               
+            setConenction();             
             pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
             pst.setString(1, NIC);
             use = pst.executeQuery();                
@@ -947,9 +875,9 @@ public class DBOperations {
         }
         return false;
     }
-    public boolean checkPID(String pid){
+    public boolean checkPID(String pid) throws ConnectionTimeOutException{
         try {
-            con = DriverManager.getConnection(url, user, password);               
+            setConenction();            
             pst = con.prepareStatement("SELECT * FROM PatientFile WHERE PID=?");
             pst.setString(1, pid);
             use = pst.executeQuery();                
@@ -964,9 +892,9 @@ public class DBOperations {
         }
          return false;
     }
-    public boolean checkUserName(String uname){       
+    public boolean checkUserName(String uname) throws ConnectionTimeOutException{       
         try {
-            con = DriverManager.getConnection(url, user, password);
+            setConenction();
             pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ?");   
             pst.setString(1,uname);
             use = pst.executeQuery();
@@ -981,9 +909,10 @@ public class DBOperations {
         }
         return false;
     }
-     public boolean checkAdmin(String uname,String pass){       
-        try {
-            con = DriverManager.getConnection(url, user, password);
+     public boolean checkAdmin(String uname,String pass) throws ConnectionTimeOutException{       
+       
+         try {
+            setConenction();
             pst = con.prepareStatement("SELECT * FROM Employee WHERE EID = 1 AND UserName = ? AND Password = MD5(?)");   
             pst.setString(1,uname);
             pst.setString(2,pass);
@@ -999,9 +928,9 @@ public class DBOperations {
         }
         return false;
     }
-    public boolean checkPassword(String pword){       
+    public boolean checkPassword(String pword) throws ConnectionTimeOutException{       
         try {
-            con = DriverManager.getConnection(url, user, password);               
+            setConenction();               
             //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
             pst = con.prepareStatement("SELECT * FROM Employee WHERE Password = ?");   
             pst.setString(1,pword);        
@@ -1015,9 +944,9 @@ public class DBOperations {
         }
         return false;
     }
-    public boolean checkDoctorID(int eid){        
+    public boolean checkDoctorID(int eid) throws ConnectionTimeOutException{        
         try {
-            con = DriverManager.getConnection(url, user, password);
+            setConenction();
             pst = con.prepareStatement("SELECT * FROM Employee WHERE EID = ?");   
             pst.setInt(1,eid);
             use = pst.executeQuery();

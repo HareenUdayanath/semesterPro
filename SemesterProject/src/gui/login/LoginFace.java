@@ -153,32 +153,42 @@ public class LoginFace extends javax.swing.JFrame {
 
     private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
         dataBase = DBOperations.getInstace();  
-        if(dataBase.checkAdmin(txtUserName.getText(), String.valueOf(pasPassword.getPassword()))){
-            new AdminFace().setVisible(true);
-            this.dispose();
-        }else{
-            
-            Employee employee = null;
-            try {
-                employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pasPassword.getPassword()));
-            } catch (SQLException ex) {
-                Logger.getLogger(LoginFace.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if(employee!=null){
-                if(employee.getPosition().equals("Doctor")){
-                    try {
-                        dataBase.setDoctorAvailability(employee.getEID(),true);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(LoginFace.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                iFactory.getInterFace(employee).setVisible(true);
+        try {
+            if(dataBase.checkAdmin(txtUserName.getText(), String.valueOf(pasPassword.getPassword()))){
+                new AdminFace().setVisible(true);
                 this.dispose();
             }else{
-                JOptionPane.showMessageDialog(null,"Invalid username or password");
-                txtUserName.setText(null);
-                pasPassword.setText(null);
+                
+                Employee employee = null;
+                try {
+                    employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pasPassword.getPassword()));
+                
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(null,ex.toString());
+                    return;
+                }
+                if(employee!=null){
+                    if(employee.getPosition().equals("Doctor")){
+                        try {
+                            dataBase.setDoctorAvailability(employee.getEID(),true);
+                        } catch (SQLException ex) {
+                            
+                        } catch (ConnectionTimeOutException ex) {
+                            JOptionPane.showMessageDialog(null,ex.toString());
+                            return;
+                        }
+                    }
+                    iFactory.getInterFace(employee).setVisible(true);
+                    this.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(null,"Invalid username or password");
+                    txtUserName.setText(null);
+                    pasPassword.setText(null);
+                }
             }
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null,ex.toString());
+            return;
         }
     }//GEN-LAST:event_btnLogInActionPerformed
 
