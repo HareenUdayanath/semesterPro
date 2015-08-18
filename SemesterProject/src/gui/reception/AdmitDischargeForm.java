@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.reception;
 
 import DataBase.ConnectionTimeOutException;
@@ -10,17 +6,17 @@ import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.Patient;
 import Domain.Room;
-import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-/**
- *
+/*
  * @author Irfad Hussain
  */
 public class AdmitDischargeForm extends javax.swing.JFrame {
 
+    //This frame is shown for both admit and discharge with slight modifications
+    
     private ReceptionGUI parent;
     private boolean admit;
     
@@ -32,18 +28,21 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
     }
 
     public AdmitDischargeForm(ReceptionGUI parent){
+        // constructor for admit patient
         this();
         this.parent = parent;
         this.admit = true;
         this.setTitle("Admit Patient");
         btnAdmitDisharge.setText("Confirm");
+        // load today's date
         Date d = new Date(System.currentTimeMillis());
-        txtYear.setText(Integer.toString(1900+d.getYear()));
-        txtMonth.setText(Integer.toString(1+d.getMonth()));
-        txtDay.setText(Integer.toString(d.getDate()));
+        txtYear.setText(Integer.toString(Help.getYear(d)));
+        txtMonth.setText(Integer.toString(Help.getMonth(d)));
+        txtDay.setText(Integer.toString(Help.getDay(d)));
     }
     
     public AdmitDischargeForm(ReceptionGUI parent,Room room,String name){
+        // constructor discharge patient. all details are provided. set them to apropriate fields
         this();
         this.parent = parent;
         this.admit = false;
@@ -227,17 +226,20 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdmitDishargeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdmitDishargeActionPerformed
-        if (admit) {
+        // this button is used to perform 3 actions. when admitting first to confirm and then to admit, when discharging.
+        if (admit) {   
             if (btnAdmitDisharge.getText().equals("Confirm")){
+                // when conforming check validity of details and load patient name (confirm action)
                 try{
-                    if (DBOperations.getInstace().isRoomAvailable(Integer.parseInt(txtRoomNumber.getText()))){
-                        Patient p = DBOperations.getInstace().getPatient(Integer.parseInt(txtPID.getText()));
+                    int PID = Integer.parseInt(txtPID.getText());
+                    if (DBOperations.getInstace().isRoomAvailable(Integer.parseInt(txtRoomNumber.getText())) && !parent.isPatientAdmitted(PID)){  // check room availability and patient referref by PID already admitted 
+                        Patient p = DBOperations.getInstace().getPatient(PID);
                         txtPatientName.setText(p.getFullName());
                         disableFields();
                         btnAdmitDisharge.setText("Admit Patient");
                         return;
                     }else{
-                        throw new NumberFormatException();
+                        throw new NumberFormatException();  // throw exception to display error messege
                     }
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(this, "Sorry an error occured while checking room or patient ID", "Error", JOptionPane.ERROR_MESSAGE);
@@ -250,6 +252,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
                 }
             }
             if (btnAdmitDisharge.getText().equals("Admit Patient")){
+                // update status in database (admit action)
                 try {
                     Room r = new Room();
                     r.setRoomNo(Integer.parseInt(txtRoomNumber.getText()));
@@ -265,6 +268,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
                 }
             }
         } else if (JOptionPane.showConfirmDialog(this, "Are you sure you want to discharge?","Confirm Action",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+            // discharge action
             try {
                 DBOperations.getInstace().setRoomAvailability(Integer.parseInt(txtRoomNumber.getText()),true);
                 JOptionPane.showMessageDialog(this, "Successfully discharged", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -279,7 +283,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         parent.setEnabled(true);
-        parent.refreshTable();
+        parent.refreshTable();  // this method is called after admit or discharge.So update room table
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 

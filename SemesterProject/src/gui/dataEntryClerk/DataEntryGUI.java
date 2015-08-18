@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.dataEntryClerk;
 
 import DataBase.ConnectionTimeOutException;
@@ -11,13 +7,11 @@ import DataBase.Help;
 import Domain.MedicalReport;
 import Domain.Patient;
 import gui.login.LoginFace;
-import java.awt.event.KeyEvent;
 import java.sql.Date;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-/**
- *
+/*
  * @author Irfad Hussain
  */
 public class DataEntryGUI extends javax.swing.JFrame {
@@ -29,10 +23,12 @@ public class DataEntryGUI extends javax.swing.JFrame {
      */
     public DataEntryGUI() {
         initComponents();
+        btnUpdatePatient.setEnabled(false);
+        // loasd todays date for report
         Date d = new Date(System.currentTimeMillis());
-        txtReportYear.setText(Integer.toString(1900+d.getYear()));
-        txtReportMonth.setText(Integer.toString(1+d.getMonth()));
-        txtReportDay.setText(Integer.toString(d.getDate()));
+        txtReportYear.setText(Integer.toString(Help.getYear(d)));
+        txtReportMonth.setText(Integer.toString(Help.getMonth(d)));
+        txtReportDay.setText(Integer.toString(Help.getDay(d)));
     }
 
     /**
@@ -567,58 +563,61 @@ public class DataEntryGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdatePatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePatientActionPerformed
-            if (validateDetails()){
-                try {
-                    p.setFirstName(txtFirstName.getText());
-                    p.setLastName(txtLastName.getText());
-                    p.setFullName(txtFullName1.getText() + " " + txtFullName2.getText());
-                    if (!txtYear.getText().equals("") && !txtMonth.getText().equals("") && !txtDay.getText().equals("")){
-                        try{
-                            p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
-                        }catch(NumberFormatException ex){
-                            JOptionPane.showMessageDialog(this, "Invalid Date of Birth!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
-                            return;
-                        }
+        // update patient if coorect details are entered. similar to add patient action performed in add patient frame
+        if (validateDetails()) {
+            try {
+                p.setFirstName(txtFirstName.getText());
+                p.setLastName(txtLastName.getText());
+                p.setFullName(txtFullName1.getText() + " " + txtFullName2.getText());
+                if (!txtYear.getText().equals("") && !txtMonth.getText().equals("") && !txtDay.getText().equals("")) {
+                    try {
+                        p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(this, "Invalid Date of Birth!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        return;
                     }
-                    p.setGender(cmbxGender.getSelectedItem().toString().substring(0, 1));
-                    p.setAddress(txtAddress1.getText() + " " + txtAddress2.getText() + " " + txtAddress3.getText());
-                    if (txtNIC.getText().equals("")){
-                        p.setNIC(null);
-                    }else{
-                        p.setNIC(txtNIC.getText());
-                    }
-                    if (!txtPatientContactNo.getText().equals("")){
-                        try{
-                            p.setPatientContactNo(Integer.parseInt(txtPatientContactNo.getText()));
-                        }catch(NumberFormatException ex){
-                            JOptionPane.showMessageDialog(this, "Invalid Patient Contact number!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
-                            return;
-                        }
-                    }
-                    p.setNameOfTheGuardian(txtNameOfGuardian.getText());
-                    if (!txtGuardianContact.getText().equals("")){
-                        try{
-                            p.setGuardianContactNo(Integer.parseInt(txtGuardianContact.getText()));
-                        }catch(NumberFormatException ex){
-                            JOptionPane.showMessageDialog(this, "Invalid guardian contact number.", "Invalid detail", JOptionPane.WARNING_MESSAGE);
-                            return;
-                        }
-                    }
-                    p.setBloodGroup(cmbxBloodGroup.getSelectedItem().toString());
-                    p.setAllergies(txtAllergies1.getText() + " " + txtAllergies2.getText());
-                    DBOperations.getInstace().updatePatient(p);
-                    JOptionPane.showMessageDialog(this, "Successfully updated patient.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    btnCanelActionPerformed(null);
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(this, "An error occured while updating.", "Error", JOptionPane.ERROR_MESSAGE);
-                } catch (ConnectionTimeOutException ex) {
-                    JOptionPane.showMessageDialog(this, "Cannot update. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
                 }
+                p.setGender(cmbxGender.getSelectedItem().toString().substring(0, 1));
+                p.setAddress(txtAddress1.getText() + " " + txtAddress2.getText() + " " + txtAddress3.getText());
+                if (txtNIC.getText().equals("")) {
+                    p.setNIC(null);
+                } else {
+                    p.setNIC(txtNIC.getText());
+                }
+                if (!txtPatientContactNo.getText().equals("")) {
+                    try {
+                        p.setPatientContactNo(Integer.parseInt(txtPatientContactNo.getText()));
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(this, "Invalid Patient Contact number!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }
+                p.setNameOfTheGuardian(txtNameOfGuardian.getText());
+                if (!txtGuardianContact.getText().equals("")) {
+                    try {
+                        p.setGuardianContactNo(Integer.parseInt(txtGuardianContact.getText()));
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(this, "Invalid guardian contact number.", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }
+                p.setBloodGroup(cmbxBloodGroup.getSelectedItem().toString());
+                p.setAllergies(txtAllergies1.getText() + " " + txtAllergies2.getText());
+                DBOperations.getInstace().updatePatient(p);
+                JOptionPane.showMessageDialog(this, "Successfully updated patient.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                btnCanelActionPerformed(null);  // preapare for next entry
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "An error occured while updating.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(this, "Cannot update. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
             }
+        }
     }//GEN-LAST:event_btnUpdatePatientActionPerformed
 
     private void btnCanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCanelActionPerformed
+        // clear every field, enable patient id field for editing
         txtPID.setText("");
+        txtPID.setEditable(true);
         txtFirstName.setText("");
         txtLastName.setText("");
         txtFullName1.setText("");
@@ -637,12 +636,13 @@ public class DataEntryGUI extends javax.swing.JFrame {
         cmbxBloodGroup.setSelectedIndex(0);
         txtAllergies1.setText("");
         txtAllergies2.setText("");
+        btnUpdatePatient.setEnabled(false);
     }//GEN-LAST:event_btnCanelActionPerformed
 
     private void btnAddReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddReportActionPerformed
         MedicalReport mReport = null;
         try{
-            if (DBOperations.getInstace().checkPID(txtReportPID.getText())){
+            if (DBOperations.getInstace().checkPID(txtReportPID.getText())){    // add details to the report object only if patient is available
                 mReport = new MedicalReport();
                 mReport.setPID(Integer.parseInt(txtReportPID.getText()));
                 mReport.setDoctorID(Integer.parseInt(txtReportDID.getText()));
@@ -650,16 +650,18 @@ public class DataEntryGUI extends javax.swing.JFrame {
                 mReport.setTreatementDescription(txtTreatmentDescription.getText());
             }
         }catch(NumberFormatException ex){
-            ex.printStackTrace();
             mReport = null;
+            JOptionPane.showMessageDialog(this, "Invalid Date or ID!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
         } catch (ConnectionTimeOutException ex) {
             mReport = null;
             JOptionPane.showMessageDialog(this, "Cannot check patient ID. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
         }
+        // report object will not be null above operation done correctly.
         if (mReport != null){
             try {
                 DBOperations.getInstace().addMedicalReport(mReport);
                 JOptionPane.showMessageDialog(this, "Report added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                // clear fields for new report
                 txtReportPID.setText("");
                 txtReportDID.setText("");
                 txtReportYear.setText("");
@@ -678,6 +680,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddReportActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // if log out conformed close this window and show login window
         if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?","Confirm Action", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
             this.dispose();
             LoginFace l = new LoginFace();
@@ -700,12 +703,14 @@ public class DataEntryGUI extends javax.swing.JFrame {
         if (p == null){
             JOptionPane.showMessageDialog(this, "Invalid Patient ID", null, JOptionPane.ERROR_MESSAGE);
         }else{
+            // if p is not null laod the details in patient object to apropriate fields
+            txtPID.setEditable(false);
             txtFirstName.setText(p.getFirstName());
             txtLastName.setText(p.getLastName());
             txtFullName1.setText(p.getFullName());
-            txtYear.setText(Integer.toString(p.getDateOfBirth().getYear()));
-            txtMonth.setText(Integer.toString(p.getDateOfBirth().getMonth()));
-            txtDay.setText(Integer.toString(p.getDateOfBirth().getDate()));
+            txtYear.setText(Integer.toString(Help.getYear(p.getDateOfBirth())));
+            txtMonth.setText(Integer.toString(Help.getMonth(p.getDateOfBirth())));
+            txtDay.setText(Integer.toString(Help.getDay(p.getDateOfBirth())));
             if (p.getGender().equals("M")){
                 cmbxGender.setSelectedIndex(0);
             }else{
@@ -735,6 +740,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
                     cmbxBloodGroup.setSelectedIndex(7); break;
             }
             txtAllergies1.setText(p.getAllergies());
+            btnUpdatePatient.setEnabled(true);
         }
     }//GEN-LAST:event_btnLoadPatientActionPerformed
 
@@ -851,6 +857,20 @@ public class DataEntryGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Invalid NIC","Invalid Detail", JOptionPane.WARNING_MESSAGE);
             return false;
         }
+        try {
+            Integer.parseInt(NIC.substring(0, NIC.length() - 1)); // first 9 digits should be numbers
+            if (p.getNIC()==null && DBOperations.getInstace().checkPatientNIC(NIC)){  // check NIC available in database only if it is not entered previously for this patient
+                JOptionPane.showMessageDialog(this, "NIC already exsits","Invalid Detail", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid NIC", "Invalid Detail", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot check NIC. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        
         return true;
     }
 }

@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import Domain.*;
-import com.mysql.jdbc.CommunicationsException;
 import java.sql.Date;
 
 
@@ -25,10 +24,11 @@ public class DBOperations {
     //private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
     private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     
-    private String user = "hosdataadmin";
-    private String password = "coperativehos7456391";
+    /*private String user = "hosdataadmin";
+    private String password = "coperativehos7456391";*/
     
-    
+    private String user = "root";
+    private String password = "irfad0101";
     
     private DBOperations(){
         this.emfac = new EmployeeFactory();
@@ -900,8 +900,7 @@ public class DBOperations {
             setConenction();             
             pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
             pst.setString(1, NIC);
-            use = pst.executeQuery();                
-            System.out.println(pst);
+            use = pst.executeQuery();
             while(use.next()){     
                 return true;
             }    
