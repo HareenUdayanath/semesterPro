@@ -12,6 +12,7 @@ import Domain.LabReport;
 import Domain.MedicalReport;
 import Domain.Patient;
 import gui.lab.ShowLabReportGUI;
+import gui.login.LoginFace;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Date;
@@ -32,10 +33,14 @@ public class DocGUI extends javax.swing.JFrame {
     public DocGUI(Doctor loggedDoc) {
         newDoc = loggedDoc;
         initComponents();
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
-                //newDoc.setAvailablity(false);
+                newDoc.setAvailablity(false);
                 setVisible(false);
+                LoginFace logWindow = new LoginFace();
+                logWindow.setVisible(true);
+                
             }    
                 });
     }

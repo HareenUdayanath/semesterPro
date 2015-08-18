@@ -209,7 +209,7 @@ public class ManagerFace extends javax.swing.JFrame {
 
         jLabel5.setText("Position");
 
-        posComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Doctor", "Receptionist", "LabTechniciant", "DataEntryClerk" }));
+        posComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Doctor", "Reception", "LabTechniciant", "DataEntryClerk" }));
 
         nicText.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -428,24 +428,38 @@ public class ManagerFace extends javax.swing.JFrame {
         String userName = unameText.getText();
         char[] password = passText.getPassword();
         char[] conPassword = conPassText.getPassword();
-        
-        if((Arrays.equals(password, conPassword))){
-            emp1.setName(name);
-            emp1.setNIC(nic);
-            emp1.setPassword(Arrays.toString(password));
-            emp1.setUsername(userName);
-            try {
-                empDB.addEmployee(emp1);
-                System.out.println("nef");
-            } catch (SQLException ex) {
-                Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ConnectionTimeOutException ex) {
-                 JOptionPane.showMessageDialog(null,ex.toString());
-                return;
+        try {
+            if(!(empDB.checkEmployeeNIC(nic))){
+                if(!(empDB.checkUserName(userName))){
+                    if((Arrays.equals(password, conPassword))){
+                        emp1.setName(name);
+                        emp1.setNIC(nic);
+                        emp1.setPassword(Arrays.toString(password));
+                        emp1.setUsername(userName);
+                        try {
+                            empDB.addEmployee(emp1);
+                            System.out.println("nef");
+                        } catch (SQLException ex) {
+                            Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (ConnectionTimeOutException ex) {
+                            JOptionPane.showMessageDialog(null,ex.toString());
+                            return;
+                        }
+                    }
+
+                    else{
+                        JOptionPane.showMessageDialog(null, "Sorry! Your password and confirm password fields doesn't match.", "Password mismatch ", JOptionPane.INFORMATION_MESSAGE);
+                    }
             }
-        }
-        else{
-            JOptionPane.showMessageDialog(null, "Sorry! Your password and confirm password fields doesn't match.", "Password mismatch ", JOptionPane.INFORMATION_MESSAGE);
+                else{
+                    JOptionPane.showMessageDialog(null, "Sorry! This username already exists. Please choose another.", "Invalid username ", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Sorry! This NIC already exists. Please check again.", "NIC mismatch ", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (ConnectionTimeOutException ex) {
+            System.out.println("timeout!!!!");
         }
         
         
