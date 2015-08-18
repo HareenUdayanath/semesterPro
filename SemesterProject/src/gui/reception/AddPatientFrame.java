@@ -472,7 +472,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Invalid NIC","Invalid Detail", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
-            Integer.parseInt(NIC.substring(0, NIC.length()-1)); // first 9 digits should be numbers if not nuberformatexception will be thrown
+            if (!NIC.equals(""))
+                Integer.parseInt(NIC.substring(0, NIC.length()-1)); // first 9 digits should be numbers if not nuberformatexception will be thrown
             if (DBOperations.getInstace().checkPatientNIC(NIC)){  // check whether this NIC already exists in database because nic should be unique
                 JOptionPane.showMessageDialog(this, "NIC already exsits","Invalid Detail", JOptionPane.WARNING_MESSAGE);
                 return false;
