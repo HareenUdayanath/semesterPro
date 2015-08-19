@@ -27,6 +27,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
     public DataEntryGUI() {
         initComponents();
         btnUpdatePatient.setEnabled(false);
+        btnCanel.setEnabled(false);
         btnChronicConditions.setEnabled(false);
         chronic = null;
         // loasd todays date for report
@@ -109,6 +110,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Data Entry");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -666,6 +668,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
         txtAllergies1.setText("");
         txtAllergies2.setText("");
         btnUpdatePatient.setEnabled(false);
+        btnCanel.setEnabled(false);
         btnChronicConditions.setEnabled(false);
         chronic = null;
     }//GEN-LAST:event_btnCanelActionPerformed
@@ -775,6 +778,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
             }
             txtAllergies1.setText(p.getAllergies());
             btnUpdatePatient.setEnabled(true);
+            btnCanel.setEnabled(true);
             btnChronicConditions.setEnabled(true);
         }
     }//GEN-LAST:event_btnLoadPatientActionPerformed
@@ -810,30 +814,6 @@ public class DataEntryGUI extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DataEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DataEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DataEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DataEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

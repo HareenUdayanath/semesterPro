@@ -141,9 +141,19 @@ public class SemesterProject {
             UIManager.setLookAndFeel(new AcrylLookAndFeel());
         } catch (Exception e) {            
         */
-           LoginFace login = new LoginFace();
-             login.setVisible(true);
-            
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+
+        }
+        LoginFace login = new LoginFace();
+        login.setVisible(true);
+
        /* try {
              //ad.setRoomAvailability(2,false);
             ArrayList<Room> rooms = ad.getAddmitedRooms();
