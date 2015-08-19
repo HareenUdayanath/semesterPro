@@ -27,6 +27,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
     public DataEntryGUI() {
         initComponents();
         btnUpdatePatient.setEnabled(false);
+        btnCanel.setEnabled(false);
         btnChronicConditions.setEnabled(false);
         chronic = null;
         // loasd todays date for report
@@ -109,6 +110,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Data Entry");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -666,6 +668,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
         txtAllergies1.setText("");
         txtAllergies2.setText("");
         btnUpdatePatient.setEnabled(false);
+        btnCanel.setEnabled(false);
         btnChronicConditions.setEnabled(false);
         chronic = null;
     }//GEN-LAST:event_btnCanelActionPerformed
@@ -775,6 +778,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
             }
             txtAllergies1.setText(p.getAllergies());
             btnUpdatePatient.setEnabled(true);
+            btnCanel.setEnabled(true);
             btnChronicConditions.setEnabled(true);
         }
     }//GEN-LAST:event_btnLoadPatientActionPerformed

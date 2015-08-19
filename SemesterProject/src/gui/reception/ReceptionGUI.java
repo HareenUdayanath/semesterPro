@@ -5,8 +5,6 @@ import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import gui.login.LoginFace;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /*
@@ -59,6 +57,7 @@ public class ReceptionGUI extends javax.swing.JFrame {
         btnRefreshRooms = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Reception");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
