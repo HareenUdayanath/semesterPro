@@ -418,6 +418,7 @@ public class ManagerFace extends javax.swing.JFrame {
     }//GEN-LAST:event_SearchBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+        //if(nameText.get)
         EmployeeFactory empFac = new EmployeeFactory();        
         empDB = DBOperations.getInstace();
         String name = nameText.getText();

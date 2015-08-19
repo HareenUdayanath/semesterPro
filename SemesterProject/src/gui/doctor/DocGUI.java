@@ -13,6 +13,7 @@ import Domain.MedicalReport;
 import Domain.Patient;
 import gui.lab.ShowLabReportGUI;
 import gui.login.LoginFace;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Date;
@@ -33,13 +34,17 @@ public class DocGUI extends javax.swing.JFrame {
     public DocGUI(Doctor loggedDoc) {
         newDoc = loggedDoc;
         initComponents();
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent we) {
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to log out?","Log out",dialogButton);
+                if(dialogResult == JOptionPane.YES_OPTION){
                 newDoc.setAvailablity(false);
                 setVisible(false);
                 LoginFace logWindow = new LoginFace();
                 logWindow.setVisible(true);
+                }
                 
             }    
                 });
@@ -146,6 +151,17 @@ public class DocGUI extends javax.swing.JFrame {
         SearchCatChooser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SearchCatChooserActionPerformed(evt);
+            }
+        });
+
+        SearchBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchBoxActionPerformed(evt);
+            }
+        });
+        SearchBox.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                SearchBoxKeyReleased(evt);
             }
         });
 
@@ -267,6 +283,8 @@ public class DocGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_SearchButtonActionPerformed
 
+    
+    
     private void ptDetailsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ptDetailsBtnActionPerformed
         // TODO add your handling code here:
         detailList.setModel(new DefaultListModel());
@@ -344,7 +362,7 @@ public class DocGUI extends javax.swing.JFrame {
                 detailList.setModel(new DefaultListModel());
                 DefaultListModel model = (DefaultListModel)detailList.getModel(); 
                 for(MedicalReport mdRpt : mediReports){
-                     model.addElement((mdRpt.getMedicalReportNum()+" Test types : "+ mdRpt.getTestTypes()));
+                     model.addElement(("Report num : " + mdRpt.getMedicalReportNum()+" Test types : "+ mdRpt.getTestTypes()));
                 }
                  mode = 4;
             } 
@@ -374,7 +392,7 @@ public class DocGUI extends javax.swing.JFrame {
         else if(mode == 4){
             if(detailList.getComponentCount()!= 0){
                 String reqReportStr = detailList.getSelectedValue().toString();
-                String rptNumStr =reqReportStr.substring(0, reqReportStr.indexOf(" ")); 
+                String rptNumStr =reqReportStr.substring(13, reqReportStr.indexOf(" ",13)); 
                 int reportNum = Integer.parseInt(rptNumStr);
                 MedicalReport reqReport = null;
                 try {
@@ -417,15 +435,57 @@ public class DocGUI extends javax.swing.JFrame {
         if(mode==5){
             labReportsBtnActionPerformed(evt);
         }
-        if(mode==4){
+        else if(mode==4){
             TreatReportsBtnActionPerformed(evt);
         }
         
-        if(mode==3||mode==2){
+        else if(mode==3||mode==2){
             ptDetailsBtnActionPerformed(evt);
         }
                       
     }//GEN-LAST:event_backBtnActionPerformed
+
+    private void SearchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchBoxActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_SearchBoxActionPerformed
+
+    private void SearchBoxKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SearchBoxKeyReleased
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==10){
+            mode = 1;
+            if(SearchCatChooser.getSelectedIndex()==0){
+                pid = Integer.parseInt(SearchBox.getText());
+            }
+            if(SearchCatChooser.getSelectedIndex()==1){            
+                String NIC = SearchBox.getText();
+           
+            }
+            DBOperations dateOpr = DBOperations.getInstace(); 
+            try {
+                pnt = dateOpr.getPatient(pid);
+            } catch (SQLException ex) {
+                Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(null,ex.toString());
+                return;
+            }
+            int index = SearchCatChooser.getSelectedIndex();
+            if(index==1){
+                String nic = SearchBox.getText();
+                //pnt = dateOpr.searchPatients(null,nic );
+            }
+            detailList.setModel(new DefaultListModel());
+            DefaultListModel model = (DefaultListModel)detailList.getModel(); 
+            model.addElement(pnt.getFullName());
+            model.addElement(pnt.getDateOfBirth());
+            model.addElement(pnt.getGender());
+            model.addElement(("Blood group : " + pnt.getBloodGroup()));
+            model.addElement(("Allergies : " + pnt.getAllergies()));
+        
+        
+        }
+    }//GEN-LAST:event_SearchBoxKeyReleased
 
     
     /**
