@@ -167,9 +167,8 @@ public class DBOperations {
         boolean result = false; 
                       
         setConenction();              
-        //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
-        pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?,null)");  
-
+        pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?)),null");  
+        
         pst.setInt(1,employee.getEID());            
         pst.setString(2, employee.getPosition());
         pst.setString(3,employee.getName());
@@ -208,8 +207,7 @@ public class DBOperations {
     public boolean addRoom(Room room) throws SQLException, ConnectionTimeOutException{
         boolean result = false; 
                    
-        setConenction();              
-        //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
+        setConenction();       
         pst = con.prepareStatement("INSERT INTO room VALUES(?,?,?,?)");  
 
         pst.setInt(1,room.getRoomNo());            
@@ -330,8 +328,8 @@ public class DBOperations {
         boolean result = false; 
             
         setConenction();              
-        //pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = MD5(?) WHERE EID = ?"); 
-        pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = ? WHERE EID = ?");              
+        pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = MD5(?) WHERE EID = ?"); 
+        //pst = con.prepareStatement("UPDATE Employee SET UserName = ?,Password = ? WHERE EID = ?");              
 
         pst.setString(1,employee.getUsername());          
         pst.setString(2,employee.getPassword());
@@ -348,8 +346,8 @@ public class DBOperations {
         boolean result = false; 
                     
         setConenction();           
-        //pst = con.prepareStatement("UPDATE Employee SET Name = ?, NIC = ?,UserName = ?,Password = MD(?) WHERE EID = 1");
-        pst = con.prepareStatement("UPDATE Employee SET Name = ?, NIC = ?,UserName = ?,Password = ? WHERE EID = 1");              
+        pst = con.prepareStatement("UPDATE Employee SET Name = ?, NIC = ?,UserName = ?,Password = MD5(?) WHERE EID = 1");
+        //pst = con.prepareStatement("UPDATE Employee SET Name = ?, NIC = ?,UserName = ?,Password = ? WHERE EID = 1");              
 
         pst.setString(1,manager.getName());
         pst.setString(2,manager.getNIC());
@@ -825,9 +823,7 @@ public class DBOperations {
 
             doctor.setEID(use.getInt(1));
             doctor.setName(use.getString(3));
-            doctor.setNIC(use.getString(4));
-            doctor.setUsername(use.getString(5));
-            doctor.setPassword(use.getString(6));   
+            doctor.setNIC(use.getString(4));           
             doctor.setAvailablity(use.getBoolean(7));
 
             doctorList.add(doctor);
@@ -921,8 +917,8 @@ public class DBOperations {
         Employee employee=null;
         try {        
            setConenction();         
-           //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
-           pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");   
+           pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+           //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=?");   
            pst.setString(1,uname);
            pst.setString(2,pword);
            use = pst.executeQuery();
@@ -1032,8 +1028,8 @@ public class DBOperations {
     public boolean checkPassword(String pword) throws ConnectionTimeOutException{       
         try {
             setConenction();               
-            //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
-            pst = con.prepareStatement("SELECT * FROM Employee WHERE Password = ?");   
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE Password=MD5(?)"); 
+            //pst = con.prepareStatement("SELECT * FROM Employee WHERE Password = ?");   
             pst.setString(1,pword);        
             use = pst.executeQuery();
             if(use.next()){                   
@@ -1065,7 +1061,7 @@ public class DBOperations {
     public boolean isRoomAvailable(int roomNo) throws ConnectionTimeOutException{       
         try {
             setConenction();               
-            //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+            
             pst = con.prepareStatement("SELECT * FROM room WHERE RoomNo = ?");   
             pst.setInt(1,roomNo);        
             use = pst.executeQuery();
