@@ -9,6 +9,7 @@ import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.LabReport;
 import gui.login.LoginFace;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -776,8 +777,10 @@ public class LabReportGUI extends javax.swing.JFrame {
             return;
         }
         try{
-            if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
-                labReport.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
+            Date testdate=Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText()));
+            if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer && testdate!=null){
+                
+                labReport.setDate(testdate);
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Date is incorrect");
@@ -858,8 +861,10 @@ public class LabReportGUI extends javax.swing.JFrame {
             return;
         }
         try{
-            if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
-                labReport.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
+            Date testdate=Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText()));
+            if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer && testdate!=null){
+                
+                labReport.setDate(testdate);
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Date is incorrect");
@@ -944,8 +949,10 @@ public class LabReportGUI extends javax.swing.JFrame {
             return;
         }
         try{
-            if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
-                labReport.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
+            Date testdate=Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText()));
+            if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer && testdate!=null){
+                
+                labReport.setDate(testdate);
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Date is incorrect");
@@ -1033,8 +1040,10 @@ public class LabReportGUI extends javax.swing.JFrame {
             return;
         }
         try{
-            if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
-                labReport.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
+            Date testdate=Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText()));
+            if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer && testdate!=null){
+                
+                labReport.setDate(testdate);
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Date is incorrect");
@@ -1124,8 +1133,10 @@ public class LabReportGUI extends javax.swing.JFrame {
             return;
         }
         try{
-            if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
-                labReport.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
+            Date testdate=Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText()));
+            if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer && testdate!=null){
+                
+                labReport.setDate(testdate);
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Date is incorrect");
