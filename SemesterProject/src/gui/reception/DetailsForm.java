@@ -1,16 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 
-/**
- *
+/*
  * @author Irfad Hussain
  */
 public class DetailsForm extends javax.swing.JFrame {
@@ -25,16 +21,16 @@ public class DetailsForm extends javax.swing.JFrame {
         initComponents();
     }
 
-    DetailsForm(ReceptionGUI parent,int mode) {
+    DetailsForm(ReceptionGUI parent,boolean isDoctorModel) {
         this();
         this.parent = parent;
-        if (mode==1){
-            cmbxSearchMode.setEnabled(false);
+        if (isDoctorModel){ 
+            cmbxSearchMode.removeItemAt(1);     // doctors can be searched by only name. remove NIC from combo box near search field
         }
         
     }
 
-    public void setTableModel(DetailsTableModel tabelModel){
+    public void setTableModel(DetailsTableModel tabelModel){  // this is used to set the correct behaviour of table
         this.tableModel = tabelModel;
         tblDetails.setModel(tabelModel);
     }
@@ -81,7 +77,8 @@ public class DetailsForm extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblDetails);
 
         btnSearch.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnSearch.setText("Search");
+        btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/zoom_in.png"))); // NOI18N
+        btnSearch.setText(" Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchActionPerformed(evt);
@@ -106,7 +103,7 @@ public class DetailsForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txtSeacrh, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
-                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearch)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -135,15 +132,17 @@ public class DetailsForm extends javax.swing.JFrame {
         try{
             switch(cmbxSearchMode.getSelectedIndex()){
                 case 0:
-                    tableModel.search(txtSeacrh.getText(), true);
+                    tableModel.search(txtSeacrh.getText(), true);   // search by name, common for doctor and patient
                     break;
                 case 1:
-                    tableModel.search(txtSeacrh.getText(), false);
+                    tableModel.search(txtSeacrh.getText(), false);  // serch by NIC, only available for patient
                     break;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Sorry, an error occured while seraching!", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot search. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
         }
         
     }//GEN-LAST:event_btnSearchActionPerformed

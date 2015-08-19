@@ -1,24 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import DataBase.Help;
+import Domain.Patient;
 import Domain.Room;
+import java.sql.Date;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-/**
- *
+/*
  * @author Irfad Hussain
  */
 public class AdmitDischargeForm extends javax.swing.JFrame {
 
+    //This frame is shown for both admit and discharge with slight modifications
+    
     private ReceptionGUI parent;
     private boolean admit;
     
@@ -30,19 +28,39 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
     }
 
     public AdmitDischargeForm(ReceptionGUI parent){
+        // constructor for admit patient
         this();
         this.parent = parent;
         this.admit = true;
-        btnAdmitDisharge.setText("Admit Patient");
+        this.setTitle("Admit Patient");
+        btnAdmitDisharge.setText("Confirm");
+        // load today's date
+        Date d = new Date(System.currentTimeMillis());
+        txtYear.setText(Integer.toString(Help.getYear(d)));
+        txtMonth.setText(Integer.toString(Help.getMonth(d)));
+        txtDay.setText(Integer.toString(Help.getDay(d)));
     }
     
-    public AdmitDischargeForm(ReceptionGUI parent,Room room){
+    public AdmitDischargeForm(ReceptionGUI parent,Room room,String name){
+        // constructor discharge patient. all details are provided. set them to apropriate fields
         this();
         this.parent = parent;
         this.admit = false;
+        this.setTitle("Discharge Patient");
         btnAdmitDisharge.setText("Discharge Patient");
+        disableFields();
+        txtRoomNumber.setText(Integer.toString(room.getRoomNo()));
+        txtPID.setText(Integer.toString(room.getPID()));
+        txtPatientName.setText(name);
+        txtYear.setText(Integer.toString(Help.getYear(room.getDate())));
+        txtMonth.setText(Integer.toString(Help.getMonth(room.getDate())));
+        txtDay.setText(Integer.toString(Help.getDay(room.getDate())));
+        btnAdmitDisharge.requestFocus();
+    }
+    
+    private void disableFields(){
+        txtRoomNumber.setEditable(false);
         txtPID.setEditable(false);
-        txtPatientName.setEditable(false);
         txtYear.setEditable(false);
         txtMonth.setEditable(false);
         txtDay.setEditable(false);
@@ -71,7 +89,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
         btnAdmitDisharge = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtRoomNumber = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -92,6 +110,8 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
 
         txtPID.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
+        txtPatientName.setEditable(false);
+        txtPatientName.setBackground(new java.awt.Color(204, 204, 204));
         txtPatientName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -128,7 +148,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Room Number :");
 
-        jTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        txtRoomNumber.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -167,7 +187,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtDay, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtRoomNumber, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtPID, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)))))
                 .addContainerGap(80, Short.MAX_VALUE))
         );
@@ -177,7 +197,7 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtRoomNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -206,35 +226,64 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdmitDishargeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdmitDishargeActionPerformed
-        if (admit) {
+        // this button is used to perform 3 actions. when admitting first to confirm and then to admit, when discharging.
+        if (admit) {   
+            if (btnAdmitDisharge.getText().equals("Confirm")){
+                // when conforming check validity of details and load patient name (confirm action)
+                try{
+                    int PID = Integer.parseInt(txtPID.getText());
+                    if (DBOperations.getInstace().isRoomAvailable(Integer.parseInt(txtRoomNumber.getText())) && !parent.isPatientAdmitted(PID)){  // check room availability and patient referref by PID already admitted 
+                        Patient p = DBOperations.getInstace().getPatient(PID);
+                        txtPatientName.setText(p.getFullName());
+                        disableFields();
+                        btnAdmitDisharge.setText("Admit Patient");
+                        return;
+                    }else{
+                        throw new NumberFormatException();  // throw exception to display error messege
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Sorry an error occured while checking room or patient ID", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(this, "Cannot check room or patient ID. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+                } catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(this, "Invalid Room number or Patient ID", "", JOptionPane.WARNING_MESSAGE);
+                } catch (NullPointerException ex){
+                    JOptionPane.showMessageDialog(this, "Invalid Patient ID", "", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+            if (btnAdmitDisharge.getText().equals("Admit Patient")){
+                // update status in database (admit action)
+                try {
+                    Room r = new Room();
+                    r.setRoomNo(Integer.parseInt(txtRoomNumber.getText()));
+                    r.setPID(Integer.parseInt(txtPID.getText()));
+                    r.setDate(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
+                    DBOperations.getInstace().updateRoom(r);
+                    JOptionPane.showMessageDialog(this, "Successfully admitted", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    btnCancelActionPerformed(null);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Sorry an error occured while updating", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(this, "Cannot update room. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        } else if (JOptionPane.showConfirmDialog(this, "Are you sure you want to discharge?","Confirm Action",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
+            // discharge action
             try {
-                Room r = new Room();
-                r.setRoomNo(Integer.parseInt(jTextField1.getText()));
-                r.setPID(Integer.parseInt(txtPID.getText()));
-                r.setAvailability(false);
-                r.setDate(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
-                DBOperations.getInstace().addRoom(r);
-                JOptionPane.showMessageDialog(this, "Successfully admitted", "Success", JOptionPane.INFORMATION_MESSAGE);
+                DBOperations.getInstace().setRoomAvailability(Integer.parseInt(txtRoomNumber.getText()),true);
+                JOptionPane.showMessageDialog(this, "Successfully discharged", "Success", JOptionPane.INFORMATION_MESSAGE);
                 btnCancelActionPerformed(null);
             } catch (SQLException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Sorry an error occured while entering!", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }catch (NumberFormatException ex){
-                JOptionPane.showMessageDialog(this, "Invalid Detail.", "", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-        } else {
-            try {
-                DBOperations.getInstace().setRoomAvailability(Integer.parseInt(jTextField1.getText()),false);
-            } catch (SQLException ex) {
-                Logger.getLogger(AdmitDischargeForm.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Sorry an error occured while discharging", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(this, "Sorry, Cannot process discharge. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnAdmitDishargeActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         parent.setEnabled(true);
+        parent.refreshTable();  // this method is called after admit or discharge.So update room table
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
@@ -285,13 +334,13 @@ public class AdmitDischargeForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblPatientName;
     private javax.swing.JTextField txtDay;
     private javax.swing.JTextField txtMonth;
     private javax.swing.JTextField txtPID;
     private javax.swing.JTextField txtPatientName;
+    private javax.swing.JTextField txtRoomNumber;
     private javax.swing.JTextField txtYear;
     // End of variables declaration//GEN-END:variables
 }

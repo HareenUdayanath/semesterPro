@@ -1,24 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.Patient;
-import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-/**
- *
+/*
  * @author Irfad Hussain
  */
 public class AddPatientFrame extends javax.swing.JFrame {
 
-    private ReceptionGUI parent;
+    private ReceptionGUI parent;  // reception gui reference is used to enable the reception gui windo after closing this window
     
     /**
      * Creates new form AddPatientFrame
@@ -29,12 +24,19 @@ public class AddPatientFrame extends javax.swing.JFrame {
     
     public AddPatientFrame(ReceptionGUI parent){
         this();
-        try {
-            this.parent = parent;
-            txtPID.setText(Integer.toString(DBOperations.getInstace().getLastPID()+1));
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Sorry,an error occured while retrieving Patient ID", "Errror", JOptionPane.WARNING_MESSAGE);
-        }
+        this. parent = parent;
+        new Thread(){
+            @Override
+            public void run(){
+                try {
+                    txtPID.setText(Integer.toString(DBOperations.getInstace().getLastPID() + 1));  // set the patient id that will get for new patient. It is last inserted id plus 1
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Sorry,an error occured while retrieving Patient ID", "Errror", JOptionPane.WARNING_MESSAGE);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(null, "Cannot load patient ID. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        }.start();
     }
     
     /**
@@ -194,28 +196,20 @@ public class AddPatientFrame extends javax.swing.JFrame {
         txtAllergies2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
         btnAddPatient.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnAddPatient.setText("Add Patient");
+        btnAddPatient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/user_add.png"))); // NOI18N
+        btnAddPatient.setText(" Add Patient");
         btnAddPatient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddPatientActionPerformed(evt);
             }
         });
-        btnAddPatient.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnAddPatientKeyReleased(evt);
-            }
-        });
 
         btnCanel.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnCanel.setText("Cancel");
+        btnCanel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/remove.png"))); // NOI18N
+        btnCanel.setText(" Cancel");
         btnCanel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCanelActionPerformed(evt);
-            }
-        });
-        btnCanel.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                btnCanelKeyReleased(evt);
             }
         });
 
@@ -258,7 +252,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btnCanel, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCanel)
                         .addGap(18, 18, 18)
                         .addComponent(btnAddPatient))
                     .addGroup(jPanel6Layout.createSequentialGroup()
@@ -399,23 +393,25 @@ public class AddPatientFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddPatientActionPerformed
-        if (validateDetails()){
+        /* Since getting the patient id is done on a seperate thread this fram will appear even an error occurs while getting it. Then patient id field 
+           will be empty. So add patient only if text in patient id field is not empty and valid details has been entered. */
+        if (!txtPID.getText().equals("") && validateDetails()){     
             try {
                 Patient p = new Patient();
                 p.setFirstName(txtFirstName.getText());
                 p.setLastName(txtLastName.getText());
                 p.setFullName(txtFullName1.getText() + " " + txtFullName2.getText());
-                if (!txtYear.getText().equals("") && !txtMonth.getText().equals("") && !txtDay.getText().equals("")){
+                if (!txtYear.getText().equals("") && !txtMonth.getText().equals("") && !txtDay.getText().equals("")){  // add date only if all 3 year, month, day fields are not empty 
                     try{
                         p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
                     }catch(NumberFormatException ex){
-                        JOptionPane.showMessageDialog(this, "Invalid Date of Birth!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Invalid date of birth!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
                         return;
                     }
                 }
                 p.setGender(cmbxGender.getSelectedItem().toString().substring(0, 1));
                 p.setAddress(txtAddress1.getText() + " " + txtAddress2.getText() + " " + txtAddress3.getText());
-                if (txtNIC.getText().equals("")){
+                if (txtNIC.getText().equals("")){   // if nic is not given set null in database
                     p.setNIC(null);
                 }else{
                     p.setNIC(txtNIC.getText());
@@ -441,10 +437,12 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 p.setAllergies(txtAllergies1.getText() + " " + txtAllergies2.getText());
                 DBOperations.getInstace().addPatient(p);
                 JOptionPane.showMessageDialog(this, "Successfully added patient.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                btnCanelActionPerformed(null);
+                btnCanelActionPerformed(null);  // close this window
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "An error occured while adding.Please try again.", "Error", JOptionPane.WARNING_MESSAGE);
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(null, "Cannot add patient. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
             }
         }
     }//GEN-LAST:event_btnAddPatientActionPerformed
@@ -458,17 +456,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
         parent.setEnabled(true);
     }//GEN-LAST:event_formWindowClosing
 
-    private void btnCanelKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnCanelKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER)
-            btnCanelActionPerformed(null);
-    }//GEN-LAST:event_btnCanelKeyReleased
-
-    private void btnAddPatientKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAddPatientKeyReleased
-        if (evt.getKeyCode()==KeyEvent.VK_ENTER)
-            btnAddPatientActionPerformed(null);
-    }//GEN-LAST:event_btnAddPatientKeyReleased
-
     private boolean validateDetails(){
+        /* check whether required and valid details are given. first name, full name cannot be empty. also checks whether NIC is in correct form if given */
         try {
             if (txtFirstName.getText().equals("")){
                 JOptionPane.showMessageDialog(this, "First Name cannot be empty!", "Invalid Detail", JOptionPane.WARNING_MESSAGE);
@@ -483,14 +472,18 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Invalid NIC","Invalid Detail", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
-            if (DBOperations.getInstace().checkPatientNIC(NIC)){
+            Integer.parseInt(NIC.substring(0, NIC.length()-1)); // first 9 digits should be numbers if not nuberformatexception will be thrown
+            if (DBOperations.getInstace().checkPatientNIC(NIC)){  // check whether this NIC already exists in database because nic should be unique
                 JOptionPane.showMessageDialog(this, "NIC already exsits","Invalid Detail", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
             return true;
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Sorry, An error occured while checking Patient ID!","Error", JOptionPane.WARNING_MESSAGE);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot check NIC. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
             return false;
+        }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(this, "Invalid NIC","Invalid Detail", JOptionPane.WARNING_MESSAGE);
+                return false;
         }
     }
     

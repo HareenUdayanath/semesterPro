@@ -1,18 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import java.sql.SQLException;
 import javax.swing.table.AbstractTableModel;
 
-/**
- *
+/*
  * @author Irfad Hussain
  */
 public abstract class DetailsTableModel extends AbstractTableModel{
+    
+    /* This is the super type for stratergy behavioural pattern */
     
     private final String[] COLUMN_NAMES;
 
@@ -30,6 +28,6 @@ public abstract class DetailsTableModel extends AbstractTableModel{
         return COLUMN_NAMES[columnIndex];
     }
     
-    public abstract void search(String key, boolean searchByName)throws SQLException;
+    public abstract void search(String key, boolean searchByName)throws SQLException,ConnectionTimeOutException;
     
 }

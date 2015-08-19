@@ -365,7 +365,7 @@ public class DocGUI extends javax.swing.JFrame {
                 detailList.setModel(new DefaultListModel());
                 DefaultListModel model = (DefaultListModel)detailList.getModel(); 
                 for(LabReport lbRpt : labReports){
-                     model.addElement((lbRpt.getLabReportNo()+" Test types : "+ lbRpt.getTestType()));
+                     model.addElement(("Report num : " + lbRpt.getLabReportNo()+" Test types : "+ lbRpt.getTestType()));
                  }
                 mode = 5;
             }
@@ -394,7 +394,7 @@ public class DocGUI extends javax.swing.JFrame {
         else if(mode == 5){
             if(detailList.getComponentCount()!= 0){
                 String reqlabReportStr = detailList.getSelectedValue().toString();
-                String labrptNumStr =reqlabReportStr.substring(0, reqlabReportStr.indexOf(" ")); 
+                String labrptNumStr =reqlabReportStr.substring(13, reqlabReportStr.indexOf(" ",13)); 
                 int labreportNum = Integer.parseInt(labrptNumStr);
                 LabReport reqReport = null;            
                 try {
