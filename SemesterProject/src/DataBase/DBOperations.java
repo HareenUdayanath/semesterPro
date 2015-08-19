@@ -952,7 +952,7 @@ public class DBOperations {
             con.close();           
             
         } catch (SQLException ex) {
-            
+            return false;
         }
         return false;
     }
@@ -969,7 +969,7 @@ public class DBOperations {
             closeConnection();
            
         } catch (SQLException ex) {
-            
+            return false;
         }
          return false;
     }
@@ -986,7 +986,7 @@ public class DBOperations {
             closeConnection();
            
         } catch (SQLException ex) {
-           
+            return false;
         }
         return false;
     }
@@ -1003,7 +1003,7 @@ public class DBOperations {
             con.close();           
             
         } catch (SQLException ex) {
-            
+            return false;
         }
         return false;
     }
@@ -1022,7 +1022,7 @@ public class DBOperations {
             closeConnection();
             
         } catch (SQLException ex) {
-           
+            return false;
         }
         return false;
     }
@@ -1038,7 +1038,7 @@ public class DBOperations {
             }             
             closeConnection();            
         } catch (SQLException ex) {
-            
+            return false;
         }
         return false;
     }
@@ -1055,7 +1055,7 @@ public class DBOperations {
             }             
             closeConnection();            
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            return false;
         }
         return false;
     }
@@ -1071,7 +1071,7 @@ public class DBOperations {
             }             
             closeConnection();            
         } catch (SQLException ex) {
-            
+            return false;
         }
         return false;
     }

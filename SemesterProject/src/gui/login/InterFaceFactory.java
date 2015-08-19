@@ -22,7 +22,7 @@ public class InterFaceFactory {
                 return new DocGUI((Doctor)employee);
             case "Reception":
                 return new ReceptionGUI();
-            case "DataEntryClerck":
+            case "DataEntryClerk":
                 return new DataEntryGUI();
             case "LabTechniciant":
                 return new LabReportGUI();

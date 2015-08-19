@@ -360,7 +360,7 @@ public class DocGUI extends javax.swing.JFrame {
                 detailList.setModel(new DefaultListModel());
                 DefaultListModel model = (DefaultListModel)detailList.getModel(); 
                 for(LabReport lbRpt : labReports){
-                     model.addElement((lbRpt.getLabReportNo()+" Test types : "+ lbRpt.getTestType()));
+                     model.addElement((lbRpt.getLabReportNo()+" Test types : "+ lbRpt.getTestName()));
                  }
                 mode = 5;
             }
