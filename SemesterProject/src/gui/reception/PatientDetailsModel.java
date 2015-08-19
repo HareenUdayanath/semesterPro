@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.reception;
 
 import DataBase.ConnectionTimeOutException;
@@ -10,9 +6,9 @@ import DataBase.DBOperations;
 import Domain.Patient;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
-/**
- *
+/*
  * @author Irfad Hussain
  */
 public class PatientDetailsModel extends DetailsTableModel {
@@ -53,6 +49,9 @@ public class PatientDetailsModel extends DetailsTableModel {
             setValues(DBOperations.getInstace().searchPatients(key));
         }else{
             setValues(DBOperations.getInstace().searchPatientsByNIC(key));
+        }
+        if (values.size()==0){
+            JOptionPane.showMessageDialog(null, "No match found!", null, JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

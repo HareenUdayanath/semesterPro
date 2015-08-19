@@ -1,19 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.reception;
 
 import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import gui.login.LoginFace;
-import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-/**
- *
+/*
  * @author Irfad Hussain
  */
 public class ReceptionGUI extends javax.swing.JFrame {
@@ -29,6 +23,7 @@ public class ReceptionGUI extends javax.swing.JFrame {
         new Thread(){
             @Override
             public void run(){
+                // load admitted patients
                 roomModel = new RoomTableModel();
                 tblRooms.setModel(roomModel);
             }
@@ -155,12 +150,20 @@ public class ReceptionGUI extends javax.swing.JFrame {
 
         tblRooms.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", "", null}
+                {"", null, "", null}
             },
             new String [] {
-                "Room Number", "Patient Name", "Admit Date"
+                "Room Number", "Patient ID", "Patient Name", "Admit Date"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblRooms.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(tblRooms);
 
@@ -243,7 +246,8 @@ public class ReceptionGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSearchPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPatientActionPerformed
-        DetailsForm df = new DetailsForm(this,0);
+        // view details form. set the behaviour to patient model
+        DetailsForm df = new DetailsForm(this,false);
         df.setTableModel(new PatientDetailsModel());
         df.setLocationRelativeTo(null);
         df.setVisible(true);
@@ -251,6 +255,7 @@ public class ReceptionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchPatientActionPerformed
 
     private void btnAddNewPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewPatientActionPerformed
+        // view add new patient window
         AddPatientFrame apf = new AddPatientFrame(this);
         apf.setLocationRelativeTo(null);
         apf.setVisible(true);
@@ -258,14 +263,16 @@ public class ReceptionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddNewPatientActionPerformed
 
     private void btnDoctorListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoctorListActionPerformed
-            DetailsForm df = new DetailsForm(this,1);
-            df.setTableModel(new DoctorDetailsModel());
-            df.setLocationRelativeTo(null);
-            df.setVisible(true);
-            this.setEnabled(false);
+        // view details form. set the behaviour to Doctor model    
+        DetailsForm df = new DetailsForm(this, true);
+        df.setTableModel(new DoctorDetailsModel());
+        df.setLocationRelativeTo(null);
+        df.setVisible(true);
+        this.setEnabled(false);
     }//GEN-LAST:event_btnDoctorListActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // if log out conformed close this window and show login window
         if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?","Confirm Action", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
             this.dispose();
             LoginFace l = new LoginFace();
@@ -275,23 +282,27 @@ public class ReceptionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btnAdmitPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdmitPatientActionPerformed
+        // show admit patient window
         AdmitDischargeForm adf = new AdmitDischargeForm(this);
+        adf.setLocationRelativeTo(null);
         adf.setVisible(true);
         this.setEnabled(false);
     }//GEN-LAST:event_btnAdmitPatientActionPerformed
 
     private void btnDischargePatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDischargePatientActionPerformed
+        // show discharge window only if a row from room table is selected
         int selected = tblRooms.getSelectedRow();
         if (selected == -1){
             JOptionPane.showMessageDialog(this, "No item selected!", null, JOptionPane.WARNING_MESSAGE);
             return;
         }
-        AdmitDischargeForm adf = new AdmitDischargeForm(this,roomModel.getRoomAt(selected), (String) roomModel.getValueAt(selected, 1));
+        AdmitDischargeForm adf = new AdmitDischargeForm(this,roomModel.getRoomAt(selected), (String) roomModel.getValueAt(selected, 2));
+        adf.setLocationRelativeTo(null);
         adf.setVisible(true);
         this.setEnabled(false);
     }//GEN-LAST:event_btnDischargePatientActionPerformed
 
-    protected void refreshTable(){
+    protected void refreshTable(){  // get all the admitted rooms. This is called after a patient is admitted or discharged 
         new Thread(){
             @Override
             public void run(){
@@ -304,6 +315,10 @@ public class ReceptionGUI extends javax.swing.JFrame {
                 }
             }
         }.start();
+    }
+    
+    public boolean isPatientAdmitted(int PID){
+        return roomModel.isPatientadmitted(PID);
     }
     
     /**

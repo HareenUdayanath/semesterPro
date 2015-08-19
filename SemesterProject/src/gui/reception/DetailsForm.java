@@ -1,18 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.reception;
 
 import DataBase.ConnectionTimeOutException;
-import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 
-/**
- *
+/*
  * @author Irfad Hussain
  */
 public class DetailsForm extends javax.swing.JFrame {
@@ -27,16 +21,16 @@ public class DetailsForm extends javax.swing.JFrame {
         initComponents();
     }
 
-    DetailsForm(ReceptionGUI parent,int mode) {
+    DetailsForm(ReceptionGUI parent,boolean isDoctorModel) {
         this();
         this.parent = parent;
-        if (mode==1){
-            cmbxSearchMode.removeItemAt(1);
+        if (isDoctorModel){ 
+            cmbxSearchMode.removeItemAt(1);     // doctors can be searched by only name. remove NIC from combo box near search field
         }
         
     }
 
-    public void setTableModel(DetailsTableModel tabelModel){
+    public void setTableModel(DetailsTableModel tabelModel){  // this is used to set the correct behaviour of table
         this.tableModel = tabelModel;
         tblDetails.setModel(tabelModel);
     }
@@ -138,10 +132,10 @@ public class DetailsForm extends javax.swing.JFrame {
         try{
             switch(cmbxSearchMode.getSelectedIndex()){
                 case 0:
-                    tableModel.search(txtSeacrh.getText(), true);
+                    tableModel.search(txtSeacrh.getText(), true);   // search by name, common for doctor and patient
                     break;
                 case 1:
-                    tableModel.search(txtSeacrh.getText(), false);
+                    tableModel.search(txtSeacrh.getText(), false);  // serch by NIC, only available for patient
                     break;
             }
         } catch (SQLException ex) {

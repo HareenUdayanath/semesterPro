@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import Domain.*;
-import com.mysql.jdbc.CommunicationsException;
 import java.sql.Date;
 
 
@@ -27,8 +26,7 @@ public class DBOperations {
     
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
-    
-    
+
     
     private DBOperations(){
         this.emfac = new EmployeeFactory();
@@ -404,6 +402,28 @@ public class DBOperations {
         closeConnection();
         return result;
     }
+    
+    public boolean updateChronicConditionsReport(ChronicConditionsReport chronicConditionsReport) throws SQLException, ConnectionTimeOutException{
+        boolean result = false; 
+                      
+        setConenction();              
+        pst = con.prepareStatement("UPDATE ChronicConditions SET ChronicConditionscol = ?, HeartDisease = ?, Stroke = ?, Cancer = ?, Diabetes = ?, Obesity = ?, Arthritis = ? WHERE PID = ?");     
+         
+        pst.setString(1, chronicConditionsReport.getChronicConditionsCol());
+        pst.setBoolean(2,chronicConditionsReport.isHeartDisease());
+        pst.setBoolean(3, chronicConditionsReport.isStroke());
+        pst.setBoolean(4, chronicConditionsReport.isCancer());
+        pst.setBoolean(5, chronicConditionsReport.isDiabetes()); 
+        pst.setBoolean(6, chronicConditionsReport.isObesity()); 
+        pst.setBoolean(7, chronicConditionsReport.isArthritis()); 
+        pst.setInt(8,chronicConditionsReport.getPID());   
+        pst.executeUpdate();
+        con.close();
+
+        result = true;
+        closeConnection();
+        return result;
+    }
    
     
     /*
@@ -471,6 +491,31 @@ public class DBOperations {
         closeConnection();
        
         return patient;
+    }
+    
+    public ChronicConditionsReport getChronicCondotionReport(int PID) throws SQLException, ConnectionTimeOutException{
+        ChronicConditionsReport ChronicCondition = null;
+       
+        setConenction();          
+        pst = con.prepareStatement("SELECT * FROM ChronicConditions WHERE PID = ?");
+        pst.setInt(1,PID);
+        use = pst.executeQuery();                
+
+        if(use.next()){                   
+            ChronicCondition = new ChronicConditionsReport();
+            ChronicCondition.setPID(use.getInt(1));
+            ChronicCondition.setChronicConditionsCol(use.getString(2));
+            ChronicCondition.setHeartDisease(use.getBoolean(3));
+            ChronicCondition.setStroke(use.getBoolean(4));
+            ChronicCondition.setCancer(use.getBoolean(5));
+            ChronicCondition.setDiabetes(use.getBoolean(6));
+            ChronicCondition.setObesity(use.getBoolean(7));
+            ChronicCondition.setArthritis(use.getBoolean(8));
+        }       
+
+        closeConnection();
+       
+        return ChronicCondition;
     }
     
     public ArrayList<Doctor> loadDoctors() throws SQLException, ConnectionTimeOutException{
@@ -900,8 +945,7 @@ public class DBOperations {
             setConenction();             
             pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
             pst.setString(1, NIC);
-            use = pst.executeQuery();                
-            System.out.println(pst);
+            use = pst.executeQuery();
             while(use.next()){     
                 return true;
             }    
@@ -998,11 +1042,11 @@ public class DBOperations {
         }
         return false;
     }
-    public boolean checkDoctorID(int eid) throws ConnectionTimeOutException{        
+    public boolean checkDoctorID(String eid) throws ConnectionTimeOutException{        
         try {
             setConenction();
             pst = con.prepareStatement("SELECT * FROM Employee WHERE EID = ?");   
-            pst.setInt(1,eid);
+            pst.setString(1,eid);
             use = pst.executeQuery();
 
             if(use.next()){  
@@ -1031,7 +1075,6 @@ public class DBOperations {
         }
         return false;
     }
-
     
     /**
      * @param ip the ip to set
