@@ -60,4 +60,8 @@ public class PatientDetailsModel extends DetailsTableModel {
         return values.size();
     }
     
+    public Patient getPatientAt(int rowIndex){
+        return values.get(rowIndex);
+    }
+    
 }
