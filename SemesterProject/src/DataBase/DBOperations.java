@@ -21,12 +21,15 @@ public class DBOperations {
     //private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
     private String ip = "192.168.173.1";
     private String port = "3306";
-    private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
-    //private String url = "jdbc:mysql://localhost:3306/SemesterProject";
+    //private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
+    private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     
-    private String user = "hosdataadmin";
-    private String password = "coperativehos7456391";
-
+    private String user = "root";
+    private String password = "";
+    //private String user = "hosdataadmin";
+    //private String password = "coperativehos7456391";
+    
+    
     
     private DBOperations(){
         this.emfac = new EmployeeFactory();
