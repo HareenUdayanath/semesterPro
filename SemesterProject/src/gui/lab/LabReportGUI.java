@@ -10,6 +10,8 @@ import DataBase.Help;
 import Domain.LabReport;
 import gui.login.LoginFace;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -86,6 +88,17 @@ public class LabReportGUI extends javax.swing.JFrame {
         return null;
         
     }
+    public static boolean isValidDate(String inDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        try {
+          dateFormat.parse(inDate.trim());
+        } catch (ParseException pe) {
+          return false;
+        }
+        return true;
+  }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
