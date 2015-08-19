@@ -8,13 +8,21 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 
 
 public class Help {
     public static Date getDate(int year,int month,int day){
-        return new Date(year-1900,month-1,day);
+        if(!(isValidDate(String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day))))
+            return null;
+        Date newDate = new Date(year-1900,month-1,day);
+        Date today = new Date(System.currentTimeMillis());
+        Date minimumDate = new Date(1900-1900,01-1,01);
+        if(!(today.compareTo(newDate)<1&&today.compareTo(minimumDate)>-1))
+            newDate = null;
+        return newDate;
     }
     public static int getYear(Date date){
         return date.getYear()+1900;
@@ -66,4 +74,17 @@ public class Help {
         }
         return ipAndPort;
     }
+    
+    public static boolean isValidDate(String inDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        try {
+          dateFormat.parse(inDate.trim());
+            System.out.println(dateFormat.parse(inDate.trim()));
+        } catch (ParseException pe) {
+          return false;
+        }
+        return true;
+    }
+    
 }
