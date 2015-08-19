@@ -39,6 +39,8 @@ public class AdminFace extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -54,7 +56,13 @@ public class AdminFace extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         addBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        btnAdd = new javax.swing.JButton();
+        txtIP = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtPort = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        cancelBtn1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Admin");
@@ -64,6 +72,9 @@ public class AdminFace extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
+
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/Secound5.png"))); // NOI18N
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Manager deails"));
 
@@ -93,6 +104,22 @@ public class AdminFace extends javax.swing.JFrame {
 
         jLabel6.setText("Manager");
 
+        addBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/user_add.png"))); // NOI18N
+        addBtn.setText("Add");
+        addBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addBtnActionPerformed(evt);
+            }
+        });
+
+        cancelBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/remove.png"))); // NOI18N
+        cancelBtn.setText("Cancel");
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -114,8 +141,13 @@ public class AdminFace extends javax.swing.JFrame {
                     .addComponent(unameText)
                     .addComponent(passText)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(0, 224, Short.MAX_VALUE)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(addBtn)
+                                .addGap(26, 26, 26)
+                                .addComponent(cancelBtn)))
+                        .addGap(0, 63, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -125,7 +157,7 @@ public class AdminFace extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(nameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6))
@@ -145,27 +177,75 @@ public class AdminFace extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(conPassText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addBtn)
+                    .addComponent(cancelBtn))
                 .addContainerGap())
         );
 
-        addBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/user_add.png"))); // NOI18N
-        addBtn.setText("Add");
-        addBtn.addActionListener(new java.awt.event.ActionListener() {
+        jTabbedPane1.addTab("Add new Manager", jPanel3);
+
+        btnAdd.setText("Add Settings");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addBtnActionPerformed(evt);
+                btnAddActionPerformed(evt);
             }
         });
 
-        cancelBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/remove.png"))); // NOI18N
-        cancelBtn.setText("Cancel");
-        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+        jLabel9.setText("New IP:");
+
+        jLabel10.setText("New Port:");
+
+        cancelBtn1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/remove.png"))); // NOI18N
+        cancelBtn1.setText("Cancel");
+        cancelBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelBtnActionPerformed(evt);
+                cancelBtn1ActionPerformed(evt);
             }
         });
 
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/Secound5.png"))); // NOI18N
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtIP, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, 379, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(cancelBtn1)))
+                .addGap(44, 44, 44))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(106, 106, 106)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addGap(40, 40, 40)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cancelBtn1))
+                .addGap(26, 26, 26))
+        );
+
+        jTabbedPane1.addTab("Changer Connection Settings", jPanel2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -174,13 +254,8 @@ public class AdminFace extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(addBtn)
-                        .addGap(18, 18, 18)
-                        .addComponent(cancelBtn))
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -189,11 +264,7 @@ public class AdminFace extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addBtn)
-                    .addComponent(cancelBtn))
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -291,6 +362,14 @@ public class AdminFace extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowClosing
 
+    private void cancelBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtn1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cancelBtn1ActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAddActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -321,9 +400,12 @@ public class AdminFace extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
+    private javax.swing.JButton btnAdd;
     private javax.swing.JButton cancelBtn;
+    private javax.swing.JButton cancelBtn1;
     private javax.swing.JPasswordField conPassText;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -331,11 +413,16 @@ public class AdminFace extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField nameText;
     private javax.swing.JTextField nicText;
     private javax.swing.JPasswordField passText;
+    private javax.swing.JTextField txtIP;
+    private javax.swing.JTextField txtPort;
     private javax.swing.JTextField unameText;
     // End of variables declaration//GEN-END:variables
 }

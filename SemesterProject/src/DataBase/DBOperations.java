@@ -39,16 +39,19 @@ public class DBOperations {
     public boolean setConenction() throws SQLException,ConnectionTimeOutException{
         boolean reachable = false;
         try {            
-            Class.forName("com.mysql.jdbc.Driver").newInstance();           
-            con = DriverManager.getConnection(url, user, password);            
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            
+            con = DriverManager.getConnection(url, user, password);   
+            
             reachable = con.isValid(30);
+            
             
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
            
         }catch(com.mysql.jdbc.exceptions.jdbc4.CommunicationsException ex){
             throw new ConnectionTimeOutException(ex.getMessage());
         }catch(Exception ex){            
-            throw new ConnectionTimeOutException(ex.getClass().getCanonicalName());
+            throw new ConnectionTimeOutException(ex.getMessage());
         }
         
        
@@ -530,9 +533,7 @@ public class DBOperations {
 
             doctor.setEID(use.getInt(1));
             doctor.setName(use.getString(3));
-            doctor.setNIC(use.getString(4));
-            doctor.setUsername(use.getString(5));
-            doctor.setPassword(use.getString(6));  
+            doctor.setNIC(use.getString(4));            
             doctor.setAvailablity(use.getBoolean(7));
 
             doctorList.add(doctor);
@@ -553,9 +554,7 @@ public class DBOperations {
             Employee employee = emfac.getEmployee(use.getString(2));                
             employee.setEID(use.getInt(1));
             employee.setName(use.getString(3));
-            employee.setNIC(use.getString(4));
-            employee.setUsername(use.getString(5));
-            employee.setPassword(use.getString(6));  
+            employee.setNIC(use.getString(4));            
             employeeList.add(employee);
         }             
         closeConnection();
@@ -574,8 +573,7 @@ public class DBOperations {
             employee.setEID(use.getInt(1));
             employee.setName(use.getString(3));
             employee.setNIC(use.getString(4));
-            employee.setUsername(use.getString(5));
-            employee.setPassword(use.getString(6));         
+                   
         }             
         closeConnection();
         return employee;

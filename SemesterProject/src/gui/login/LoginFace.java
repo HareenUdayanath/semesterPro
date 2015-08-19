@@ -23,6 +23,46 @@ public class LoginFace extends javax.swing.JFrame {
         initComponents();
     }
 
+    private void logIn(){
+        dataBase = DBOperations.getInstace();  
+        try {
+            if(dataBase.checkAdmin(txtUserName.getText(), String.valueOf(pasPassword.getPassword()))){
+                new AdminFace().setVisible(true);
+                this.dispose();
+            }else{
+                
+                Employee employee = null;
+                try {
+                    employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pasPassword.getPassword()));
+                
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if(employee!=null){
+                    if(employee.getPosition().equals("Doctor")){
+                        try {
+                            dataBase.setDoctorAvailability(employee.getEID(),true);
+                        } catch (SQLException ex) {
+                            
+                        } catch (ConnectionTimeOutException ex) {
+                            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                    }
+                    iFactory.getInterFace(employee).setVisible(true);
+                    this.dispose();
+                }else{
+                    JOptionPane.showMessageDialog(null,"Invalid username or password");
+                    txtUserName.setText(null);
+                    pasPassword.setText(null);
+                }
+            }
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,7 +81,7 @@ public class LoginFace extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnLogIn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Cooperative Hospital System");
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -58,6 +98,12 @@ public class LoginFace extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(51, 51, 255));
         jLabel1.setText("User Name");
+
+        pasPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pasPasswordActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 255));
@@ -156,44 +202,7 @@ public class LoginFace extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogInActionPerformed
-        dataBase = DBOperations.getInstace();  
-        try {
-            if(dataBase.checkAdmin(txtUserName.getText(), String.valueOf(pasPassword.getPassword()))){
-                new AdminFace().setVisible(true);
-                this.dispose();
-            }else{
-                
-                Employee employee = null;
-                try {
-                    employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pasPassword.getPassword()));
-                
-                } catch (ConnectionTimeOutException ex) {
-                    JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-                if(employee!=null){
-                    if(employee.getPosition().equals("Doctor")){
-                        try {
-                            dataBase.setDoctorAvailability(employee.getEID(),true);
-                        } catch (SQLException ex) {
-                            
-                        } catch (ConnectionTimeOutException ex) {
-                            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                    }
-                    iFactory.getInterFace(employee).setVisible(true);
-                    this.dispose();
-                }else{
-                    JOptionPane.showMessageDialog(null,"Invalid username or password");
-                    txtUserName.setText(null);
-                    pasPassword.setText(null);
-                }
-            }
-        } catch (ConnectionTimeOutException ex) {
-            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-            
-        }
+        logIn();
     }//GEN-LAST:event_btnLogInActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -201,6 +210,10 @@ public class LoginFace extends javax.swing.JFrame {
            System.exit(0);
        }
     }//GEN-LAST:event_formWindowClosing
+
+    private void pasPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pasPasswordActionPerformed
+        logIn();
+    }//GEN-LAST:event_pasPasswordActionPerformed
 
     /**
      * @param args the command line arguments

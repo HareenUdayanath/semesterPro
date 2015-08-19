@@ -141,7 +141,7 @@ public class SemesterProject {
             UIManager.setLookAndFeel(new AcrylLookAndFeel());
         } catch (Exception e) {            
         */
-        try {
+       /* try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -152,7 +152,7 @@ public class SemesterProject {
 
         }
         LoginFace login = new LoginFace();
-        login.setVisible(true);
+        login.setVisible(true);*/
 
        /* try {
              //ad.setRoomAvailability(2,false);
@@ -163,6 +163,8 @@ public class SemesterProject {
         } catch (SQLException ex) {
             Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
         }*/
-        
+        Help.writeIPandPort("123","123");
+        String[] i = Help.readIPandPort();
+        System.out.println(i[0]+" "+i[1]);
     }
 }
