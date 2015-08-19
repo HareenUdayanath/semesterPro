@@ -161,7 +161,7 @@ public class LoginFace extends javax.swing.JFrame {
             }
         });
 
-        btnChange.setIcon(new javax.swing.ImageIcon("C:\\Users\\Asus\\Desktop\\logoCop\\change.png")); // NOI18N
+        btnChange.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/login/change.png"))); // NOI18N
         btnChange.setText("Change Loggin Settings");
         btnChange.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

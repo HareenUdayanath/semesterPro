@@ -215,7 +215,7 @@
         <Component class="javax.swing.JButton" name="btnChange">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Asus\Desktop\logoCop\change.png"/>
+              <Image iconType="3" name="/gui/login/change.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Change Loggin Settings"/>
           </Properties>
