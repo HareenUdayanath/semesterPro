@@ -234,13 +234,13 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
     private void changeButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButActionPerformed
         // TODO add your handling code here:
         dataBase = DBOperations.getInstace();
-        System.out.println("cccccc");
+        
         Employee employee = null;
-        System.out.println("cccccc");
+        
         try {
-            System.out.println("cccccc");
+            
             employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pswdPassword.getPassword()));
-            System.out.println("cccccc");
+           
         } catch (ConnectionTimeOutException ex) {
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
