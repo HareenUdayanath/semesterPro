@@ -182,6 +182,11 @@ public class AdminFace extends javax.swing.JFrame {
 
         jLabel5.setText("Position");
 
+        nicText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nicTextActionPerformed(evt);
+            }
+        });
         nicText.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 nicTextKeyTyped(evt);
@@ -290,7 +295,7 @@ public class AdminFace extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 363, Short.MAX_VALUE)
+            .addGap(0, 379, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                     .addContainerGap(50, Short.MAX_VALUE)
@@ -321,7 +326,7 @@ public class AdminFace extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 91, Short.MAX_VALUE)
                 .addGap(378, 378, 378))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -351,17 +356,17 @@ public class AdminFace extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void nicTextKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nicTextKeyTyped
-
+         
         char c = evt.getKeyChar();
         String nic = nicText.getText();
         if(nic.length()==10){
             evt.consume();
         }
         if(nic.length()==9){
-            if((Character.isDigit(c)||(c==KeyEvent.VK_BACK_SPACE)||(c==KeyEvent.VK_DELETE)||(c==KeyEvent.VK_V))||(c==KeyEvent.VK_X)){
-            } else {
-                evt.consume();
-            }
+            if(((c==KeyEvent.VK_BACK_SPACE)||(c==KeyEvent.VK_DELETE)||(c==KeyEvent.VK_V))||(c==KeyEvent.VK_X)){
+        } else {
+            evt.consume();
+        }
         }
         else if((Character.isDigit(c)||(c==KeyEvent.VK_BACK_SPACE)||(c==KeyEvent.VK_DELETE))){
         } else {
@@ -437,8 +442,12 @@ public class AdminFace extends javax.swing.JFrame {
         Help.writeIPandPort(txtIP.getText(),txtPort.getText());
         this.txtIP.setText(null);
         this.txtPort.setText(null);
-        
+        DBOperations.getInstace().setIP();
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void nicTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nicTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nicTextActionPerformed
 
     /**
      * @param args the command line arguments

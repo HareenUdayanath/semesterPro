@@ -9,8 +9,10 @@ import DataBase.DBOperations;
 import Domain.Employee;
 import java.sql.SQLException;
 import java.util.Arrays;
+import javax.swing.JFrame;
 
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 /**
  *
@@ -22,14 +24,19 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
     private DBOperations dataBase;
     private int empId;
     private Employee changeEmp ;
+    private JFrame loginFace;
     
     /**
      * Creates new form LoginFace
      */
     
     public ChangeLogInSetting() {
-        initComponents();
-        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        initComponents();        
+        this.loginFace = null;
+    }
+    public ChangeLogInSetting(JFrame loginFace) {
+        initComponents();        
+        this.loginFace = loginFace;
     }
     
     public void getPreviousData(int eid) throws SQLException{   
@@ -234,13 +241,11 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
     private void changeButActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeButActionPerformed
         // TODO add your handling code here:
         dataBase = DBOperations.getInstace();
-        System.out.println("cccccc");
-        Employee employee = null;
-        System.out.println("cccccc");
-        try {
-            System.out.println("cccccc");
+        
+        Employee employee = null;       
+        try {           
             employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pswdPassword.getPassword()));
-            System.out.println("cccccc");
+           
         } catch (ConnectionTimeOutException ex) {
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
@@ -248,11 +253,7 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         if(employee!=null){
             String uName = txtNewUserName.getText();
             String pass = new String(pswdNewPassword.getPassword()); 
-            if(checkPassword(pass)){
-                JOptionPane.showMessageDialog(null,"The Password already exist");
-                pswdNewPassword.setText("");
-                pswdConfirmPassword.setText("");
-            }else if(checkUserName(uName)){
+            if(checkUserName(uName)){
                 JOptionPane.showMessageDialog(null,"The UserName already exist");
                 txtNewUserName.setText("");
             }else if(Arrays.equals(pswdNewPassword.getPassword(), pswdConfirmPassword.getPassword())){
@@ -283,12 +284,15 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
     }//GEN-LAST:event_changeButActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-       
-       this.dispose();
+        if(loginFace!=null)
+            loginFace.setEnabled(true);
+        this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
     private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
-       this.dispose();
+        if(loginFace!=null)
+            loginFace.setEnabled(true);
+        this.dispose();
     }//GEN-LAST:event_exitBtnActionPerformed
 
     /**
