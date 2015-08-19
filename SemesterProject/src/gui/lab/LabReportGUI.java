@@ -10,6 +10,8 @@ import DataBase.Help;
 import Domain.LabReport;
 import gui.login.LoginFace;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,14 +26,11 @@ import javax.swing.JTextField;
 public class LabReportGUI extends javax.swing.JFrame {
     java.awt.event.ActionEvent evtt;
     private String testNumber;
-    private String str;
     private DefaultCellEditor cellEditor;
     private DBOperations ad ; 
-    private LabReport l;
+    private LabReport labReport;
     private boolean updateState;
     public LabReportGUI() {
-        
-        this.str = "";
         ad=DBOperations.getInstace();
         initComponents();
         updateState=false;
@@ -40,6 +39,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         TCpanel.setVisible(false);
         UFRpanel.setVisible(false);
         LPpanel.setVisible(false);
+        this.setLocationRelativeTo(null);
     }
     private String chooseTest(){
         String s=(String) TestBox.getSelectedItem();
@@ -88,6 +88,17 @@ public class LabReportGUI extends javax.swing.JFrame {
         return null;
         
     }
+    public static boolean isValidDate(String inDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        try {
+          dateFormat.parse(inDate.trim());
+        } catch (ParseException pe) {
+          return false;
+        }
+        return true;
+  }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -720,69 +731,75 @@ public class LabReportGUI extends javax.swing.JFrame {
         if(updateState){
             try {
                 DBOperations ad = DBOperations.getInstace();
-                l=ad.getLastLabReport();
+                labReport=ad.getLastLabReport();
             } catch (SQLException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ConnectionTimeOutException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                return;
+               
             }
         }else{
-                l=new LabReport();
+                labReport=new LabReport();
         }
         
         String item=(String)TestBox.getSelectedItem();
-        l.setTestType(Integer.valueOf(item));
+        labReport.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
         String pid=textPatientID.getText();
         String data;
         try{
             if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
-                l.setPID(Integer.valueOf(pid));
+                labReport.setPID(Integer.valueOf(pid));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+            return;
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Patient ID is not registered");
+            return;
         } catch (ConnectionTimeOutException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
+            
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
-                l.setLabTechID(Integer.valueOf(tecId));
+                labReport.setLabTechID(Integer.valueOf(tecId));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
             textLabTecID.setText(null);
+            return;
         }
-        l.getDataList().clear();
-        for(int i=0;i<UFRtable.getRowCount();i++){
-            data=(String)UFRtable.getValueAt(i,1);
-            l.addDataToTheList(data);
-        }  
         try{
             if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
-                l.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
+                labReport.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Date is incorrect");
             textYear.setText(null);
             textMonth.setText(null);
             textDate.setText(null);
+            return;
         }
+        labReport.getDataList().clear();
+        for(int i=0;i<UFRtable.getRowCount();i++){
+            data=(String)UFRtable.getValueAt(i,1);
+            labReport.addDataToTheList(data);
+        }  
+        
         
         try{
             if(updateState){
-                ad.updateLabReport(l);
+                ad.updateLabReport(labReport);
             }else{
-                ad.addLabReport(l);
+                ad.addLabReport(labReport);
             }
-            JOptionPane.showMessageDialog(null, "Date is successfully added");
+            JOptionPane.showMessageDialog(null, "Data is successfully added");
             this.dispose();
             new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
@@ -796,73 +813,80 @@ public class LabReportGUI extends javax.swing.JFrame {
         if(updateState){
             try {
                 DBOperations ad = DBOperations.getInstace();
-                l=ad.getLastLabReport();
+                labReport=ad.getLastLabReport();
             } catch (SQLException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ConnectionTimeOutException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                return;
+                
             }
         }else{
-              l=new LabReport();
+              labReport=new LabReport();
         }
        
         String item=(String)TestBox.getSelectedItem();
-        l.setTestType(Integer.valueOf(item));
+        labReport.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
         String pid=textPatientID.getText();
         String data=CholesterolAmount.getText();
         try{
             if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
-                l.setPID(Integer.valueOf(pid));
+                labReport.setPID(Integer.valueOf(pid));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+            return;
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Patient ID is not registered");
+            return;
         } catch (ConnectionTimeOutException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
+           
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
-                l.setLabTechID(Integer.valueOf(tecId));
+                labReport.setLabTechID(Integer.valueOf(tecId));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
             textLabTecID.setText(null);
-        }
-        try{
-            l.getDataList().clear();
-            if(Double.valueOf(data) instanceof Double){
-                 l.addDataToTheList(data);
-            }
-        }catch(NumberFormatException ex){
-            JOptionPane.showMessageDialog(null, "Data is incorrect");
-            CholesterolAmount.setText(null);
+            return;
         }
         try{
             if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
-                l.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
+                labReport.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Date is incorrect");
             textYear.setText(null);
             textMonth.setText(null);
             textDate.setText(null);
+            return;
         }
+        try{
+            labReport.getDataList().clear();
+            if(Double.valueOf(data) instanceof Double){
+                 labReport.addDataToTheList(data);
+            }
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(null, "Data is incorrect");
+            CholesterolAmount.setText(null);
+            return;
+        }
+        
        
         try{
             if(updateState){
-                ad.updateLabReport(l);
+                ad.updateLabReport(labReport);
             }else{
-                ad.addLabReport(l);
+                ad.addLabReport(labReport);
             }
-            JOptionPane.showMessageDialog(null, "Date is successfully added");
+            JOptionPane.showMessageDialog(null, "Data is successfully added");
             this.dispose();
             new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
@@ -874,36 +898,37 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfirmTCActionPerformed
 
     private void btnconfirmFBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconfirmFBSActionPerformed
-            if(updateState){
-              DBOperations ad = DBOperations.getInstace(); 
-                try {
-                    l=ad.getLastLabReport();
-                } catch (SQLException ex) {
-                    Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ConnectionTimeOutException ex) {
-                    Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-            }else{
-                l=new LabReport();
-            }
+        if(updateState){
+             DBOperations ad = DBOperations.getInstace(); 
+             try {
+                   labReport=ad.getLastLabReport();
+             } catch (SQLException ex) {
+                   Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (ConnectionTimeOutException ex) {
+                   Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+                   JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+             }
+        }else{
+             labReport=new LabReport();
+        }
         
         String item=(String)TestBox.getSelectedItem();
-        l.setTestType(Integer.valueOf(item));
+        labReport.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
         String pid=textPatientID.getText();
         String data=fbsAmount.getText();
         try{
             if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
-                l.setPID(Integer.valueOf(pid));
+                labReport.setPID(Integer.valueOf(pid));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+            return;
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Patient ID is not registered");
+            return;
         } catch (ConnectionTimeOutException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
@@ -911,39 +936,43 @@ public class LabReportGUI extends javax.swing.JFrame {
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
-                l.setLabTechID(Integer.valueOf(tecId));
+                labReport.setLabTechID(Integer.valueOf(tecId));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
             textLabTecID.setText(null);
-        }
-        try{
-            l.getDataList().clear();
-            if(Double.valueOf(data) instanceof Double){
-                 l.addDataToTheList(data);
-            }
-        }catch(NumberFormatException ex){
-            JOptionPane.showMessageDialog(null, "Data is incorrect");
-            fbsAmount.setText(null);
+            return;
         }
         try{
             if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
-                l.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
+                labReport.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Date is incorrect");
             textYear.setText(null);
             textMonth.setText(null);
             textDate.setText(null);
+            return;
         }
+        try{
+            labReport.getDataList().clear();
+            if(Double.valueOf(data) instanceof Double){
+                 labReport.addDataToTheList(data);
+            }
+        }catch(NumberFormatException ex){
+            JOptionPane.showMessageDialog(null, "Data is incorrect");
+            fbsAmount.setText(null);
+            return;
+        }
+        
         
         try{
             if(updateState){
-                ad.updateLabReport(l);
+                ad.updateLabReport(labReport);
             }else{
-                ad.addLabReport(l);
+                ad.addLabReport(labReport);
             }
-            JOptionPane.showMessageDialog(null, "Date is successfully added");
+            JOptionPane.showMessageDialog(null, "Data is successfully added");
             this.dispose();
             new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
@@ -960,69 +989,74 @@ public class LabReportGUI extends javax.swing.JFrame {
         if(updateState){
               DBOperations ad = DBOperations.getInstace(); 
             try {
-                l=ad.getLastLabReport();
+                labReport=ad.getLastLabReport();
             } catch (SQLException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ConnectionTimeOutException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                return;
             }
             }else{
-                l=new LabReport();
+                labReport=new LabReport();
             }
         
         String item=(String)TestBox.getSelectedItem();
-        l.setTestType(Integer.valueOf(item));
+        labReport.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
         String pid=textPatientID.getText();
         String data;
         try{
             if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
-                l.setPID(Integer.valueOf(pid));
+                labReport.setPID(Integer.valueOf(pid));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+            return;
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Patient ID is not registered");
+            return;
         } catch (ConnectionTimeOutException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
+           
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
-                l.setLabTechID(Integer.valueOf(tecId));
+                labReport.setLabTechID(Integer.valueOf(tecId));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
             textLabTecID.setText(null);
+            return;
         }
-        l.getDataList().clear();
-        for(int i=0;i<LPtable.getRowCount();i++){
-            data=(String)LPtable.getValueAt(i,1);
-            l.addDataToTheList(data);
-        }  
         try{
             if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
-                l.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
+                labReport.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Date is incorrect");
             textYear.setText(null);
             textMonth.setText(null);
             textDate.setText(null);
+            return;
         }
+        labReport.getDataList().clear();
+        for(int i=0;i<LPtable.getRowCount();i++){
+            data=(String)LPtable.getValueAt(i,1);
+            labReport.addDataToTheList(data);
+        }  
+        
         
         try{
             if(updateState){
-                ad.updateLabReport(l);
+                ad.updateLabReport(labReport);
             }else{
-                ad.addLabReport(l);
+                ad.addLabReport(labReport);
             }
-            JOptionPane.showMessageDialog(null, "Date is successfully added");
+            JOptionPane.showMessageDialog(null, "Data is successfully added");
         this.dispose();
         new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
@@ -1035,11 +1069,9 @@ public class LabReportGUI extends javax.swing.JFrame {
 
     private void LPtableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LPtableKeyReleased
         int num=evt.getKeyCode();
-        if((96<=num && 105>=num)||num==110 || evt.isActionKey()|| num==10){
-            
-        }else{
+        if(!((96<=num && 105>=num)||num==110 || evt.isActionKey()|| num==10)){
             cellEditor=(DefaultCellEditor)LPtable.getCellEditor(LPtable.getSelectedRow(),LPtable.getSelectedColumn());
-            ((JTextField)cellEditor.getComponent()).setText(str);
+            ((JTextField)cellEditor.getComponent()).setText(null);
         }
     }//GEN-LAST:event_LPtableKeyReleased
 
@@ -1047,69 +1079,75 @@ public class LabReportGUI extends javax.swing.JFrame {
         if(updateState){
               DBOperations ad = DBOperations.getInstace(); 
             try {
-                l=ad.getLastLabReport();
+                labReport=ad.getLastLabReport();
             } catch (SQLException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ConnectionTimeOutException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                return;
+               
             }
             }else{
-                l=new LabReport();
+                labReport=new LabReport();
             }
         
         String item=(String)TestBox.getSelectedItem();
-        l.setTestType(Integer.valueOf(item));
+        labReport.setTestType(Integer.valueOf(item));
         String tecId=textLabTecID.getText();
         String pid=textPatientID.getText();
         String data;
         try{
             if(Integer.valueOf(pid) instanceof Integer && Integer.valueOf(pid)<=ad.getLastPID()){
-                l.setPID(Integer.valueOf(pid));
+                labReport.setPID(Integer.valueOf(pid));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Patient ID is incorrect");
             textPatientID.setText(null);
+            return;
         } catch (SQLException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Patient ID is not registered");
+            return;
         } catch (ConnectionTimeOutException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
+        
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
-                l.setLabTechID(Integer.valueOf(tecId));
+                labReport.setLabTechID(Integer.valueOf(tecId));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Lab technician ID is incorrect");
             textLabTecID.setText(null);
+            return;
         }
-        l.getDataList().clear();
-        for(int i=0;i<FBCtable.getRowCount();i++){
-            data=(String)FBCtable.getValueAt(i,1);
-            l.addDataToTheList(data);
-        }  
         try{
             if(Integer.valueOf(textYear.getText())instanceof Integer && Integer.valueOf(textMonth.getText())instanceof Integer && Integer.valueOf(textDate.getText())instanceof Integer){
-                l.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
+                labReport.setDate(Help.getDate(Integer.valueOf(textYear.getText()), Integer.valueOf(textMonth.getText()), Integer.valueOf(textDate.getText())));
             }
         }catch(NumberFormatException ex){
             JOptionPane.showMessageDialog(null, "Date is incorrect");
             textYear.setText(null);
             textMonth.setText(null);
             textDate.setText(null);
+            return;
         }
+        labReport.getDataList().clear();
+        for(int i=0;i<FBCtable.getRowCount();i++){
+            data=(String)FBCtable.getValueAt(i,1);
+            labReport.addDataToTheList(data);
+        }  
+        
         
         try{
             if(updateState){
-                ad.updateLabReport(l);
+                ad.updateLabReport(labReport);
             }else{
-                ad.addLabReport(l);
+                ad.addLabReport(labReport);
             }
-            JOptionPane.showMessageDialog(null, "Date is successfully added");
+            JOptionPane.showMessageDialog(null, "Data is successfully added");
             this.dispose();
             new LabReportGUI().setVisible(true);
         }catch(SQLException ex){
@@ -1122,9 +1160,7 @@ public class LabReportGUI extends javax.swing.JFrame {
 
     private void FBCtableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FBCtableKeyReleased
         int num=evt.getKeyCode();
-        if((96<=num && 105>=num)||num==110 || evt.isActionKey()|| num==10){
-            
-        }else{
+        if(!((96<=num && 105>=num)||num==110 || evt.isActionKey()|| num==10)){
             cellEditor=(DefaultCellEditor)FBCtable.getCellEditor(FBCtable.getSelectedRow(),FBCtable.getSelectedColumn());
             ((JTextField)cellEditor.getComponent()).setText(null);
         }
