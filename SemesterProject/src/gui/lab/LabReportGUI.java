@@ -37,6 +37,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         TCpanel.setVisible(false);
         UFRpanel.setVisible(false);
         LPpanel.setVisible(false);
+        this.setLocationRelativeTo(null);
     }
     private String chooseTest(){
         String s=(String) TestBox.getSelectedItem();
@@ -723,7 +724,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             } catch (ConnectionTimeOutException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                return;
+               
             }
         }else{
                 labReport=new LabReport();
@@ -747,7 +748,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         } catch (ConnectionTimeOutException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+            
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -799,7 +800,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             } catch (ConnectionTimeOutException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                return;
+                
             }
         }else{
               labReport=new LabReport();
@@ -823,7 +824,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         } catch (ConnectionTimeOutException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+           
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -871,20 +872,19 @@ public class LabReportGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConfirmTCActionPerformed
 
     private void btnconfirmFBSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnconfirmFBSActionPerformed
-            if(updateState){
-              DBOperations ad = DBOperations.getInstace(); 
-                try {
-                    labReport=ad.getLastLabReport();
-                } catch (SQLException ex) {
-                    Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ConnectionTimeOutException ex) {
-                    Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-            }else{
-                labReport=new LabReport();
-            }
+        if(updateState){
+             DBOperations ad = DBOperations.getInstace(); 
+             try {
+                   labReport=ad.getLastLabReport();
+             } catch (SQLException ex) {
+                   Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+             } catch (ConnectionTimeOutException ex) {
+                   Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
+                   JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+             }
+        }else{
+             labReport=new LabReport();
+        }
         
         String item=(String)TestBox.getSelectedItem();
         labReport.setTestType(Integer.valueOf(item));
@@ -904,7 +904,6 @@ public class LabReportGUI extends javax.swing.JFrame {
         } catch (ConnectionTimeOutException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-            return;
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -963,7 +962,6 @@ public class LabReportGUI extends javax.swing.JFrame {
             } catch (ConnectionTimeOutException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                return;
             }
             }else{
                 labReport=new LabReport();
@@ -987,7 +985,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         } catch (ConnectionTimeOutException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+           
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){
@@ -1048,7 +1046,7 @@ public class LabReportGUI extends javax.swing.JFrame {
             } catch (ConnectionTimeOutException ex) {
                 Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-                return;
+               
             }
             }else{
                 labReport=new LabReport();
@@ -1072,7 +1070,7 @@ public class LabReportGUI extends javax.swing.JFrame {
         } catch (ConnectionTimeOutException ex) {
             Logger.getLogger(LabReportGUI.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-            return;
+        
         }
         try{
             if(Integer.valueOf(tecId) instanceof Integer){

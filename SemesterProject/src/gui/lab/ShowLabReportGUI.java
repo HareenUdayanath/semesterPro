@@ -38,6 +38,7 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
         UFRpanel.setVisible(false);
         LPpanel.setVisible(false);
         setPanel();
+        this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     private int chooseTest(){
@@ -94,7 +95,7 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
             String s=String.valueOf(labreport.getTestType());
             lblTestID.setText(s);
             textPatientID.setText(String.valueOf(labreport.getPID()));
-            jLabel12.setText(String.valueOf(labreport.getLabTechID()));
+            lblLabTechId.setText(String.valueOf(labreport.getLabTechID()));
             lblDate.setText(String.valueOf(Help.getDay(labreport.getDate())));
             lblMonth.setText(String.valueOf(Help.getMonth(labreport.getDate())));
             lblYear.setText(String.valueOf(Help.getYear(labreport.getDate())));
@@ -174,7 +175,7 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
         lblDate = new javax.swing.JLabel();
         lblTestName = new javax.swing.JLabel();
         textPatientID = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        lblLabTechId = new javax.swing.JLabel();
         lblTestID = new javax.swing.JLabel();
         titlePanel = new javax.swing.JPanel();
         titleName = new javax.swing.JLabel();
@@ -312,11 +313,6 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
             }
         });
         FBCtable.setColumnSelectionAllowed(true);
-        FBCtable.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                FBCtableKeyReleased(evt);
-            }
-        });
         jScrollPane3.setViewportView(FBCtable);
         FBCtable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -408,11 +404,6 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
             }
         });
         LPtable.setColumnSelectionAllowed(true);
-        LPtable.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                LPtableKeyReleased(evt);
-            }
-        });
         jScrollPane1.setViewportView(LPtable);
         LPtable.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -518,7 +509,7 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
         textPatientID.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         textPatientID.setText("jLabel12");
 
-        jLabel12.setText("jLabel12");
+        lblLabTechId.setText("jLabel12");
 
         lblTestID.setText("jLabel13");
 
@@ -540,7 +531,7 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
                     .addGroup(generalDetailPanelLayout.createSequentialGroup()
                         .addComponent(labTechnicianID)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel12)
+                        .addComponent(lblLabTechId)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(generalDetailPanelLayout.createSequentialGroup()
@@ -591,7 +582,7 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
                         .addGap(8, 8, 8)
                         .addGroup(generalDetailPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labTechnicianID)
-                            .addComponent(jLabel12))
+                            .addComponent(lblLabTechId))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
@@ -665,26 +656,6 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void LPtableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_LPtableKeyReleased
-        int num=evt.getKeyCode();
-        if((96<=num && 105>=num)||num==110 || evt.isActionKey()|| num==10){
-            
-        }else{
-            cellEditor=(DefaultCellEditor)LPtable.getCellEditor(LPtable.getSelectedRow(),LPtable.getSelectedColumn());
-            ((JTextField)cellEditor.getComponent()).setText(str);
-        }
-    }//GEN-LAST:event_LPtableKeyReleased
-
-    private void FBCtableKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_FBCtableKeyReleased
-        int num=evt.getKeyCode();
-        if((96<=num && 105>=num)||num==110 || evt.isActionKey()|| num==10){
-            
-        }else{
-            cellEditor=(DefaultCellEditor)FBCtable.getCellEditor(FBCtable.getSelectedRow(),FBCtable.getSelectedColumn());
-            ((JTextField)cellEditor.getComponent()).setText(null);
-        }
-    }//GEN-LAST:event_FBCtableKeyReleased
-
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
@@ -742,7 +713,6 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -757,6 +727,7 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblCholesterolAmount;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblFbsAmount;
+    private javax.swing.JLabel lblLabTechId;
     private javax.swing.JLabel lblMonth;
     private javax.swing.JLabel lblTestID;
     private javax.swing.JLabel lblTestName;
