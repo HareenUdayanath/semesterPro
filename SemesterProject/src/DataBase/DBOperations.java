@@ -24,10 +24,10 @@ public class DBOperations {
     //private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
     private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     
-    private String user = "root";
-    private String password = "";
-    //private String user = "hosdataadmin";
-    //private String password = "coperativehos7456391";
+    //private String user = "root";
+    //private String password = "";
+    private String user = "hosdataadmin";
+    private String password = "coperativehos7456391";
     
     
     
