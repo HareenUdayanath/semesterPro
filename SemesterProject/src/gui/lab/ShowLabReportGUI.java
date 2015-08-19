@@ -24,9 +24,8 @@ public class ShowLabReportGUI extends javax.swing.JFrame {
     private String str;
     private DefaultCellEditor cellEditor;
     private DBOperations ad ; 
-    private LabReport l;
     private boolean updateState;
-    LabReport labreport;
+    private LabReport labreport;
     public ShowLabReportGUI(LabReport labreport) {
         this.labreport=labreport;
         this.str = "";
