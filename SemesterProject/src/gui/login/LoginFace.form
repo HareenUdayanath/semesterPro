@@ -217,7 +217,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/gui/login/change.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Change Loggin Settings"/>
+            <Property name="text" type="java.lang.String" value="Change Login Settings"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnChangeActionPerformed"/>

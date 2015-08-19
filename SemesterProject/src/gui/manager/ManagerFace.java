@@ -9,7 +9,10 @@ import DataBase.DBOperations;
 import Domain.Employee;
 import Domain.EmployeeFactory;
 import gui.login.ChangeLogInSetting;
+import gui.login.LoginFace;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import sun.security.util.Password;
 
 /**
@@ -34,6 +38,19 @@ public class ManagerFace extends javax.swing.JFrame {
     EmployeeFactory emfac;
     public ManagerFace() {
         initComponents();
+         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to log out?","Log out",dialogButton);
+                if(dialogResult == JOptionPane.YES_OPTION){                
+                setVisible(false);
+                LoginFace logWindow = new LoginFace();
+                logWindow.setVisible(true);
+                }
+                
+            }    
+                });
         nameLabel.setEnabled(false);
         posLabel.setEnabled(false);
         nicLabel.setEnabled(false);
@@ -465,6 +482,9 @@ public class ManagerFace extends javax.swing.JFrame {
             }
 
             }
+        else{
+        JOptionPane.showMessageDialog(null, "Please fill all the required fields.", "Enter required data ", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
@@ -476,6 +496,7 @@ public class ManagerFace extends javax.swing.JFrame {
 
     private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
         // TODO add your handling code here:
+        if(searchID!=0){
         empDB = DBOperations.getInstace();        
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to remove this employee?","Remove Employee",dialogButton);
@@ -488,6 +509,10 @@ public class ManagerFace extends javax.swing.JFrame {
                  JOptionPane.showMessageDialog(null,ex.toString());
                 return;
             }
+        }
+        }
+        else{        
+        JOptionPane.showMessageDialog(null, "Please enter an EID. You can check the employee list to find an ID", "Enter an ID ", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_removeBtnActionPerformed
 
@@ -569,15 +594,21 @@ public class ManagerFace extends javax.swing.JFrame {
     private void changeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeBtnActionPerformed
         // TODO add your handling code here:
         empDB = DBOperations.getInstace();
-        int eid = Integer.parseInt(changeIdText.getText());
-        
-        ChangeLogInSetting changeEmpLog = new ChangeLogInSetting();
-        try {
-            changeEmpLog.getPreviousData(eid);
-        } catch (SQLException ex) {
-            Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+        if(!"".equals(changeIdText.getText()))
+        {
+            int eid = Integer.parseInt(changeIdText.getText());
+
+            ChangeLogInSetting changeEmpLog = new ChangeLogInSetting();
+            try {
+                changeEmpLog.getPreviousData(eid);
+            } catch (SQLException ex) {
+                Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            changeEmpLog.setVisible(true);
         }
-        changeEmpLog.setVisible(true);
+        else{
+            JOptionPane.showMessageDialog(null, "Please enter an EID. You can check the employee list to find an ID", "Enter an ID ", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_changeBtnActionPerformed
 
     
