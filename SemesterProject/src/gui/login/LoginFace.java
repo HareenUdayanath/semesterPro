@@ -5,6 +5,7 @@ import DataBase.*;
 import Domain.Employee;
 import gui.admin.AdminFace;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 
 import javax.swing.JOptionPane;
@@ -27,7 +28,7 @@ public class LoginFace extends javax.swing.JFrame {
         dataBase = DBOperations.getInstace();  
         try {
             if(dataBase.checkAdmin(txtUserName.getText(), String.valueOf(pasPassword.getPassword()))){
-                new AdminFace().setVisible(true);
+                new AdminFace(false).setVisible(true);
                 this.dispose();
             }else{
                 
@@ -59,8 +60,13 @@ public class LoginFace extends javax.swing.JFrame {
                 }
             }
         } catch (ConnectionTimeOutException ex) {
-            JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
-            
+            char[] pass = {'A','d','m','i','n','1','2','3'};
+            if(txtUserName.getText().equals("Admin")&&Arrays.equals(pasPassword.getPassword(), pass)){
+                new AdminFace(true).setVisible(true);
+                this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(null,ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     /**

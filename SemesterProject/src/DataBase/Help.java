@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.sql.Date;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,11 +29,11 @@ public class Help {
         String text = ip+"\n"+port;
         BufferedWriter output = null;
         try {
-            File file = new File("/example.txt");
+            File file = new File("example.itcope");
             output = new BufferedWriter(new FileWriter(file));
             output.write(text);
         } catch ( IOException e ) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } finally {
             if ( output != null ) try {
                 output.close();
@@ -46,20 +47,20 @@ public class Help {
         String []ipAndPort = new String[2];
         try {
             String sCurrentLine;
-            br = new BufferedReader(new FileReader("/example.txt"));
+            br = new BufferedReader(new FileReader("example.itcope"));
             int i = 0;
             while ((sCurrentLine = br.readLine()) != null) {
                 ipAndPort[i++] = sCurrentLine;
             }
 
-        } catch (IOException e) {
-                e.printStackTrace();
+        } catch (IOException e) {                
+        
         }catch(Exception ex){
         } finally {
                 try {
-                        if (br != null)br.close();
+                    if (br != null)br.close();
                 } catch (IOException ex) {
-                        ex.printStackTrace();
+                    //ex.printStackTrace();
                 }
         }
         return ipAndPort;

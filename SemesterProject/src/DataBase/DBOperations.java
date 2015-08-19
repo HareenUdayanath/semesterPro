@@ -18,10 +18,10 @@ public class DBOperations {
     private EmployeeFactory emfac = null;
     private static DBOperations instance = null;
     //private String url = "jdbc:odbc://192.168.173.1:3306/test2";    
-    private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
-    private String ip = "192.168.173.1";
+    //private String url = "jdbc:mysql://192.168.173.2:3306/SemesterProject";
+    private String ip = "192.168.173.2";
     private String port = "3306";
-    //private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
+    private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
     //private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     
     private String user = "hosdataadmin";
@@ -30,6 +30,12 @@ public class DBOperations {
     
     private DBOperations(){
         this.emfac = new EmployeeFactory();
+        String[] ipAndPort = Help.readIPandPort();
+        if(ipAndPort[0]!=null&&ipAndPort[1]!=null){
+            this.ip = ipAndPort[0];
+            this.port = ipAndPort[1];
+            this.url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";           
+        }
     }
     
     /*
@@ -39,12 +45,9 @@ public class DBOperations {
     public boolean setConenction() throws SQLException,ConnectionTimeOutException{
         boolean reachable = false;
         try {            
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            
-            con = DriverManager.getConnection(url, user, password);   
-            
-            reachable = con.isValid(30);
-            
+            Class.forName("com.mysql.jdbc.Driver").newInstance();            
+            con = DriverManager.getConnection(url, user, password);           
+            reachable = con.isValid(30);           
             
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
            
