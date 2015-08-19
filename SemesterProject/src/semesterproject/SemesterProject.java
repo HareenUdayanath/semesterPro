@@ -13,6 +13,7 @@ import gui.manager.*;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.UIManager;
 
 
 public class SemesterProject {
@@ -34,7 +35,7 @@ public class SemesterProject {
                 lr.addDataToTheList(""+i);
             }
             new ShowLabReportGUI (lr).setVisible(true);*/
-              
+                  
             /*LabReportGUI l=new LabReportGUI();
              l.setVisible(true);*/
                  
@@ -134,9 +135,25 @@ public class SemesterProject {
          } catch (SQLException ex) {
              Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
          }*/
-            LoginFace login = new LoginFace();
-             login.setVisible(true);
             
+          
+       /*try {
+            UIManager.setLookAndFeel(new AcrylLookAndFeel());
+        } catch (Exception e) {            
+        */
+       try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+
+        }
+        LoginFace login = new LoginFace();
+        login.setVisible(true);
+
        /* try {
              //ad.setRoomAvailability(2,false);
             ArrayList<Room> rooms = ad.getAddmitedRooms();
@@ -146,6 +163,9 @@ public class SemesterProject {
         } catch (SQLException ex) {
             Logger.getLogger(SemesterProject.class.getName()).log(Level.SEVERE, null, ex);
         }*/
-        
+        //Help.writeIPandPort("123","123");
+        //String[] i = Help.readIPandPort();
+        //if(i[0]!=null)
+            //System.out.println(i[0]+" "+i[1]);
     }
 }

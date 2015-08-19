@@ -1,26 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import Domain.Doctor;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
-/**
+/*
  *
  * @author Irfad Hussain
  */
 public class DoctorDetailsModel extends DetailsTableModel{
 
-    private ArrayList<Doctor> values;
+    private ArrayList<Doctor> values = new ArrayList<Doctor>();
     
-    public DoctorDetailsModel() throws SQLException{
+    public DoctorDetailsModel(){
         super(new String[]{"Employee ID","Name","Availability"});
-        values = DBOperations.getInstace().loadDoctors();    // load avilable doctors at begining
+        new Thread(){
+            public void run(){
+                try {
+                    values = DBOperations.getInstace().loadDoctors();    // load avilable doctors at begining
+                    fireTableStructureChanged();
+                    if (values.size()==0){
+                        JOptionPane.showMessageDialog(null, "Doctor List Empty!", null, JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    System.out.println("loaded");
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Sorry, an error occured while loading Doctors!", "Error", JOptionPane.ERROR_MESSAGE);
+                    values = new ArrayList<Doctor>();
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(null, "Cannot load doctor list. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+                    values = new ArrayList<Doctor>();
+                }
+            }
+        }.start();
     }
     
     @Override
@@ -47,8 +63,11 @@ public class DoctorDetailsModel extends DetailsTableModel{
     }
     
     @Override
-    public void search(String name, boolean searchByName) throws SQLException {
+    public void search(String name, boolean searchByName) throws SQLException,ConnectionTimeOutException {
         setValues(DBOperations.getInstace().searchDoctors(name));
+        if (values.size()==0){
+            JOptionPane.showMessageDialog(null, "No match found!", null, JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     @Override

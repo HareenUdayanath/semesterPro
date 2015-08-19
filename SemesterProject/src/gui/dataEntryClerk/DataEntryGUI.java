@@ -1,32 +1,40 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.dataEntryClerk;
 
+import DataBase.ConnectionTimeOutException;
 import DataBase.DBOperations;
 import DataBase.Help;
+import Domain.ChronicConditionsReport;
 import Domain.MedicalReport;
 import Domain.Patient;
 import gui.login.LoginFace;
+import java.sql.Date;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-/**
- *
+/*
  * @author Irfad Hussain
  */
 public class DataEntryGUI extends javax.swing.JFrame {
 
     private Patient p;
+    private ChronicConditionsGUI chronic;
+    private boolean addChronicConditions; // to select whether update or insert chronic condition
     
     /**
      * Creates new form DataEntryClerkGUI
      */
     public DataEntryGUI() {
         initComponents();
-        
+        btnUpdatePatient.setEnabled(false);
+        btnCanel.setEnabled(false);
+        btnChronicConditions.setEnabled(false);
+        chronic = null;
+        // loasd todays date for report
+        Date d = new Date(System.currentTimeMillis());
+        txtReportYear.setText(Integer.toString(Help.getYear(d)));
+        txtReportMonth.setText(Integer.toString(Help.getMonth(d)));
+        txtReportDay.setText(Integer.toString(Help.getDay(d)));
     }
 
     /**
@@ -98,8 +106,11 @@ public class DataEntryGUI extends javax.swing.JFrame {
         btnLoadPatient = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         cmbxBloodGroup = new javax.swing.JComboBox();
+        btnChronicConditions = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Data Entry");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -364,6 +375,14 @@ public class DataEntryGUI extends javax.swing.JFrame {
 
         cmbxBloodGroup.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-" }));
 
+        btnChronicConditions.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btnChronicConditions.setText("Chronic Conditions ...");
+        btnChronicConditions.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChronicConditionsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -448,10 +467,13 @@ public class DataEntryGUI extends javax.swing.JFrame {
                                         .addComponent(txtFullName1)
                                         .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtFullName2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addComponent(txtFullName2, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnChronicConditions, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(108, 108, 108)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(82, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
@@ -525,11 +547,15 @@ public class DataEntryGUI extends javax.swing.JFrame {
                     .addComponent(txtAllergies1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtAllergies2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnChronicConditions, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnUpdatePatient, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCanel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                    .addComponent(btnCanel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnUpdatePatient, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         jScrollPane1.setViewportView(jPanel6);
@@ -561,56 +587,68 @@ public class DataEntryGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdatePatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdatePatientActionPerformed
-            if (validateDetails()){
-                try {
-                    p.setFirstName(txtFirstName.getText());
-                    p.setLastName(txtLastName.getText());
-                    p.setFullName(txtFullName1.getText() + " " + txtFullName2.getText());
-                    if (!txtYear.getText().equals("") && !txtMonth.getText().equals("") && !txtDay.getText().equals("")){
-                        try{
-                            p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
-                        }catch(NumberFormatException ex){
-                            JOptionPane.showMessageDialog(this, "Invalid Date of Birth!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
-                            return;
-                        }
+        // update patient if coorect details are entered. similar to add patient action performed in add patient frame
+        if (validateDetails()) {
+            try {
+                p.setFirstName(txtFirstName.getText());
+                p.setLastName(txtLastName.getText());
+                p.setFullName(txtFullName1.getText() + " " + txtFullName2.getText());
+                if (!txtYear.getText().equals("") && !txtMonth.getText().equals("") && !txtDay.getText().equals("")) {
+                    try {
+                        p.setDateOfBirth(Help.getDate(Integer.parseInt(txtYear.getText()), Integer.parseInt(txtMonth.getText()), Integer.parseInt(txtDay.getText())));
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(this, "Invalid Date of Birth!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        return;
                     }
-                    p.setGender(cmbxGender.getSelectedItem().toString().substring(0, 1));
-                    p.setAddress(txtAddress1.getText() + " " + txtAddress2.getText() + " " + txtAddress3.getText());
-                    if (txtNIC.getText().equals("")){
-                        p.setNIC(null);
-                    }else{
-                        p.setNIC(txtNIC.getText());
-                    }
-                    if (!txtPatientContactNo.getText().equals("")){
-                        try{
-                            p.setPatientContactNo(Integer.parseInt(txtPatientContactNo.getText()));
-                        }catch(NumberFormatException ex){
-                            JOptionPane.showMessageDialog(this, "Invalid Patient Contact number!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
-                            return;
-                        }
-                    }
-                    p.setNameOfTheGuardian(txtNameOfGuardian.getText());
-                    if (!txtGuardianContact.getText().equals("")){
-                        try{
-                            p.setGuardianContactNo(Integer.parseInt(txtGuardianContact.getText()));
-                        }catch(NumberFormatException ex){
-                            JOptionPane.showMessageDialog(this, "Invalid guardian contact number.", "Invalid detail", JOptionPane.WARNING_MESSAGE);
-                            return;
-                        }
-                    }
-                    p.setBloodGroup(cmbxBloodGroup.getSelectedItem().toString());
-                    p.setAllergies(txtAllergies1.getText() + " " + txtAllergies2.getText());
-                    DBOperations.getInstace().updatePatient(p);
-                    JOptionPane.showMessageDialog(this, "Successfully updated patient.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    btnCanelActionPerformed(null);
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(this, "An error occured while updating.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+                p.setGender(cmbxGender.getSelectedItem().toString().substring(0, 1));
+                p.setAddress(txtAddress1.getText() + " " + txtAddress2.getText() + " " + txtAddress3.getText());
+                if (txtNIC.getText().equals("")) {
+                    p.setNIC(null);
+                } else {
+                    p.setNIC(txtNIC.getText());
+                }
+                if (!txtPatientContactNo.getText().equals("")) {
+                    try {
+                        p.setPatientContactNo(Integer.parseInt(txtPatientContactNo.getText()));
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(this, "Invalid Patient Contact number!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }
+                p.setNameOfTheGuardian(txtNameOfGuardian.getText());
+                if (!txtGuardianContact.getText().equals("")) {
+                    try {
+                        p.setGuardianContactNo(Integer.parseInt(txtGuardianContact.getText()));
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(this, "Invalid guardian contact number.", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                }
+                p.setBloodGroup(cmbxBloodGroup.getSelectedItem().toString());
+                p.setAllergies(txtAllergies1.getText() + " " + txtAllergies2.getText());
+                DBOperations.getInstace().updatePatient(p);
+                if (chronic != null){
+                    if (addChronicConditions) {
+                        DBOperations.getInstace().addChronicConditionsReport(chronic.getReport());
+                    } else {
+                        DBOperations.getInstace().updateChronicConditionsReport(chronic.getReport());
+                    }
+                }
+                JOptionPane.showMessageDialog(this, "Successfully updated patient.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                btnCanelActionPerformed(null);  // preapare for next entry
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "An error occured while updating.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(this, "Cannot update. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
             }
+        }
     }//GEN-LAST:event_btnUpdatePatientActionPerformed
 
     private void btnCanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCanelActionPerformed
+        // clear every field, enable patient id field for editing
         txtPID.setText("");
+        txtPID.setEditable(true);
         txtFirstName.setText("");
         txtLastName.setText("");
         txtFullName1.setText("");
@@ -629,12 +667,16 @@ public class DataEntryGUI extends javax.swing.JFrame {
         cmbxBloodGroup.setSelectedIndex(0);
         txtAllergies1.setText("");
         txtAllergies2.setText("");
+        btnUpdatePatient.setEnabled(false);
+        btnCanel.setEnabled(false);
+        btnChronicConditions.setEnabled(false);
+        chronic = null;
     }//GEN-LAST:event_btnCanelActionPerformed
 
     private void btnAddReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddReportActionPerformed
         MedicalReport mReport = null;
         try{
-            if (DBOperations.getInstace().checkPID(txtReportPID.getText())){
+            if (DBOperations.getInstace().checkPID(txtReportPID.getText()) && DBOperations.getInstace().checkDoctorID(txtReportDID.getText())){    // add details to the report object only if patient & Doctor id is available
                 mReport = new MedicalReport();
                 mReport.setPID(Integer.parseInt(txtReportPID.getText()));
                 mReport.setDoctorID(Integer.parseInt(txtReportDID.getText()));
@@ -642,25 +684,30 @@ public class DataEntryGUI extends javax.swing.JFrame {
                 mReport.setTreatementDescription(txtTreatmentDescription.getText());
             }
         }catch(NumberFormatException ex){
-            ex.printStackTrace();
-           mReport = null;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Sorry, an error occured while checking ID", "Error", JOptionPane.ERROR_MESSAGE);
+            mReport = null;
+            JOptionPane.showMessageDialog(this, "Invalid Date or ID!", "Invalid detail", JOptionPane.WARNING_MESSAGE);
+        } catch (ConnectionTimeOutException ex) {
+            mReport = null;
+            JOptionPane.showMessageDialog(this, "Cannot check patient ID. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
         }
+        // report object will not be null if above operation done correctly.
         if (mReport != null){
             try {
                 DBOperations.getInstace().addMedicalReport(mReport);
                 JOptionPane.showMessageDialog(this, "Report added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                // clear fields and load today's date for new report
                 txtReportPID.setText("");
                 txtReportDID.setText("");
-                txtReportYear.setText("");
-                txtReportMonth.setText("");
-                txtReportDay.setText("");
+                Date d = new Date(System.currentTimeMillis());
+                txtReportYear.setText(Integer.toString(Help.getYear(d)));
+                txtReportMonth.setText(Integer.toString(Help.getMonth(d)));
+                txtReportDay.setText(Integer.toString(Help.getDay(d)));
                 txtTreatmentDescription.setText("");
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Invalid Detail", null, JOptionPane.WARNING_MESSAGE);
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(this, "Cannot add patient. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
             }
         }else{
             JOptionPane.showMessageDialog(this, "Invalid Detail", null, JOptionPane.WARNING_MESSAGE);
@@ -668,6 +715,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddReportActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // if log out conformed close this window and show login window
         if (JOptionPane.showConfirmDialog(this, "Are you sure you want to log out?","Confirm Action", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
             this.dispose();
             LoginFace l = new LoginFace();
@@ -684,16 +732,22 @@ public class DataEntryGUI extends javax.swing.JFrame {
             p = null;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Sorry, an error occured while loading patient", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot load patient. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
         }
         if (p == null){
             JOptionPane.showMessageDialog(this, "Invalid Patient ID", null, JOptionPane.ERROR_MESSAGE);
         }else{
+            // if p is not null laod the details in patient object to apropriate fields
+            txtPID.setEditable(false);
             txtFirstName.setText(p.getFirstName());
             txtLastName.setText(p.getLastName());
             txtFullName1.setText(p.getFullName());
-            txtYear.setText(Integer.toString(p.getDateOfBirth().getYear()));
-            txtMonth.setText(Integer.toString(p.getDateOfBirth().getMonth()));
-            txtDay.setText(Integer.toString(p.getDateOfBirth().getDate()));
+            if (p.getDateOfBirth()!= null){
+                txtYear.setText(Integer.toString(Help.getYear(p.getDateOfBirth())));
+                txtMonth.setText(Integer.toString(Help.getMonth(p.getDateOfBirth())));
+                txtDay.setText(Integer.toString(Help.getDay(p.getDateOfBirth())));
+            }
             if (p.getGender().equals("M")){
                 cmbxGender.setSelectedIndex(0);
             }else{
@@ -723,37 +777,43 @@ public class DataEntryGUI extends javax.swing.JFrame {
                     cmbxBloodGroup.setSelectedIndex(7); break;
             }
             txtAllergies1.setText(p.getAllergies());
+            btnUpdatePatient.setEnabled(true);
+            btnCanel.setEnabled(true);
+            btnChronicConditions.setEnabled(true);
         }
     }//GEN-LAST:event_btnLoadPatientActionPerformed
+
+    private void btnChronicConditionsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChronicConditionsActionPerformed
+        if (chronic == null){
+            try {
+                ChronicConditionsReport chronicCondition = DBOperations.getInstace().getChronicCondotionReport(p.getPID());
+                if (chronicCondition != null) {
+                    addChronicConditions = false;
+                    chronic = new ChronicConditionsGUI(this, chronicCondition);
+                    chronic.setLocationRelativeTo(null);
+                    chronic.setVisible(true);
+                    this.setEnabled(false);
+                } else {
+                    addChronicConditions = true;
+                    chronic = new ChronicConditionsGUI(this, txtPID.getText());
+                    chronic.setLocationRelativeTo(null);
+                    chronic.setVisible(true);
+                    this.setEnabled(false);
+                }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Sorry, an error occured while loading Chronic conditions", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(this, "Cannot load Chronic conditions. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+            }
+        }else{
+            chronic.setVisible(true);
+        }
+    }//GEN-LAST:event_btnChronicConditionsActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DataEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DataEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DataEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DataEntryGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -765,6 +825,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddReport;
     private javax.swing.JButton btnCanel;
+    private javax.swing.JButton btnChronicConditions;
     private javax.swing.JButton btnLoadPatient;
     private javax.swing.JButton btnUpdatePatient;
     private javax.swing.JComboBox cmbxBloodGroup;
@@ -799,6 +860,7 @@ public class DataEntryGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField txtAddress1;
     private javax.swing.JTextField txtAddress2;
@@ -839,6 +901,21 @@ public class DataEntryGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Invalid NIC","Invalid Detail", JOptionPane.WARNING_MESSAGE);
             return false;
         }
+        try {
+            if (!NIC.equals(""))
+                Integer.parseInt(NIC.substring(0, NIC.length() - 1)); // first 9 digits should be numbers
+            if (p.getNIC()==null && DBOperations.getInstace().checkPatientNIC(NIC)){  // check NIC available in database only if it is not entered previously for this patient
+                JOptionPane.showMessageDialog(this, "NIC already exsits","Invalid Detail", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid NIC", "Invalid Detail", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot check NIC. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        
         return true;
     }
 }

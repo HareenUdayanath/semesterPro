@@ -1,22 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package gui.reception;
 
+import DataBase.ConnectionTimeOutException;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 
-/**
- *
+/*
  * @author Irfad Hussain
  */
 public class DetailsForm extends javax.swing.JFrame {
     
-    private ReceptionGUI parent;
     private DetailsTableModel tableModel; 
+    private boolean isDoctorModel;
 
     /**
      * Creates new form SearchPatientForm
@@ -25,16 +21,17 @@ public class DetailsForm extends javax.swing.JFrame {
         initComponents();
     }
 
-    DetailsForm(ReceptionGUI parent,int mode) {
+    DetailsForm(boolean isDoctorModel) {
         this();
-        this.parent = parent;
-        if (mode==1){
-            cmbxSearchMode.setEnabled(false);
+        this.isDoctorModel = isDoctorModel;
+        if (isDoctorModel){
+            this.setTitle("Search Doctors");
+            cmbxSearchMode.removeItemAt(1);     // doctors can be searched by only name. remove NIC from combo box near search field
         }
         
     }
 
-    public void setTableModel(DetailsTableModel tabelModel){
+    public void setTableModel(DetailsTableModel tabelModel){  // this is used to set the correct behaviour of table
         this.tableModel = tabelModel;
         tblDetails.setModel(tabelModel);
     }
@@ -57,11 +54,6 @@ public class DetailsForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search Patient");
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -78,10 +70,16 @@ public class DetailsForm extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblDetails.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblDetailsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblDetails);
 
         btnSearch.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnSearch.setText("Search");
+        btnSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/manager/zoom_in.png"))); // NOI18N
+        btnSearch.setText(" Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchActionPerformed(evt);
@@ -106,7 +104,7 @@ public class DetailsForm extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txtSeacrh, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(30, 30, 30)
-                        .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSearch)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -127,26 +125,37 @@ public class DetailsForm extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        parent.setEnabled(true);
-    }//GEN-LAST:event_formWindowClosing
-
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        if (!isDoctorModel && txtSeacrh.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Search text is empty", null, JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         try{
             switch(cmbxSearchMode.getSelectedIndex()){
                 case 0:
-                    tableModel.search(txtSeacrh.getText(), true);
+                    tableModel.search(txtSeacrh.getText(), true);   // search by name, common for doctor and patient
                     break;
                 case 1:
-                    tableModel.search(txtSeacrh.getText(), false);
+                    tableModel.search(txtSeacrh.getText(), false);  // serch by NIC, only available for patient
                     break;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Sorry, an error occured while seraching!", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ConnectionTimeOutException ex) {
+            JOptionPane.showMessageDialog(this, "Cannot search. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
         }
         
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void tblDetailsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblDetailsMouseClicked
+        if (evt.getClickCount()==2 && !isDoctorModel){
+            PatientDetailsModel pdm = (PatientDetailsModel) tableModel;
+            AddPatientFrame adf = new AddPatientFrame(this, pdm.getPatientAt(tblDetails.getSelectedRow()));
+            adf.setVisible(true);
+            this.setEnabled(false);
+        }
+    }//GEN-LAST:event_tblDetailsMouseClicked
 
     /**
      * @param args the command line arguments

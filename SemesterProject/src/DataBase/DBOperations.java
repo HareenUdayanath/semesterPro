@@ -7,10 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import Domain.*;
-import com.mysql.jdbc.CommunicationsException;
 import java.sql.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 
 public class DBOperations {
@@ -20,19 +18,24 @@ public class DBOperations {
     private EmployeeFactory emfac = null;
     private static DBOperations instance = null;
     //private String url = "jdbc:odbc://192.168.173.1:3306/test2";    
-    //private String url = "jdbc:mysql://192.168.173.1:3306/SemesterProject";
-    private String ip = "192.168.173.1";
+    //private String url = "jdbc:mysql://192.168.173.2:3306/SemesterProject";
+    private String ip = "192.168.173.2";
     private String port = "3306";
-    //private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
-    private String url = "jdbc:mysql://localhost:3306/SemesterProject";
+    private String url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";
+    //private String url = "jdbc:mysql://localhost:3306/SemesterProject";
     
     private String user = "hosdataadmin";
     private String password = "coperativehos7456391";
+
     
-    
-    
-    public DBOperations(){
+    private DBOperations(){
         this.emfac = new EmployeeFactory();
+        String[] ipAndPort = Help.readIPandPort();
+        if(ipAndPort[0]!=null&&ipAndPort[1]!=null){
+            this.ip = ipAndPort[0];
+            this.port = ipAndPort[1];
+            this.url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";           
+        }
     }
     
     /*
@@ -42,16 +45,16 @@ public class DBOperations {
     public boolean setConenction() throws SQLException,ConnectionTimeOutException{
         boolean reachable = false;
         try {            
-            Class.forName("com.mysql.jdbc.Driver").newInstance();           
-            con = DriverManager.getConnection(url, user, password);            
-            reachable = con.isValid(30);
+            Class.forName("com.mysql.jdbc.Driver").newInstance();            
+            con = DriverManager.getConnection(url, user, password);           
+            reachable = con.isValid(30);           
             
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
-            Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+           
         }catch(com.mysql.jdbc.exceptions.jdbc4.CommunicationsException ex){
             throw new ConnectionTimeOutException(ex.getMessage());
         }catch(Exception ex){            
-            throw new ConnectionTimeOutException(ex.getClass().getCanonicalName());
+            throw new ConnectionTimeOutException(ex.getMessage());
         }
         
        
@@ -163,14 +166,15 @@ public class DBOperations {
                       
         setConenction();              
         //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
-        pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?)");  
+        pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,?,null)");  
 
         pst.setInt(1,employee.getEID());            
         pst.setString(2, employee.getPosition());
         pst.setString(3,employee.getName());
         pst.setString(4, employee.getNIC());
         pst.setString(5, employee.getUsername());
-        pst.setString(6, employee.getPassword());           
+        pst.setString(6, employee.getPassword());      
+        
         pst.executeUpdate();
         con.close();
 
@@ -385,6 +389,48 @@ public class DBOperations {
         closeConnection();
         return result;
     }
+    public boolean updateRoom(Room room) throws SQLException, ConnectionTimeOutException{
+        boolean result = false; 
+                   
+        setConenction();              
+        //pst = con.prepareStatement("INSERT INTO Employee VALUES(?,?,?,?,?,MD5(?))");  
+        pst = con.prepareStatement("UPDATE room SET PID = ?, Date = ?,Availability = ? WHERE RoomNo = ?");  
+
+        pst.setInt(1,room.getPID());
+        pst.setDate(2, room.getDate());
+        pst.setBoolean(3, room.isAvailability());
+        pst.setInt(4,room.getRoomNo());    
+        
+
+        pst.executeUpdate();
+        
+        result = true;
+        closeConnection();
+        return result;
+    }
+    
+    public boolean updateChronicConditionsReport(ChronicConditionsReport chronicConditionsReport) throws SQLException, ConnectionTimeOutException{
+        boolean result = false; 
+                      
+        setConenction();              
+        pst = con.prepareStatement("UPDATE ChronicConditions SET ChronicConditionscol = ?, HeartDisease = ?, Stroke = ?, Cancer = ?, Diabetes = ?, Obesity = ?, Arthritis = ? WHERE PID = ?");     
+         
+        pst.setString(1, chronicConditionsReport.getChronicConditionsCol());
+        pst.setBoolean(2,chronicConditionsReport.isHeartDisease());
+        pst.setBoolean(3, chronicConditionsReport.isStroke());
+        pst.setBoolean(4, chronicConditionsReport.isCancer());
+        pst.setBoolean(5, chronicConditionsReport.isDiabetes()); 
+        pst.setBoolean(6, chronicConditionsReport.isObesity()); 
+        pst.setBoolean(7, chronicConditionsReport.isArthritis()); 
+        pst.setInt(8,chronicConditionsReport.getPID());   
+        pst.executeUpdate();
+        con.close();
+
+        result = true;
+        closeConnection();
+        return result;
+    }
+   
     
     /*
      * Load Data.................................................
@@ -453,6 +499,31 @@ public class DBOperations {
         return patient;
     }
     
+    public ChronicConditionsReport getChronicCondotionReport(int PID) throws SQLException, ConnectionTimeOutException{
+        ChronicConditionsReport ChronicCondition = null;
+       
+        setConenction();          
+        pst = con.prepareStatement("SELECT * FROM ChronicConditions WHERE PID = ?");
+        pst.setInt(1,PID);
+        use = pst.executeQuery();                
+
+        if(use.next()){                   
+            ChronicCondition = new ChronicConditionsReport();
+            ChronicCondition.setPID(use.getInt(1));
+            ChronicCondition.setChronicConditionsCol(use.getString(2));
+            ChronicCondition.setHeartDisease(use.getBoolean(3));
+            ChronicCondition.setStroke(use.getBoolean(4));
+            ChronicCondition.setCancer(use.getBoolean(5));
+            ChronicCondition.setDiabetes(use.getBoolean(6));
+            ChronicCondition.setObesity(use.getBoolean(7));
+            ChronicCondition.setArthritis(use.getBoolean(8));
+        }       
+
+        closeConnection();
+       
+        return ChronicCondition;
+    }
+    
     public ArrayList<Doctor> loadDoctors() throws SQLException, ConnectionTimeOutException{
         ArrayList<Doctor> doctorList = new ArrayList<>();
         
@@ -465,9 +536,7 @@ public class DBOperations {
 
             doctor.setEID(use.getInt(1));
             doctor.setName(use.getString(3));
-            doctor.setNIC(use.getString(4));
-            doctor.setUsername(use.getString(5));
-            doctor.setPassword(use.getString(6));  
+            doctor.setNIC(use.getString(4));            
             doctor.setAvailablity(use.getBoolean(7));
 
             doctorList.add(doctor);
@@ -488,9 +557,8 @@ public class DBOperations {
             Employee employee = emfac.getEmployee(use.getString(2));                
             employee.setEID(use.getInt(1));
             employee.setName(use.getString(3));
-            employee.setNIC(use.getString(4));
-            employee.setUsername(use.getString(5));
-            employee.setPassword(use.getString(6));         
+            employee.setNIC(use.getString(4));            
+            employeeList.add(employee);
         }             
         closeConnection();
         return employeeList;
@@ -508,8 +576,7 @@ public class DBOperations {
             employee.setEID(use.getInt(1));
             employee.setName(use.getString(3));
             employee.setNIC(use.getString(4));
-            employee.setUsername(use.getString(5));
-            employee.setPassword(use.getString(6));         
+                   
         }             
         closeConnection();
         return employee;
@@ -682,7 +749,7 @@ public class DBOperations {
         
         use = pst.executeQuery();             
 
-        if(use.next()){ 
+        while(use.next()){ 
             
             Room room = new Room();
             room.setRoomNo(use.getInt(1));
@@ -840,7 +907,7 @@ public class DBOperations {
         pst.setInt(1, EID);
 
         pst.executeUpdate();
-        con.close();
+        closeConnection();
 
         result = true;        
         return result;
@@ -870,7 +937,7 @@ public class DBOperations {
 
 
        } catch (SQLException ex) {
-           Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+           
        }
        return employee;
     }
@@ -879,15 +946,14 @@ public class DBOperations {
             setConenction();             
             pst = con.prepareStatement("SELECT * FROM PatientFile WHERE NIC=?");
             pst.setString(1, NIC);
-            use = pst.executeQuery();                
-            System.out.println(pst);
+            use = pst.executeQuery();
             while(use.next()){     
                 return true;
             }    
             con.close();           
             
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return false;
     }
@@ -898,13 +964,13 @@ public class DBOperations {
             pst.setString(1, pid);
             use = pst.executeQuery();                
             System.out.println(pst);
-            while(use.next()){     
+            if(use.next()){     
                 return true;
             }    
             closeConnection();
            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
          return false;
     }
@@ -921,11 +987,28 @@ public class DBOperations {
             closeConnection();
            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return false;
     }
-     public boolean checkAdmin(String uname,String pass) throws ConnectionTimeOutException{       
+    public boolean checkEmployeeNIC(String NIC) throws ConnectionTimeOutException{        
+        try {
+            setConenction();             
+            pst = con.prepareStatement("SELECT * FROM Employee WHERE NIC=?");
+            pst.setString(1, NIC);
+            use = pst.executeQuery();                
+            System.out.println(pst);
+            if(use.next()){     
+                return true;
+            }    
+            con.close();           
+            
+        } catch (SQLException ex) {
+            return false;
+        }
+        return false;
+    }
+    public boolean checkAdmin(String uname,String pass) throws ConnectionTimeOutException{       
        
          try {
             setConenction();
@@ -940,7 +1023,7 @@ public class DBOperations {
             closeConnection();
             
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return false;
     }
@@ -956,15 +1039,15 @@ public class DBOperations {
             }             
             closeConnection();            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return false;
     }
-    public boolean checkDoctorID(int eid) throws ConnectionTimeOutException{        
+    public boolean checkDoctorID(String eid) throws ConnectionTimeOutException{        
         try {
             setConenction();
             pst = con.prepareStatement("SELECT * FROM Employee WHERE EID = ?");   
-            pst.setInt(1,eid);
+            pst.setString(1,eid);
             use = pst.executeQuery();
 
             if(use.next()){  
@@ -973,7 +1056,23 @@ public class DBOperations {
             }             
             closeConnection();            
         } catch (SQLException ex) {
-            //Logger.getLogger(DBOperations.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return false;
+    }
+    public boolean isRoomAvailable(int roomNo) throws ConnectionTimeOutException{       
+        try {
+            setConenction();               
+            //pst = con.prepareStatement("SELECT * FROM Employee WHERE UserName = ? AND Password=MD5(?)"); 
+            pst = con.prepareStatement("SELECT * FROM room WHERE RoomNo = ?");   
+            pst.setInt(1,roomNo);        
+            use = pst.executeQuery();
+            if(use.next() && use.getBoolean(2)){                   
+                return true;        
+            }             
+            closeConnection();            
+        } catch (SQLException ex) {
+            return false;
         }
         return false;
     }
