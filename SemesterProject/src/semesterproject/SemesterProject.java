@@ -156,5 +156,6 @@ public class SemesterProject {
         //String[] i = Help.readIPandPort();
         //if(i[0]!=null)
             //System.out.println(i[0]+" "+i[1]);
+        //System.out.println("sdasdasd  "+Help.getDate(2000,42,98));
     }
 }

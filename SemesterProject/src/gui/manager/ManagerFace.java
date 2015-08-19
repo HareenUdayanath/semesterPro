@@ -211,6 +211,11 @@ public class ManagerFace extends javax.swing.JFrame {
 
         posComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Doctor", "Reception", "LabTechniciant", "DataEntryClerk" }));
 
+        nicText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nicTextActionPerformed(evt);
+            }
+        });
         nicText.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 nicTextKeyTyped(evt);
@@ -578,6 +583,10 @@ public class ManagerFace extends javax.swing.JFrame {
         }
         changeEmpLog.setVisible(true);
     }//GEN-LAST:event_changeBtnActionPerformed
+
+    private void nicTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nicTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nicTextActionPerformed
 
     
     public static void main(String args[]) {
