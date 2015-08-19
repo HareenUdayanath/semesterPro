@@ -437,7 +437,7 @@ public class AdminFace extends javax.swing.JFrame {
         Help.writeIPandPort(txtIP.getText(),txtPort.getText());
         this.txtIP.setText(null);
         this.txtPort.setText(null);
-        
+        DBOperations.getInstace().setIP();
     }//GEN-LAST:event_btnAddActionPerformed
 
     /**

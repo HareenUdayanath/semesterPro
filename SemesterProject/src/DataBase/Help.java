@@ -31,12 +31,12 @@ public class Help {
         try {
             File file = new File("example.itcope");
             output = new BufferedWriter(new FileWriter(file));
-            output.write(text);
+            output.write(text);            
         } catch ( IOException e ) {
             //e.printStackTrace();
         } finally {
             if ( output != null ) try {
-                output.close();
+                output.close();                
             } catch (IOException ex) {
                 //Logger.getLogger(Help.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -50,6 +50,7 @@ public class Help {
             br = new BufferedReader(new FileReader("example.itcope"));
             int i = 0;
             while ((sCurrentLine = br.readLine()) != null) {
+                System.out.println(sCurrentLine);
                 ipAndPort[i++] = sCurrentLine;
             }
 
