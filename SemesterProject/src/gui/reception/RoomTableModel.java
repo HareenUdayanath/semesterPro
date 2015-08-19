@@ -24,6 +24,9 @@ public class RoomTableModel extends AbstractTableModel{
             if (this.rooms == null){
                 this.rooms = new ArrayList<Room>();
             }
+            if (rooms.size()==0){
+                JOptionPane.showMessageDialog(null, "No admitted rooms to display.", "", JOptionPane.INFORMATION_MESSAGE);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, "Sorry, an error occured while loading rooms", "Error", JOptionPane.ERROR_MESSAGE);
@@ -80,6 +83,9 @@ public class RoomTableModel extends AbstractTableModel{
     
     public void setValues(ArrayList<Room> rooms){
         this.rooms = rooms;
+        if (rooms.size() == 0) {
+            JOptionPane.showMessageDialog(null, "No admitted rooms to display.", "", JOptionPane.INFORMATION_MESSAGE);
+        }
         fireTableStructureChanged();
     }
     

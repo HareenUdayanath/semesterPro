@@ -6,6 +6,7 @@ import DataBase.DBOperations;
 import DataBase.Help;
 import Domain.Patient;
 import java.sql.SQLException;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /*
@@ -13,7 +14,7 @@ import javax.swing.JOptionPane;
  */
 public class AddPatientFrame extends javax.swing.JFrame {
 
-    private ReceptionGUI parent;  // reception gui reference is used to enable the reception gui windo after closing this window
+    private JFrame parent;  // reception gui reference is used to enable the reception gui windo after closing this window
     
     /**
      * Creates new form AddPatientFrame
@@ -22,7 +23,7 @@ public class AddPatientFrame extends javax.swing.JFrame {
         initComponents();
     }
     
-    public AddPatientFrame(ReceptionGUI parent){
+    public AddPatientFrame(JFrame parent){
         this();
         this. parent = parent;
         new Thread(){
@@ -37,6 +38,78 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 }
             }
         }.start();
+    }
+    
+    public AddPatientFrame(JFrame parent, Patient p){
+        this();
+        this.parent = parent;
+        btnAddPatient.setVisible(false);
+        btnCanel.setText("OK");
+        btnCanel.setIcon(null);
+        txtPID.setText(Integer.toString(p.getPID()));
+        txtFirstName.setText(p.getFirstName());
+        txtFirstName.setEditable(false);
+        txtLastName.setText(p.getLastName());
+        txtLastName.setEditable(false);
+        txtFullName1.setText(p.getFullName());
+        txtFullName1.setEditable(false);
+        txtFullName2.setEditable(false);
+        if (p.getDateOfBirth() != null) {
+            txtYear.setText(Integer.toString(Help.getYear(p.getDateOfBirth())));
+            txtMonth.setText(Integer.toString(Help.getMonth(p.getDateOfBirth())));
+            txtDay.setText(Integer.toString(Help.getDay(p.getDateOfBirth()))); 
+        }
+        txtYear.setEditable(false);
+        txtMonth.setEditable(false);
+        txtDay.setEditable(false);
+        if (p.getGender().equals("M")) {
+            cmbxGender.setSelectedIndex(0);
+        } else {
+            cmbxGender.setSelectedIndex(1);
+        }
+        cmbxGender.setEnabled(false);
+        txtAddress1.setText(p.getAddress());
+        txtAddress1.setEditable(false);
+        txtAddress2.setEditable(false);
+        txtAddress3.setEditable(false);
+        txtNIC.setText(p.getNIC());
+        txtNIC.setEditable(false);
+        txtPatientContactNo.setText(Integer.toString(p.getPatientContactNo()));
+        txtPatientContactNo.setEditable(false);
+        txtNameOfGuardian.setText(p.getNameOfTheGuardian());
+        txtNameOfGuardian.setEditable(false);
+        txtGuardianContact.setText(Integer.toString(p.getGuardianContactNo()));
+        txtGuardianContact.setEditable(false);
+        switch (p.getBloodGroup()) {
+            case "A+":
+                cmbxBloodGroup.setSelectedIndex(0);
+                break;
+            case "A-":
+                cmbxBloodGroup.setSelectedIndex(1);
+                break;
+            case "B+":
+                cmbxBloodGroup.setSelectedIndex(2);
+                break;
+            case "B-":
+                cmbxBloodGroup.setSelectedIndex(3);
+                break;
+            case "AB+":
+                cmbxBloodGroup.setSelectedIndex(4);
+                break;
+            case "AB-":
+                cmbxBloodGroup.setSelectedIndex(5);
+                break;
+            case "O+":
+                cmbxBloodGroup.setSelectedIndex(6);
+                break;
+            case "O-":
+                cmbxBloodGroup.setSelectedIndex(7);
+                break;
+        }
+        cmbxBloodGroup.setEnabled(false);
+        txtAllergies1.setText(p.getAllergies());
+        txtAllergies1.setEditable(false);
+        txtAllergies2.setEditable(false);
     }
     
     /**
@@ -472,7 +545,8 @@ public class AddPatientFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Invalid NIC","Invalid Detail", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
-            Integer.parseInt(NIC.substring(0, NIC.length()-1)); // first 9 digits should be numbers if not nuberformatexception will be thrown
+            if (!NIC.equals(""))
+                Integer.parseInt(NIC.substring(0, NIC.length()-1)); // first 9 digits should be numbers if not nuberformatexception will be thrown
             if (DBOperations.getInstace().checkPatientNIC(NIC)){  // check whether this NIC already exists in database because nic should be unique
                 JOptionPane.showMessageDialog(this, "NIC already exsits","Invalid Detail", JOptionPane.WARNING_MESSAGE);
                 return false;

@@ -54,8 +54,10 @@ public class ReceptionGUI extends javax.swing.JFrame {
         tblRooms = new javax.swing.JTable();
         btnAdmitPatient = new javax.swing.JButton();
         btnDischargePatient = new javax.swing.JButton();
+        btnRefreshRooms = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Reception");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -104,8 +106,8 @@ public class ReceptionGUI extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addComponent(btnAddNewPatient)
                 .addGap(18, 18, 18)
-                .addComponent(btnSearchPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addComponent(btnSearchPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,6 +167,11 @@ public class ReceptionGUI extends javax.swing.JFrame {
             }
         });
         tblRooms.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tblRooms.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRoomsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblRooms);
 
         btnAdmitPatient.setText("Admit Patient");
@@ -181,6 +188,13 @@ public class ReceptionGUI extends javax.swing.JFrame {
             }
         });
 
+        btnRefreshRooms.setText("Refresh Room Table");
+        btnRefreshRooms.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshRoomsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
@@ -193,6 +207,8 @@ public class ReceptionGUI extends javax.swing.JFrame {
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRefreshRooms)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnAdmitPatient)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -206,7 +222,8 @@ public class ReceptionGUI extends javax.swing.JFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnDischargePatient, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(btnAdmitPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAdmitPatient, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRefreshRooms, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
                 .addContainerGap())
@@ -247,11 +264,10 @@ public class ReceptionGUI extends javax.swing.JFrame {
 
     private void btnSearchPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchPatientActionPerformed
         // view details form. set the behaviour to patient model
-        DetailsForm df = new DetailsForm(this,false);
+        DetailsForm df = new DetailsForm(false);
         df.setTableModel(new PatientDetailsModel());
         df.setLocationRelativeTo(null);
         df.setVisible(true);
-        this.setEnabled(false);
     }//GEN-LAST:event_btnSearchPatientActionPerformed
 
     private void btnAddNewPatientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddNewPatientActionPerformed
@@ -264,11 +280,10 @@ public class ReceptionGUI extends javax.swing.JFrame {
 
     private void btnDoctorListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoctorListActionPerformed
         // view details form. set the behaviour to Doctor model    
-        DetailsForm df = new DetailsForm(this, true);
+        DetailsForm df = new DetailsForm(true);
         df.setTableModel(new DoctorDetailsModel());
         df.setLocationRelativeTo(null);
         df.setVisible(true);
-        this.setEnabled(false);
     }//GEN-LAST:event_btnDoctorListActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -302,6 +317,34 @@ public class ReceptionGUI extends javax.swing.JFrame {
         this.setEnabled(false);
     }//GEN-LAST:event_btnDischargePatientActionPerformed
 
+    private void tblRoomsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRoomsMouseClicked
+        if (evt.getClickCount()==2){
+            try{
+            AddPatientFrame adf = new AddPatientFrame(this, DBOperations.getInstace().getPatient(roomModel.getRoomAt(tblRooms.getSelectedRow()).getPID()));
+            adf.setVisible(true);
+            this.setEnabled(false);
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Sorry, an error occured while loading patient.", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ConnectionTimeOutException ex) {
+                JOptionPane.showMessageDialog(null, "Cannot load patient. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_tblRoomsMouseClicked
+
+    private void btnRefreshRoomsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshRoomsActionPerformed
+        new Thread(){
+            public void run(){
+                try {
+                    roomModel.setValues(DBOperations.getInstace().getAddmitedRooms());
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Sorry, an error occured while loading rooms.", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (ConnectionTimeOutException ex) {
+                    JOptionPane.showMessageDialog(null, "Cannot load rooms. Connection Timed out. Please try again.", "Time out", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        }.start();
+    }//GEN-LAST:event_btnRefreshRoomsActionPerformed
+
     protected void refreshTable(){  // get all the admitted rooms. This is called after a patient is admitted or discharged 
         new Thread(){
             @Override
@@ -325,30 +368,6 @@ public class ReceptionGUI extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ReceptionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ReceptionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ReceptionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ReceptionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -368,6 +387,7 @@ public class ReceptionGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnAdmitPatient;
     private javax.swing.JButton btnDischargePatient;
     private javax.swing.JButton btnDoctorList;
+    private javax.swing.JButton btnRefreshRooms;
     private javax.swing.JButton btnSearchPatient;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

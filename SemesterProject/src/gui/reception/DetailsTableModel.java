@@ -2,6 +2,7 @@
 package gui.reception;
 
 import DataBase.ConnectionTimeOutException;
+import Domain.Patient;
 import java.sql.SQLException;
 import javax.swing.table.AbstractTableModel;
 

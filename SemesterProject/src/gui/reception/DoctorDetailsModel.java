@@ -22,9 +22,11 @@ public class DoctorDetailsModel extends DetailsTableModel{
             public void run(){
                 try {
                     values = DBOperations.getInstace().loadDoctors();    // load avilable doctors at begining
+                    fireTableStructureChanged();
                     if (values.size()==0){
                         JOptionPane.showMessageDialog(null, "Doctor List Empty!", null, JOptionPane.INFORMATION_MESSAGE);
                     }
+                    System.out.println("loaded");
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Sorry, an error occured while loading Doctors!", "Error", JOptionPane.ERROR_MESSAGE);

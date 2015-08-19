@@ -10,6 +10,7 @@ public class LabReport extends Document{
     private int labReportNo=0;
     private int testType;
     private int labTechID;
+    private String testName;
     private ArrayList<String> dataList = new ArrayList();
 
 
@@ -68,6 +69,16 @@ public class LabReport extends Document{
      * @param testType the testType to set
      */
     public void setTestType(int testType) {
+        if(testType==1)
+            this.testName = "Fasting Blood Sugar";
+        else if(testType==2)
+            this.testName = "Urine Full Report";
+        else if(testType==3)
+            this.testName = "Full Blood Count";
+        else if(testType==4)
+            this.testName = "Serum Lipid Profile";
+        else
+            this.testName = "Total Cholesterol";
         this.testType = testType;
     }
 
@@ -87,5 +98,12 @@ public class LabReport extends Document{
     
     public void addDataToTheList(String data){
         this.dataList.add(data);
+    }
+
+    /**
+     * @return the testName
+     */
+    public String getTestName() {
+        return testName;
     }
 }
