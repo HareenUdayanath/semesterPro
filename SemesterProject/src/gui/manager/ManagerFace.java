@@ -9,7 +9,10 @@ import DataBase.DBOperations;
 import Domain.Employee;
 import Domain.EmployeeFactory;
 import gui.login.ChangeLogInSetting;
+import gui.login.LoginFace;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import sun.security.util.Password;
 
 /**
@@ -34,6 +38,19 @@ public class ManagerFace extends javax.swing.JFrame {
     EmployeeFactory emfac;
     public ManagerFace() {
         initComponents();
+         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent we) {
+                int dialogButton = JOptionPane.YES_NO_OPTION;
+                int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to log out?","Log out",dialogButton);
+                if(dialogResult == JOptionPane.YES_OPTION){                
+                setVisible(false);
+                LoginFace logWindow = new LoginFace();
+                logWindow.setVisible(true);
+                }
+                
+            }    
+                });
         nameLabel.setEnabled(false);
         posLabel.setEnabled(false);
         nicLabel.setEnabled(false);
@@ -423,52 +440,56 @@ public class ManagerFace extends javax.swing.JFrame {
     }//GEN-LAST:event_SearchBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        //if(nameText.get)
-        EmployeeFactory empFac = new EmployeeFactory();        
-        empDB = DBOperations.getInstace();
-        String name = nameText.getText();
-        String position = posComboBox.getSelectedItem().toString();
-        System.out.println(position);
-        Employee emp1 = emfac.getEmployee(position);
-        String nic = nicText.getText();        
-        String userName = unameText.getText();
-        char[] password = passText.getPassword();
-        char[] conPassword = conPassText.getPassword();
-        try {
-            if(!(empDB.checkEmployeeNIC(nic))){
-                if(!(empDB.checkUserName(userName))){
-                    if((Arrays.equals(password, conPassword))){
-                        emp1.setName(name);
-                        emp1.setNIC(nic);
-                        emp1.setPassword(Arrays.toString(password));
-                        emp1.setUsername(userName);
-                        try {
-                            empDB.addEmployee(emp1);
-                            System.out.println("nef");
-                        } catch (SQLException ex) {
-                            Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (ConnectionTimeOutException ex) {
-                            JOptionPane.showMessageDialog(null,ex.toString());
-                            return;
-                        }
-                    }
+        if(!((nameText.getText()=="")||(nicText.getText()=="")||(unameText.getText()=="")||(passText.getPassword().length==0))){
+                 
+            EmployeeFactory empFac = new EmployeeFactory();        
+            empDB = DBOperations.getInstace();
+            String name = nameText.getText();
+            String position = posComboBox.getSelectedItem().toString();
 
-                    else{
-                        JOptionPane.showMessageDialog(null, "Sorry! Your password and confirm password fields doesn't match.", "Password mismatch ", JOptionPane.INFORMATION_MESSAGE);
-                    }
-            }
-                else{
-                    JOptionPane.showMessageDialog(null, "Sorry! This username already exists. Please choose another.", "Invalid username ", JOptionPane.INFORMATION_MESSAGE);
+            Employee emp1 = emfac.getEmployee(position);
+            String nic = nicText.getText();        
+            String userName = unameText.getText();
+            char[] password = passText.getPassword();
+            char[] conPassword = conPassText.getPassword();
+            try {
+                if(!(empDB.checkEmployeeNIC(nic))){
+                    if(!(empDB.checkUserName(userName))){
+                        if((Arrays.equals(password, conPassword))){
+                            emp1.setName(name);
+                            emp1.setNIC(nic);
+                            emp1.setPassword(Arrays.toString(password));
+                            emp1.setUsername(userName);
+                            try {
+                                empDB.addEmployee(emp1);
+
+                            } catch (SQLException ex) {
+                                Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (ConnectionTimeOutException ex) {
+                                JOptionPane.showMessageDialog(null,ex.toString());
+                                return;
+                            }
+                        }
+
+                        else{
+                            JOptionPane.showMessageDialog(null, "Sorry! Your password and confirm password fields doesn't match.", "Password mismatch ", JOptionPane.INFORMATION_MESSAGE);
+                        }
                 }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Sorry! This username already exists. Please choose another.", "Invalid username ", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Sorry! This NIC already exists. Please check again.", "NIC mismatch ", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (ConnectionTimeOutException ex) {
+                System.out.println("timeout!!!!");
             }
-            else{
-                JOptionPane.showMessageDialog(null, "Sorry! This NIC already exists. Please check again.", "NIC mismatch ", JOptionPane.INFORMATION_MESSAGE);
+
             }
-        } catch (ConnectionTimeOutException ex) {
-            System.out.println("timeout!!!!");
+        else{
+        JOptionPane.showMessageDialog(null, "Please fill all the required fields.", "Enter required data ", JOptionPane.INFORMATION_MESSAGE);
         }
-        
-        
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
@@ -480,6 +501,7 @@ public class ManagerFace extends javax.swing.JFrame {
 
     private void removeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBtnActionPerformed
         // TODO add your handling code here:
+        if(searchID!=0){
         empDB = DBOperations.getInstace();        
         int dialogButton = JOptionPane.YES_NO_OPTION;
         int dialogResult = JOptionPane.showConfirmDialog (null, "Are you sure you want to remove this employee?","Remove Employee",dialogButton);
@@ -492,6 +514,10 @@ public class ManagerFace extends javax.swing.JFrame {
                  JOptionPane.showMessageDialog(null,ex.toString());
                 return;
             }
+        }
+        }
+        else{        
+        JOptionPane.showMessageDialog(null, "Please enter an EID. You can check the employee list to find an ID", "Enter an ID ", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_removeBtnActionPerformed
 
@@ -538,7 +564,7 @@ public class ManagerFace extends javax.swing.JFrame {
         empDB = DBOperations.getInstace();
         try {           
             elist.empList = empDB.loadEmplyee();
-             System.out.println("ggggg");
+             
         } catch (SQLException ex) {
             Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ConnectionTimeOutException ex) {
@@ -573,15 +599,21 @@ public class ManagerFace extends javax.swing.JFrame {
     private void changeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeBtnActionPerformed
         // TODO add your handling code here:
         empDB = DBOperations.getInstace();
-        int eid = Integer.parseInt(changeIdText.getText());
-        
-        ChangeLogInSetting changeEmpLog = new ChangeLogInSetting();
-        try {
-            changeEmpLog.getPreviousData(eid);
-        } catch (SQLException ex) {
-            Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+        if(!"".equals(changeIdText.getText()))
+        {
+            int eid = Integer.parseInt(changeIdText.getText());
+
+            ChangeLogInSetting changeEmpLog = new ChangeLogInSetting();
+            try {
+                changeEmpLog.getPreviousData(eid);
+            } catch (SQLException ex) {
+                Logger.getLogger(ManagerFace.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            changeEmpLog.setVisible(true);
         }
-        changeEmpLog.setVisible(true);
+        else{
+            JOptionPane.showMessageDialog(null, "Please enter an EID. You can check the employee list to find an ID", "Enter an ID ", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_changeBtnActionPerformed
 
     private void nicTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nicTextActionPerformed

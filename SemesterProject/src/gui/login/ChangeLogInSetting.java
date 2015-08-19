@@ -242,8 +242,10 @@ public class ChangeLogInSetting extends javax.swing.JFrame {
         // TODO add your handling code here:
         dataBase = DBOperations.getInstace();
         
-        Employee employee = null;       
-        try {           
+        Employee employee = null;
+        
+        try {
+            
             employee = dataBase.checkEmplyee(txtUserName.getText(),String.valueOf(pswdPassword.getPassword()));
            
         } catch (ConnectionTimeOutException ex) {

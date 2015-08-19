@@ -309,7 +309,7 @@ public class DocGUI extends javax.swing.JFrame {
             medicalDates = ptDB.getMedicalDates(pid);
         } catch (SQLException ex) {
             Logger.getLogger(DocGUI.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ex);
+            
         } catch (ConnectionTimeOutException ex) {
             JOptionPane.showMessageDialog(null,ex.toString());
             return;
