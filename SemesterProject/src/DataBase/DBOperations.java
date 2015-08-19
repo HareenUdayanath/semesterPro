@@ -30,6 +30,9 @@ public class DBOperations {
     
     private DBOperations(){
         this.emfac = new EmployeeFactory();
+        setIP();
+    }
+    public void setIP(){
         String[] ipAndPort = Help.readIPandPort();
         if(ipAndPort[0]!=null&&ipAndPort[1]!=null){
             this.ip = ipAndPort[0];
@@ -37,7 +40,6 @@ public class DBOperations {
             this.url = "jdbc:mysql://"+ip+":"+port+"/SemesterProject";           
         }
     }
-    
     /*
      * Connection Establishment
      */
